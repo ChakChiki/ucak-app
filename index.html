@@ -1,36 +1,108 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Uçak Yükleme Hesaplama</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Uçak Yükleme Hesaplama - Mobil</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 10px; background:#000; color:#fff; }
-    h2 { text-align:center; margin-bottom:15px; }
-    .options-box { border: 2px solid #555; border-radius: 10px; padding: 10px; background: #111; max-width: 380px; margin: 0 auto 20px auto; }
-    .options-box label { display: block; margin-top: 8px; font-weight: bold; }
-    .fuel-block { margin-top: 10px; }
-    .fuel-result { font-weight: bold; color: #00ccff; margin-top: 5px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 15px; display:none; font-size:14px; }
-    th, td { border: 1px solid #555; padding: 5px; text-align: center; }
-    th { background: #222; }
-    .num { text-align: right; }
-    .total { font-weight: bold; background: #111; }
-    input[type=number] { width:55px; padding:3px; font-size:14px; background:#222; color:#fff; border:1px solid #444; border-radius:4px; }
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-    input[type=number] { -moz-appearance: textfield; }
-    /* Fosforlu yeşil */
-    .totalCell { color:#00ff66; font-weight:bold; }
-    .total td:last-child { color:#00ff66; font-weight:bold; }
+    :root{
+      --bg: #0f0f10;
+      --panel: #171717;
+      --panel-2: #1c1c1c;
+      --muted: #cfcfcf;
+      --accent: #32d74b;
+      --card-w: 118px;
+      --max-w: 430px;
+    }
+    body{
+      margin:0;
+      padding:10px;
+      background:var(--bg);
+      color:var(--muted);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      max-width:var(--max-w);
+      margin-left:auto;
+      margin-right:auto;
+      -webkit-font-smoothing:antialiased;
+    }
+    h1{font-size:16px;text-align:center;margin:6px 0 10px 0;color:var(--muted);}
+    .options {
+      background:var(--panel);
+      border-radius:10px;
+      padding:10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .row {display:flex;gap:8px;align-items:center;justify-content:space-between;}
+    .label{font-size:12px;color:#dcdcdc;min-width:88px;}
+    .smallInput{
+      background:var(--panel-2);
+      border:none;
+      color:var(--muted);
+      padding:6px 8px;
+      border-radius:8px;
+      font-size:13px;
+      box-sizing:border-box;
+      width:100%;
+      max-width:280px;
+    }
+    .grid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(var(--card-w),1fr));
+      gap:8px;
+    }
+    .card{
+      background:var(--panel-2);
+      border-radius:10px;
+      padding:8px;
+      text-align:center;
+      min-height:92px;
+    }
+    .card .title{font-weight:700;font-size:13px;color:#e6e6e6;margin-bottom:6px;}
+    .card input{
+      width:56px;
+      padding:4px;
+      border-radius:6px;
+      border:none;
+      background:#151515;
+      color:var(--muted);
+      text-align:center;
+      font-size:12px;
+      margin:3px;
+    }
+    .card .tot{margin-top:6px;font-weight:700;font-size:13px;color:var(--accent);}
+    .groups{margin-top:12px;display:flex;flex-direction:column;gap:6px;}
+    .groupCard{
+      background:#171717;
+      border-radius:8px;
+      padding:8px;
+      display:flex;
+      justify-content:space-between;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .groupCard .gval{ color:var(--accent); font-weight:700; }
+    .fuelResult{
+      margin-top:10px;
+      background:#171717;
+      border-radius:8px;
+      padding:8px;
+      font-size:13px;
+      display:flex;
+      justify-content:space-between;
+    }
+    .fuelResult .v{color:var(--accent);font-weight:700;}
   </style>
 </head>
 <body>
-  <h2>Uçak Yükleme Hesaplama</h2>
+  <h1>Uçak Yükleme Hesaplama</h1>
 
-  <!-- Seçenekler Kutusu -->
-  <div class="options-box">
-    <label>Uçak Tipi:
-      <select id="aircraft">
+  <div class="options">
+    <div class="row">
+      <div class="label">Uçak Tipi</div>
+      <select id="aircraft" class="smallInput">
         <option value="">Seçiniz</option>
         <option value="B737">Boeing 737</option>
         <option value="A319">Airbus A319</option>
@@ -44,157 +116,152 @@
         <option value="A320B">Airbus A320 Bulk</option>
         <option value="A321B">Airbus A321 Bulk</option>
       </select>
-    </label>
+    </div>
 
-    <label>Ortalama Bagaj Kg:
-      <input type="number" id="avgBag" value="20">
-    </label>
+    <div class="row">
+      <div class="label">Ortalama bagaj (kg)</div>
+      <input id="avgBag" class="smallInput" type="number" inputmode="decimal" step="0.1" placeholder="örn. 20">
+    </div>
 
-    <div class="fuel-block">
-      <label>Total Fuel (kg): <input type="number" id="totalFuel"></label>
-      <label>Taxi Fuel (kg): <input type="number" id="taxiFuel"></label>
-      <div class="fuel-result" id="remainFuel"></div>
+    <div class="row" style="gap:6px;">
+      <div style="flex:1;">
+        <div class="label">Total Fuel (kg)</div>
+        <input id="totalFuel" class="smallInput" type="number" inputmode="decimal" step="0.1">
+      </div>
+      <div style="flex:1;">
+        <div class="label">Taxi Fuel (kg)</div>
+        <input id="taxiFuel" class="smallInput" type="number" inputmode="decimal" step="0.1">
+      </div>
     </div>
   </div>
 
-  <!-- Hesaplama Tablosu -->
-  <table id="table">
-    <thead>
-      <tr>
-        <th>Kompartman</th>
-        <th>Bagaj Sayısı</th>
-        <th>Bagaj Kg</th>
-        <th>Kargo Kg</th>
-        <th>Toplam Kg</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div id="fuelBox" class="fuelResult" style="display:none;">
+    <div>Kalan Yakıt</div>
+    <div id="fuelRemain" class="v"></div>
+  </div>
 
-  <script>
-    const aircraftComps = {
-      "B737": ["1","2","3","4"],
-      "A319": ["11","12","41","42","51"],
-      "A320": ["11","12","13","31","32","41","42","5"],
-      "A321": ["11","12","21","22","23","31","32","33","41","42","5"],
-      "A330": ["1","2","3","4","5"],
-      "A350": ["1","2","3","4","5"],
-      "B777": ["1","2","3","4","5"],
-      "B787": ["1","2","3","4","5"],
-      "A319B": ["1","4","5"],
-      "A320B": ["1","3","4","5"],
-      "A321B": ["1","2","3","4","5"]
-    };
+  <div id="grid" class="grid"></div>
+  <div id="groupTotals" class="groups"></div>
 
-    let compartments = [];
-    const table = document.getElementById("table");
-    const tbody = table.querySelector("tbody");
+<script>
+const aircraftComps = {
+  "B737": ["1","2","3","4"],
+  "A319": ["11","12","41","42","51"],
+  "A320": ["11","12","13","31","32","41","42","5"],
+  "A321": ["11","12","21","22","23","31","32","33","41","42","5"],
+  "A330": ["1","2","3","4","5"],
+  "A350": ["1","2","3","4","5"],
+  "B777": ["1","2","3","4","5"],
+  "B787": ["1","2","3","4","5"],
+  "A319B": ["1","4","5"],
+  "A320B": ["1","3","4","5"],
+  "A321B": ["1","2","3","4","5"]
+};
 
-    document.getElementById("aircraft").addEventListener("change", () => {
-      const val = document.getElementById("aircraft").value;
-      tbody.innerHTML="";
-      compartments = [];
-      if(val){
-        table.style.display="table";
-        aircraftComps[val].forEach(name=>{
-          compartments.push({name, bags:null, cargo:null});
-        });
-        buildTable();
-        updateValues();
-      } else {
-        table.style.display="none";
-      }
+const groupDefs = {
+  "A319":[["11","12"],["41","42"],["51"]],
+  "A320":[["11","12","13"],["31","32"],["41","42"],["5"]],
+  "A321":[["11","12"],["21","22","23"],["31","32","33"],["41","42"],["5"]],
+  "A319B":[["1","4","5"]],
+  "A320B":[["1","3","4","5"]],
+  "A321B":[["1","2","3","4","5"]],
+  "B737":[["1","2","3","4"]],
+  "A330":[["1","2","3","4","5"]],
+  "A350":[["1","2","3","4","5"]],
+  "B777":[["1","2","3","4","5"]],
+  "B787":[["1","2","3","4","5"]]
+};
+
+let compartments = [];
+
+const grid = document.getElementById('grid');
+const groupTotals = document.getElementById('groupTotals');
+const fuelBox = document.getElementById('fuelBox');
+const fuelRemain = document.getElementById('fuelRemain');
+
+document.getElementById('aircraft').addEventListener('change', onAircraftChange);
+document.getElementById('avgBag').addEventListener('input', updateAll);
+document.getElementById('totalFuel').addEventListener('input', updateFuel);
+document.getElementById('taxiFuel').addEventListener('input', updateFuel);
+
+function onAircraftChange(){
+  const val = document.getElementById('aircraft').value;
+  grid.innerHTML=''; groupTotals.innerHTML='';
+  compartments = [];
+  if(!val) return;
+  aircraftComps[val].forEach(name => compartments.push({name, bags:0, cargo:0}));
+  renderGrid();
+  updateAll();
+}
+
+function renderGrid(){
+  grid.innerHTML='';
+  compartments.forEach(c=>{
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML = `
+      <div class="title">${c.name}</div>
+      <div style="display:flex;justify-content:center;gap:6px;margin-top:6px;">
+        <input inputmode="decimal" type="number" class="bag" data-comp="${c.name}" placeholder="B">
+        <input inputmode="decimal" type="number" class="cargo" data-comp="${c.name}" placeholder="K">
+      </div>
+      <div class="tot" id="tot-${c.name}"></div>
+    `;
+    grid.appendChild(card);
+  });
+  grid.querySelectorAll('.bag').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      const comp = compartments.find(x=>x.name===inp.dataset.comp);
+      comp.bags = inp.value===''?0:parseFloat(inp.value);
+      updateAll();
     });
+  });
+  grid.querySelectorAll('.cargo').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      const comp = compartments.find(x=>x.name===inp.dataset.comp);
+      comp.cargo = inp.value===''?0:parseFloat(inp.value);
+      updateAll();
+    });
+  });
+}
 
-    document.getElementById("avgBag").addEventListener("input", updateValues);
-    document.getElementById("totalFuel").addEventListener("input", calcFuel);
-    document.getElementById("taxiFuel").addEventListener("input", calcFuel);
+function updateFuel(){
+  const total = parseFloat(document.getElementById('totalFuel').value||0);
+  const taxi = parseFloat(document.getElementById('taxiFuel').value||0);
+  const remain = total - taxi;
+  if(total>0 || taxi>0){
+    fuelBox.style.display="flex";
+    fuelRemain.textContent = remain.toFixed(1) + " kg";
+  } else {
+    fuelBox.style.display="none";
+  }
+}
 
-    function calcFuel(){
-      let total = document.getElementById("totalFuel").value;
-      let taxi = document.getElementById("taxiFuel").value;
-      if(total==="" && taxi===""){
-        document.getElementById("remainFuel").textContent = "";
-      } else {
-        let remain = (parseFloat(total||0) - parseFloat(taxi||0));
-        document.getElementById("remainFuel").textContent = "Remaining Fuel: " + remain + " kg";
-      }
-    }
+function updateAll(){
+  const avg = parseFloat(document.getElementById('avgBag').value||0);
+  compartments.forEach(c=>{
+    const bagKg = (c.bags||0) * avg;
+    const total = bagKg + (c.cargo||0);
+    const totEl = document.getElementById('tot-'+c.name);
+    if(totEl) totEl.textContent = total ? (total.toFixed(1)+" kg") : '';
+  });
 
-    function buildTable(){
-      tbody.innerHTML="";
-      compartments.forEach(c=>{
-        const row=document.createElement("tr");
-        row.innerHTML=`
-          <td>${c.name}</td>
-          <td><input type="number" data-comp="${c.name}" class="bagInput"></td>
-          <td class="num bagKgCell"></td>
-          <td><input type="number" data-comp="${c.name}" class="cargoInput"></td>
-          <td class="num totalCell"></td>`;
-        tbody.appendChild(row);
-      });
-
-      tbody.querySelectorAll(".bagInput").forEach(inp=>{
-        inp.addEventListener("input",e=>{
-          let comp=compartments.find(x=>x.name===inp.dataset.comp);
-          comp.bags = e.target.value==="" ? null : parseFloat(e.target.value);
-          updateValues();
-        });
-      });
-      tbody.querySelectorAll(".cargoInput").forEach(inp=>{
-        inp.addEventListener("input",e=>{
-          let comp=compartments.find(x=>x.name===inp.dataset.comp);
-          comp.cargo = e.target.value==="" ? null : parseFloat(e.target.value);
-          updateValues();
-        });
-      });
-    }
-
-    function updateValues(){
-      const avg=+document.getElementById("avgBag").value||0;
-      const rows=tbody.querySelectorAll("tr");
-      compartments.forEach((c,i)=>{
-        const bagKg=(c.bags||0)*avg;
-        const total=bagKg+(c.cargo||0);
-        rows[i].querySelector(".bagKgCell").textContent=bagKg?bagKg.toFixed(1):"";
-        rows[i].querySelector(".totalCell").textContent=total?total.toFixed(1):"";
-      });
-
-      // eski grup satırlarını temizle
-      tbody.querySelectorAll(".total").forEach(r=>r.remove());
-      const val=document.getElementById("aircraft").value;
-      if(val==="A319"){
-        addGroupRow(["11","12"],"11+12 Toplam");
-        addGroupRow(["41","42"],"41+42 Toplam");
-        addGroupRow(["51"],"51 Toplam");
-      }
-      if(val==="A320"){
-        addGroupRow(["11","12","13"],"11+12+13 Toplam");
-        addGroupRow(["31","32"],"31+32 Toplam");
-        addGroupRow(["41","42"],"41+42 Toplam");
-        addGroupRow(["5"],"5 Toplam");
-      }
-      if(val==="A321"){
-        addGroupRow(["11","12"],"11+12 Toplam");
-        addGroupRow(["21","22","23"],"21+22+23 Toplam");
-        addGroupRow(["31","32","33"],"31+32+33 Toplam");
-        addGroupRow(["41","42"],"41+42 Toplam");
-        addGroupRow(["5"],"5 Toplam");
-      }
-    }
-
-    function addGroupRow(names,label){
-      const avg=+document.getElementById("avgBag").value||0;
-      let bagSum=0,cargoSum=0;
-      names.forEach(n=>{
-        let c=compartments.find(x=>x.name===n);
-        if(c){ bagSum+=(c.bags||0)*avg; cargoSum+=(c.cargo||0); }
-      });
-      const row=document.createElement("tr");
-      row.className="total";
-      row.innerHTML=`<td>${label}</td><td colspan="3"></td><td class="num">${(bagSum+cargoSum).toFixed(1)}</td>`;
-      tbody.appendChild(row);
-    }
-  </script>
+  groupTotals.innerHTML='';
+  const val = document.getElementById('aircraft').value;
+  if(!val) return;
+  const defs = groupDefs[val] || [];
+  defs.forEach(g=>{
+    let sum=0;
+    g.forEach(n=>{
+      const c = compartments.find(x=>x.name===n);
+      if(c){ sum += (c.bags||0)*avg + (c.cargo||0); }
+    });
+    const gc=document.createElement('div');
+    gc.className='groupCard';
+    gc.innerHTML=`<div>${g.join('+')} Toplam</div><div class="gval">${sum.toFixed(1)} kg</div>`;
+    groupTotals.appendChild(gc);
+  });
+}
+</script>
 </body>
 </html>
