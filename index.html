@@ -48,7 +48,6 @@
       font-size: 12px;
     }
     .result { margin-top:10px; font-weight:bold; }
-    #calc { margin-top:15px; }
   </style>
 </head>
 <body>
@@ -90,11 +89,11 @@
     <div id="compInputs"></div>
   </section>
 
-  <section id="calc">
-    <h3>Gelişmiş Hesap Makinesi</h3>
-    <input type="text" id="calcInput" placeholder="Örn: (200+150)/2">
-    <button onclick="runCalc()">Hesapla</button>
-    <div id="calcResult"></div>
+  <section>
+    <h3>Toplamlar</h3>
+    <div>Toplam Bagaj Ağırlığı: <span id="sumBag">0</span> kg</div>
+    <div>Toplam Kargo Ağırlığı: <span id="sumCargo">0</span> kg</div>
+    <div>Toplam Yük (Bagaj+Kargo): <span id="sumTotal">0</span> kg</div>
   </section>
 
 <script>
@@ -137,30 +136,28 @@ function buildCompartments(){
 
 function updateWeights(){
   const avg=parseFloat(document.getElementById("avgBag").value)||0;
+  let totalBag=0, totalCargo=0;
+
   document.querySelectorAll("#compInputs tr").forEach(row=>{
     let bag=row.querySelector("input[data-type=bag]");
     let cargo=row.querySelector("input[data-type=cargo]");
     if(bag && cargo){
       let b=parseFloat(bag.value)||0;
       let c=parseFloat(cargo.value)||0;
-      let total=b*avg+c;
+      totalBag += b*avg;
+      totalCargo += c;
       let id="res-"+bag.dataset.comp;
-      document.getElementById(id).innerText=total;
+      document.getElementById(id).innerText=(b*avg+c);
     }
   });
+
+  document.getElementById("sumBag").innerText=totalBag;
+  document.getElementById("sumCargo").innerText=totalCargo;
+  document.getElementById("sumTotal").innerText=(totalBag+totalCargo);
+
   let tf=parseFloat(document.getElementById("totalFuel").value)||0;
   let tx=parseFloat(document.getElementById("taxiFuel").value)||0;
   document.getElementById("remainFuel").innerText=(tf-tx);
-}
-
-function runCalc(){
-  try{
-    let expr = document.getElementById("calcInput").value;
-    let result = Function("return (" + expr + ")")();
-    document.getElementById("calcResult").innerText=result;
-  }catch(e){
-    document.getElementById("calcResult").innerText="Hata";
-  }
 }
 </script>
 </body>
