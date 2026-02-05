@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0b0b0b" />
+
+  <title>Ops Toolkit (Mobil v34.6 STABLE v4)</title>
+  <style>
+    :root{
+      --bg:#0b0b0b; --card:#151515; --card2:#101010;
+      --text:#ffffff; --muted:#bdbdbd; --border:#2d2d2d;
+      --accent:#00e0ff; --warn:#ffcc00; --bad:#ff4d4d;
+      --shadow: 0 10px 30px rgba(0,0,0,.45); --r:16px;
+    }
+    *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    }
+    .wrap{ max-width: 720px; margin: 0 auto; padding: 14px 14px 140px; }
+    .screen{ display:none; }
+    .screen.active{ display:block; }
+
+    .card{
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .card.secondary{ background: var(--card2); }
+
+    .topbar{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .title{ font-size: 16px; font-weight: 950; margin:0; letter-spacing:.2px; }
+    .sub{ margin-top:8px; font-size:12px; color:var(--muted); display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+    .pill,.chip{
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--border);
+      padding: 6px 10px; border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+      white-space:nowrap;
+    }
+    .chip.warn{ color:#fff; border-color: rgba(255,204,0,.55); background: rgba(255,204,0,.12); }
+    .chip.bad{ color:#fff; border-color: rgba(255,77,77,.5); background: rgba(255,77,77,.12); }
+
+    label{ display:block; font-size: 13px; color: var(--muted); margin: 0 0 6px; font-weight: 750; }
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .grid3{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; }
+    @media (max-width:420px){ .grid2,.grid3{ grid-template-columns:1fr; } }
+
+    select, input[type="number"], input[type="text"], textarea{
+      width:100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px 12px;
+      font-size: 16px; /* iOS zoom off */
+      outline: none;
+    }
+    option{ background:#101010; color:#fff; }
+    input[readonly]{ opacity:.92; background: rgba(255,255,255,0.04); }
+
+    .hint{ margin-top:8px; color:var(--muted); font-size:12px; line-height:1.25rem; }
+    .divider{ height:1px; background: var(--border); margin: 12px 0; opacity:.8; }
+
+    .btns{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+    button{
+      appearance:none; border:none; cursor:pointer;
+      border-radius: 14px; padding: 12px 14px;
+      font-size: 14px; font-weight: 900;
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+      min-height: 44px;
+      flex: 1 1 auto;
+    }
+    button:active{ transform: translateY(1px); }
+    .btn-primary{ background: linear-gradient(180deg, rgba(0,224,255,.25), rgba(0,224,255,.12)); border-color: rgba(0,224,255,.35); }
+    .btn-danger{ background: linear-gradient(180deg, rgba(255,60,60,.22), rgba(255,60,60,.10)); border-color: rgba(255,60,60,.35); }
+
+    .stat{
+      display:flex; flex-direction:column; gap:6px;
+      padding: 12px; border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      min-width: 140px;
+    }
+    .stat .k{ color: var(--muted); font-size: 12px; font-weight:750; }
+    .stat .v{ color: var(--accent); font-size: 18px; font-weight: 950; font-variant-numeric: tabular-nums; }
+    .stat .v.warn{ color: var(--warn); }
+
+    .qbtnRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+    .qbtn{
+      padding: 10px 10px; min-height: 40px;
+      border-radius: 12px;
+      font-size: 13px; font-weight: 950;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      cursor:pointer;
+      flex: 1 1 auto;
+      max-width: 120px;
+    }
+
+    body.light{
+      --bg:#f5f6f8; --card:#ffffff; --card2:#f1f3f6;
+      --text:#0b0b0b; --muted:#4d4d4d; --border:#d6dbe3;
+      --accent:#0066ff; --warn:#b07a00; --bad:#c40000;
+      --shadow: 0 10px 30px rgba(0,0,0,.12);
+    }
+
+  
+.subgrid2{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
+.subgrid2 .subfield{margin:0;}
+.subgrid2 select{width:100%;}
+
+.sumtable{width:100%; border-collapse:collapse; font-size:14px;}
+.sumtable th,.sumtable td{border:1px solid var(--border); padding:10px 10px; text-align:left; white-space:nowrap;}
+.sumtable th{color:var(--muted); font-weight:900;}
+.sumtable td{font-weight:900;}
+
+.wrap{min-height:100vh; display:flex; align-items:center; justify-content:flex-start;
+  padding-top: calc(env(safe-area-inset-top) + 18px);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 18px);
+}
+.wrap > .card{width:min(520px, 100%);}
+@media (min-height: 800px){
+  .wrap{padding-top: calc(env(safe-area-inset-top) + 34px);}
+}
+
+/* gentle center tweak (keep original proportions) */
+.wrap{padding-top: calc(env(safe-area-inset-top) + 14px);}
+@media (min-height: 850px){
+  .wrap{padding-top: calc(env(safe-area-inset-top) + 24px);}
+}
+</style>
+
+  <style media="print">
+    body{ background:#fff !important; color:#000 !important; }
+    .screen{ display:none !important; }
+    #summary.screen{ display:block !important; }
+    #summary .wrap{ max-width:none; padding:0; }
+    button, .btns, .hint#copySummaryHint, textarea#summaryText { display:none !important; }
+    .card{ box-shadow:none !important; border:1px solid #ccc !important; }
+  </style>
+
+</head>
+<body>
+
+<!-- HOME -->
+<section class="screen active" id="home">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">Ops Toolkit</div>
+          <div class="sub">
+            <span class="pill" id="clockPill">—</span>
+            <span class="pill" id="datePill">—</span>
+            <span class="chip" id="statusChip">Hazır</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hint">Apronda düzen varsa, arkasında güçlü bir harekat vardır.</div>
+
+      <div class="btns">
+        <button class="btn-primary" id="goLoad" type="button">✈️ Balance / Ağırlık Kontrol</button>
+        <button class="btn-primary" id="goRad" type="button">☢️ Radyoaktif Mesafe</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="btns">
+        <button id="btnNewFlight" type="button">🆕 Yeni Uçuş</button>
+        <button id="goBackup" type="button">💾 Yedekle / Geri Yükle</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="btns">
+        <button id="goSummary" type="button">📄 Flight Summary (PDF)</button>
+        <button id="goRecent" type="button">🕘 Son Uçuşlar</button>
+      </div>
+      <div class="btns">
+        <button id="toggleTheme" type="button">🌞/🌙 Tema</button>
+        <button id="toggleLang" type="button">TR / EN</button>
+        <button id="goInstall" type="button">📲 Ana Ekrana Ekle</button>
+      </div>
+
+      </div>
+  </div>
+</section>
+
+<!-- LOAD -->
+<section class="screen" id="load">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">✈️ Balance Kontrol</div>
+          <div class="sub">
+            <span class="pill" id="clockPillL">—</span>
+            <span class="pill" id="datePillL">—</span>
+            <span class="chip" id="statusChipL">Aktif</span>
+          </div>
+        </div>
+        <button id="backFromLoad" type="button">Menü</button>
+      </div>
+
+      <div class="grid3">
+        <div>
+          <label>Sefer No (TK)</label>
+          <input type="text" id="flightNo" placeholder="örn. TK0012" autocapitalize="characters" />
+        </div>
+        <div>
+          <label>Uçak Kuyruğu (Tail)</label>
+          <input type="text" id="tailNo" placeholder="örn. TC-LGA" autocapitalize="characters" />
+        </div>
+                <div>
+          <label>Crew / Pantry</label>
+          <div class="subgrid2">
+<div class="subfield">
+          
+          <select id="crewCode">
+            <option value="">Seçiniz</option>
+            <optgroup label="2/ ...">
+              <option>2/0</option><option>2/4</option><option>2/5</option><option>2/6</option><option>2/8</option>
+              <option>2/10</option><option>2/11</option><option>2/12</option><option>2/14</option>
+            </optgroup>
+            <optgroup label="3/ ...">
+              <option>3/0</option><option>3/4</option><option>3/5</option><option>3/6</option><option>3/8</option>
+              <option>3/10</option><option>3/11</option><option>3/12</option><option>3/14</option>
+            </optgroup>
+          </select>
+        </div>
+<div class="subfield">
+          
+          <select id="pantryCode">
+            <option value="">Seçiniz</option>
+            <option value="A">A</option>
+            <option value="L">L</option>
+            <option value="M">M</option>
+            <option value="D">D</option>
+            <option value="F">F</option>
+          </select>
+        </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div>
+          <label>Uçak Tipi</label>
+          <select id="aircraft">
+            <option value="">Seçiniz</option>
+            <option value="B738">B-737 / 800</option>
+            <option value="B739">B-737 / 900</option>
+            <option value="A319">A-319</option>
+            <option value="A320">A-320</option>
+            <option value="A321">A-321</option>
+            <option value="A330">A-330</option>
+            <option value="B787">B-787</option>
+            <option value="B777">B-777</option>
+            <option value="A350">A-350</option>
+            <optgroup label="(Bulk - yük tablosu için)">
+              <option value="A319B">A319 Bulk</option>
+              <option value="A320B">A320 Bulk</option>
+              <option value="A321B">A321 Bulk</option>
+            </optgroup>
+          </select>
+        </div>
+        <div>
+          <label>Hızlı</label>
+          <div class="btns" style="margin-top:0;">
+            <button class="btn-primary" id="btnSave" type="button">Kaydet</button>
+            <button class="btn-danger" id="btnReset" type="button">Sıfırla</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card secondary" id="fuelCard">
+      <div style="font-weight:950; margin-bottom:10px;">Fuel Kontrol</div>
+
+      <div class="grid2">
+        <div>
+          <label>Total Fuel (kg)</label>
+          <input type="number" id="totalFuel" inputmode="numeric" placeholder="örn. 8200" />
+        </div>
+        <div>
+          <label>Taxi Fuel (kg)</label>
+          <input type="number" id="taxiFuel" inputmode="numeric" placeholder="örn. 300" />
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label>Trip Fuel (kg) (Bilgi)</label>
+          <input type="number" id="tripFuel" inputmode="numeric" placeholder="örn. 7600" />
+          <div class="hint">Bilgi amaçlı. Hesaplamaya dahil değil.</div>
+        </div>
+        <div>
+          <label>Sonuçlar</label>
+          <div class="grid2">
+            <div class="stat" style="min-width:unset;"><div class="k">Remaining</div><div class="v warn" id="remainFuelStat">—</div></div>
+            <div class="stat" style="min-width:unset;"><div class="k">Trip (info)</div><div class="v" id="tripFuelStat">—</div></div>
+          </div>
+          <div class="hint">Remaining = Total − Taxi</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card secondary" id="bagCard">
+      <div style="font-weight:950; margin-bottom:10px;">Bagaj Kontrol</div>
+
+      <div class="grid2">
+        <div>
+          <label>Toplam Bagaj (kg)</label>
+          <input type="number" id="bagTotalKg" inputmode="numeric" placeholder="örn. 2450" />
+        </div>
+        <div>
+          <label>Bagaj PCS</label>
+          <input type="number" id="bagPieces" inputmode="numeric" placeholder="örn. 122" />
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label>Hesap</label>
+          <div class="grid2">
+            <div class="stat" style="min-width:unset;"><div class="k">Avg Bagaj</div><div class="v warn" id="avgBagStat">—</div></div>
+            <div class="stat" style="min-width:unset;"><div class="k">PCS Toplam</div><div class="v" id="bagPcsStat">—</div></div>
+          </div>
+          <div class="hint">Avg = Total KG / PCS</div>
+        </div>
+
+        <div>
+          <label>Özet</label>
+          <div class="grid2">
+            <div class="stat" style="min-width:unset;"><div class="k">TK / Tail</div><div class="v" id="sumMeta1">—</div></div>
+            <div class="stat" style="min-width:unset;"><div class="k">Crew / AC</div><div class="v" id="sumMeta2">—</div></div>
+          </div>
+          <div class="hint">Tek bakış kontrol.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card secondary">
+      <div class="grid2">
+        <div>
+          <label>Su Oranı</label>
+          <select id="waterRatio">
+            <option value="">Seçiniz</option>
+          </select>
+          <div class="hint" id="waterHint">Uçak tipi + tail girince seçenekler gelir.</div>
+        </div>
+        <div>
+          <label>Su (Ağırlık / Index)</label>
+          <div class="grid2">
+            <div class="stat" style="min-width:unset;"><div class="k">Su Ağırlığı</div><div class="v" id="waterWeight">—</div></div>
+            <div class="stat" style="min-width:unset;"><div class="k">Su Index</div><div class="v warn" id="waterIndex">—</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <div style="font-weight:950;">Kompartman Girişi</div>
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <label style="margin:0; font-size:12px; color:var(--muted); font-weight:850; display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="flowMode" checked style="width:18px; height:18px; accent-color: var(--accent);" />
+            Hızlı akış
+          </label>
+          <button id="btnClearComps" type="button">Komp Sıfırla</button>
+        </div>
+      </div>
+      <div class="hint" id="compHint">Uçak tipi seçince açılır. Sadece Bag PCS + Cargo KG gir.</div>
+
+      <div class="hint" id="groupTotalsLabel" style="margin-top:10px; display:none; font-weight:850;">Kompartman toplamları</div>
+      <div id="groupTotals" style="margin-top:8px; display:none;"></div>
+
+      <div id="compList" style="margin-top:12px; display:none;"></div>
+
+      <div class="divider"></div>
+
+      <div class="stat" style="min-width:unset;">
+        <div class="k">Toplam Yük (Bagaj + Kargo)</div>
+        <div class="v" id="sumTotal">0.0</div>
+      </div>
+
+      <details style="margin-top:10px; background: rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:14px; padding: 10px 12px;">
+        <summary style="cursor:pointer; font-weight:900; color: var(--muted);">Toplamlar (detay)</summary>
+        <div class="grid2" style="margin-top:10px;">
+          <div class="stat" style="min-width:unset;"><div class="k">Toplam Bagaj</div><div class="v" id="sumBag">0.0</div></div>
+          <div class="stat" style="min-width:unset;"><div class="k">Toplam Kargo</div><div class="v" id="sumCargo">0.0</div></div>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- RAD -->
+<section class="screen" id="rad">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">☢️ Radyoaktif Mesafe</div>
+          <div class="sub">
+            <span class="pill" id="clockPillR">—</span>
+            <span class="pill" id="datePillR">—</span>
+            <span class="chip" id="statusChipR">Aktif</span>
+          </div>
+        </div>
+        <button id="backFromRad" type="button">Menü</button>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label>Uçak Tipi</label>
+          <select id="radAircraft">
+            <option value="">Seçiniz</option>
+            <option value="A319">A319</option>
+            <option value="A320">A320</option>
+            <option value="A321">A321</option>
+            <option value="A330-200">A330-200</option>
+            <option value="A330-300">A330-300</option>
+            <option value="A350">A350</option>
+            <option value="B737-800">B737-800</option>
+            <option value="B737-900">B737-900</option>
+            <option value="B787">B787</option>
+            <option value="B777">B777</option>
+          </select>
+        </div>
+        <div>
+          <label>Kompartman</label>
+          <select id="radComp">
+            <option value="">Seçiniz</option>
+          </select>
+          <div class="hint" id="radCompHint">Uçak tipini seçince kompartmanlar gelir.</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div>
+          <label>TI değerleri (Sum otomatik)</label>
+          <input type="text" id="radTI" inputmode="text" placeholder="örn. 1.5 + 0.3 + 0.2" />
+          <div class="hint">“+” / virgül / boşluk kabul.</div>
+        </div>
+        <div>
+          <label>Kutu yüksekliği (cm)</label>
+          <input type="number" id="radBoxHcm" inputmode="numeric" placeholder="örn. 42" />
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div class="stat" style="min-width:unset;"><div class="k">Sum TI</div><div class="v" id="radSumTI">—</div></div>
+        <div class="stat" style="min-width:unset;"><div class="k">TI Band</div><div class="v" id="radBand">—</div></div>
+        <div class="stat" style="min-width:unset;"><div class="k">Min Mesafe (m)</div><div class="v" id="radMinM">—</div></div>
+        <div class="stat" style="min-width:unset;"><div class="k">Gerekli Toplam (cm)</div><div class="v warn" id="radNeedCm">—</div></div>
+        <div class="stat" style="min-width:unset;"><div class="k">Komp. Yüksekliği (cm)</div><div class="v" id="radCompCm">—</div></div>
+      </div>
+      <div class="hint" id="radExplain" style="margin-top:10px;">—</div>
+
+      <div class="divider"></div>
+
+      <div class="stat" style="min-width:unset;">
+        <div class="k">Sonuç</div>
+        <div class="v" id="radResult">—</div>
+      </div>
+      <div class="hint">Kural: (Min Mesafe + Kutu Yüksekliği) ≤ Kompartman Yüksekliği.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SUMMARY -->
+<section class="screen" id="summary">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">📄 Flight Summary</div>
+          <div class="sub">
+            <span class="pill" id="clockPillS">—</span>
+            <span class="pill" id="datePillS">—</span>
+            <span class="chip" id="statusChipS">Hazır</span>
+          </div>
+        </div>
+        <button id="backFromSummary" type="button">Menü</button>
+      </div>
+
+      <div class="hint">Bu ekran “tek sayfa kontrol” içindir. PDF almak için <b>Yazdır / PDF</b> butonuna bas (telefon “PDF olarak kaydet” seçeneği verir).</div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div class="stat" style="min-width:unset;"><div class="k">Flight / Tail</div><div class="v" id="sumFT">—</div></div>
+        <div class="stat" style="min-width:unset;"><div class="k">Crew / AC</div><div class="v" id="sumCA">—</div></div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="stat" style="min-width:unset;">
+        <div class="k">Özet Tablo</div>
+        <div style="overflow:auto; margin-top:10px;">
+          <table class="sumtable" id="sumTable">
+            <tbody>
+              <tr><th>Flight</th><td id="tFlight">—</td><th>Tail</th><td id="tTail">—</td></tr>
+              <tr><th>Crew</th><td id="tCrew">—</td><th>Pantry</th><td id="tPantry">—</td></tr>
+              <tr><th>Aircraft</th><td id="tAC">—</td><th>Water</th><td id="tWater">—</td></tr>
+              <tr><th>Total Fuel</th><td id="tTotalFuel">—</td><th>Taxi Fuel</th><td id="tTaxiFuel">—</td></tr>
+              <tr><th>Remaining</th><td id="tRemFuel">—</td><th>Trip Fuel</th><td id="tTripFuel">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="hint">Tek bakış kontrol.</div>
+      </div>
+
+
+      <div class="divider"></div>
+
+      <div class="stat" style="min-width:unset;">
+        <div class="k">Pantry Code</div>
+        <div class="v" id="sumPantryCode">—</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div class="stat" style="min-width:unset;"><div class="k">Fuel Total</div><div class="v" id="sumFuelTotal">—</div></div>
+        <div class="stat" style="min-width:unset;"><div class="k">Taxi / Remaining</div><div class="v warn" id="sumFuelTR">—</div></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div class="stat" style="min-width:unset;"><div class="k">Trip Fuel (info)</div><div class="v" id="sumTrip">—</div></div>
+        <div class="stat" style="min-width:unset;"><div class="k">Water (W / Index)</div><div class="v" id="sumWater">—</div></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div class="stat" style="min-width:unset;"><div class="k">Baggage (KG / PCS / Avg)</div><div class="v" id="sumBagBox">—</div></div>
+        <div class="stat" style="min-width:unset;"><div class="k">Load Total</div><div class="v" id="sumLoadBox">—</div></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="stat" style="min-width:unset;">
+        <div class="k">Radioactive Result</div>
+        <div class="v" id="sumRad">—</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="hint" style="font-weight:900; margin:0 0 8px;">Comp Group Totals</div>
+      <div id="sumGroups"></div>
+
+      <div class="divider"></div>
+
+      <div class="btns">
+        <button class="btn-primary" id="btnPrint" type="button">🖨️ Yazdır / PDF</button>
+        <button id="btnCopySummary" type="button">📋 Metni Kopyala</button>
+      </div>
+      <textarea id="summaryText" style="width:100%; margin-top:10px; min-height: 180px;" readonly></textarea>
+      <div class="hint" id="copySummaryHint">—</div>
+    </div>
+  </div>
+</section>
+
+<!-- RECENT -->
+<section class="screen" id="recent">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">🕘 Son Uçuşlar</div>
+          <div class="sub">
+            <span class="pill" id="clockPillH">—</span>
+            <span class="pill" id="datePillH">—</span>
+            <span class="chip" id="statusChipH">Hazır</span>
+          </div>
+        </div>
+        <button id="backFromRecent" type="button">Menü</button>
+      </div>
+
+      <div class="hint">Otomatik kaydedilen son uçuşlar (maks. 5). Birine dokun → geri yükle.</div>
+      <div class="divider"></div>
+      <div id="recentList"></div>
+
+      <div class="btns" style="margin-top:12px;">
+        <button class="btn-danger" id="btnClearHistory" type="button">Geçmişi Sil</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section class="screen" id="install">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">📲 Ana Ekrana Ekle</div>
+          <div class="sub">
+            <span class="pill" id="clockPillI">—</span>
+            <span class="pill" id="datePillI">—</span>
+            <span class="chip" id="statusChipI">Bilgi</span>
+          </div>
+        </div>
+        <button id="backFromInstall" type="button">Menü</button>
+      </div>
+
+      <div class="hint"><b>Not:</b> Bu dosyayı “HTML dosyası” gibi açtığında bile iPhone/Android ana ekrana ekleyebilirsin. (Tam PWA/Offline install için HTTPS ile host etmek gerekir.)</div>
+      <div class="divider"></div>
+
+      <div class="hint" style="font-weight:950;">iPhone (Safari)</div>
+      <div class="hint">1) Dosyayı Safari’de aç<br>2) Paylaş (⬆️) → <b>Ana Ekrana Ekle</b><br>3) İsim ver → Ekle</div>
+
+      <div class="divider"></div>
+
+      <div class="hint" style="font-weight:950;">Android (Chrome)</div>
+      <div class="hint">1) Dosyayı Chrome’da aç<br>2) Menü (⋮) → <b>Ana ekrana ekle</b> veya <b>Uygulamayı yükle</b> (varsa)</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- BACKUP -->
+<section class="screen" id="backup">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">💾 Yedekle / Geri Yükle</div>
+          <div class="sub">
+            <span class="pill" id="clockPillB">—</span>
+            <span class="pill" id="datePillB">—</span>
+            <span class="chip" id="statusChipB">Hazır</span>
+          </div>
+        </div>
+        <button id="backFromBackup" type="button">Menü</button>
+      </div>
+
+      <div class="hint">Bu ekran saha için: tek dosyada yedek al, başka telefona yapıştırıp geri yükle.</div>
+
+      <div class="divider"></div>
+
+      <div class="btns">
+        <button class="btn-primary" id="btnExport" type="button">📤 Yedek Metni Üret</button>
+        <button id="btnImport" type="button">📥 Yapıştırıp Geri Yükle</button>
+      </div>
+
+      <textarea id="backupText" style="width:100%; margin-top:10px; min-height: 220px;" placeholder="Burada yedek metni görünür / buraya yapıştırılır."></textarea>
+      <div class="hint" id="backupHint">—</div>
+
+      <div class="divider"></div>
+
+      <details style="background: rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:14px; padding: 10px 12px;">
+        <summary style="cursor:pointer; font-weight:900; color: var(--muted);">Ne yedekleniyor?</summary>
+        <div class="hint" style="margin-top:8px;">Son uçuş (inputlar + kompartmanlar), son 5 uçuş listesi ve tema/dil ayarları.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<script>
+"use strict";
+
+/* helpers */
+const $ = (id)=>document.getElementById(id);
+function safeNum(v){
+  const s = String(v ?? "").trim();
+  if(!s) return null;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : null;
+}
+function setChip(id, kind, text){
+  const el = $(id);
+  if(!el) return;
+  el.classList.remove("warn","bad");
+  if(kind) el.classList.add(kind);
+  el.textContent = text;
+}
+function updateClock(){
+  const now = new Date();
+  const c = "Saat: " + now.toLocaleTimeString("tr-TR", {hour:"2-digit", minute:"2-digit", second:"2-digit"});
+  const d = now.toLocaleDateString("tr-TR", {weekday:"long", year:"numeric", month:"2-digit", day:"2-digit"});
+  ["clockPill","clockPillL","clockPillR","clockPillS","clockPillH","clockPillI","clockPillB"].forEach(id=>{ const el=$(id); if(el) el.textContent=c; });
+  ["datePill","datePillL","datePillR","datePillS","datePillH","datePillI","datePillB"].forEach(id=>{ const el=$(id); if(el) el.textContent=d; });
+}
+updateClock();
+installNoAutoAdvance(); setInterval(updateClock, 1000);
+
+/* NAV (click only = stable) */
+function show(name){
+  ["home","load","rad","summary","recent","install","backup"].forEach(s=>$(s).classList.remove("active"));
+  $(name).classList.add("active");
+}
+$("goLoad").addEventListener("click", ()=>show("load"));
+$("goRad").addEventListener("click", ()=>show("rad"));
+$("backFromLoad").addEventListener("click", ()=>show("home"));
+$("backFromRad").addEventListener("click", ()=>show("home"));
+
+/* ===== EXTRA NAV ===== */
+$("goSummary").addEventListener("click", ()=>{ refreshSummary(); show("summary"); });
+$("goRecent").addEventListener("click", ()=>{ renderHistory(); show("recent"); });
+$("goInstall").addEventListener("click", ()=>show("install"));
+$("backFromSummary").addEventListener("click", ()=>show("home"));
+$("backFromRecent").addEventListener("click", ()=>show("home"));
+$("backFromInstall").addEventListener("click", ()=>show("home"));
+
+$("btnNewFlight").addEventListener("click", ()=>{
+  // Clear flight-specific fields but keep preferences
+  $("flightNo").value = "";
+  $("tailNo").value = "";
+  $("crewCode").value = "";
+  if($("pantryCode")) $("pantryCode").value = "";
+  $("totalFuel").value = "";
+  $("taxiFuel").value = "";
+  $("tripFuel").value = "";
+  $("bagTotalKg").value = "";
+  $("bagPieces").value = "";
+  $("waterRatio").value = "";
+  compartments.forEach(c=>{ c.bags=null; c.cargo=null; });
+  compartments.forEach(c=>{
+    const b=$("b_"+c.name); const g=$("g_"+c.name);
+    if(b) b.value=""; if(g) g.value="";
+    const t=$("ct_"+c.name); if(t) t.textContent="0.0";
+  });
+  updateValues();
+  scheduleAutoSave();
+  setChip("statusChip","", prefs.lang==="en" ? "New flight" : "Yeni uçuş");
+  show("load");
+});
+
+$("goBackup").addEventListener("click", ()=>{ show("backup"); $("backupHint").textContent="—"; });
+$("backFromBackup").addEventListener("click", ()=>show("home"));
+
+
+$("btnClearHistory").addEventListener("click", ()=>{
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
+});
+
+
+
+/* ===== Balance data ===== */
+const aircraftComps = {
+  "B737": ["1","2","3","4"],
+  "A319": ["11","12","41","42","51"],
+  "A320": ["11","12","13","31","32","41","42","5"],
+  "A321": ["11","12","21","22","23","31","32","33","41","42","5"],
+  "A330": ["1","2","3","4","5"],
+  "A350": ["1","2","3","4","5"],
+  "B777": ["1","2","3","4","5"],
+  "B787": ["1","2","3","4","5"],
+  "A319B": ["1","4.5"],
+  "A320B": ["1","3","4","5"],
+  "A321B": ["1","2","3","4","5"]
+};
+let compartments = []; // {name, bags, cargo}
+
+function tailSuffix(){
+  const t = ($("tailNo").value || "").toUpperCase().replaceAll(" ", "");
+  const m = t.match(/([A-Z0-9]{3})$/);
+  return m ? m[1] : "";
+}
+
+/* water DB (same as your working logic) */
+const waterDB = {
+  "B738": {"25%":{w:-177,i:-2.5},"50%":{w:-118,i:-1.7},"75%":{w:-59,i:-0.8}},
+  "B739": {"25%":{w:-178,i:-2.7},"50%":{w:-119,i:-1.8},"75%":{w:-59,i:-0.9}},
+  "A319": {"25%":{w:-150,i:-1.7},"50%":{w:-100,i:-1.1},"75%":{w:-50,i:-0.6}},
+  "A320": {"25%":{w:-150,i:+0.5},"50%":{w:-100,i:+0.3},"75%":{w:-50,i:+0.2}},
+  "A321": {"25%":{w:-150,i:-2.3},"50%":{w:-100,i:-1.6},"75%":{w:-50,i:-0.8}},
+  "B787": {"1/8":{w:-924,i:-3.9},"2/8":{w:-792,i:-3.3},"3/8":{w:-660,i:-2.8},"4/8":{w:-528,i:-2.2},"5/8":{w:-396,i:-1.7},"6/8":{w:-264,i:-1.1},"7/8":{w:-132,i:-0.6}},
+  "B777": {"1/8":{w:-1172,i:-3.9},"2/8":{w:-1004,i:-3.3},"3/8":{w:-837,i:-2.8},"4/8":{w:-670,i:-2.2},"5/8":{w:-502,i:-1.6},"6/8":{w:-335,i:-1.1},"7/8":{w:-167,i:-0.5}},
+  "A350_AC": {"1/10":{w:-954,i:-4.4},"2/10":{w:-848,i:-3.9},"3/10":{w:-742,i:-3.4},"4/10":{w:-636,i:-2.9},"5/10":{w:-530,i:-2.4},"6/10":{w:-424,i:-1.9},"7/10":{w:-318,i:-1.5},"8/10":{w:-212,i:-1.0},"9/10":{w:-106,i:-0.5}},
+  "A350_BD": {"1/10":{w:-1350,i:-6.0},"2/10":{w:-1200,i:-5.4},"3/10":{w:-1050,i:-4.7},"4/10":{w:-900,i:-4.0},"5/10":{w:-750,i:-3.3},"6/10":{w:-600,i:-2.7},"7/10":{w:-450,i:-2.0},"8/10":{w:-300,i:-1.3},"9/10":{w:-150,i:-0.7}},
+  "A330_JNA_JNB": {"25%":{w:-525,i:-2.6},"50%":{w:-350,i:-1.7},"75%":{w:-175,i:-0.9}},
+  "A330_GRP2": {"25%":{w:-525,i:-1.6},"50%":{w:-350,i:-1.1},"75%":{w:-175,i:-0.5}},
+  "A330_JNF_JNG_JIL_JIM_JIN": {"25%":{w:-788,i:-3.5},"50%":{w:-525,i:-2.4},"75%":{w:-263,i:-1.2}},
+  "A330_GRP4": {"25%":{w:-525,i:-2.0},"50%":{w:-350,i:-1.4},"75%":{w:-175,i:-0.9}},
+  "A330_TC_LON": {"25%":{w:788,i:-4.2},"50%":{w:525,i:-2.8},"75%":{w:263,i:-1.4}}
+};
+function a350GroupByTail(sfx){
+  if(!sfx) return "A350_AC";
+  if(sfx.startsWith("LG")){
+    const third=sfx[2];
+    if("RSTUVYZ".includes(third)) return "A350_BD";
+    return "A350_AC";
+  }
+  if(sfx.startsWith("LH")) return "A350_BD";
+  return "A350_AC";
+}
+function a330GroupByTail(sfx){
+  if(!sfx) return "A330_GRP2";
+  if(sfx==="JNA"||sfx==="JNB") return "A330_JNA_JNB";
+  if(["JNF","JNG","JIL","JIM","JIN"].includes(sfx)) return "A330_JNF_JNG_JIL_JIM_JIN";
+  if(sfx==="LON") return "A330_TC_LON";
+  if(["JNC","JND","JNE"].includes(sfx)) return "A330_GRP2";
+  if(sfx.startsWith("JN") && sfx[2] >= "H" && sfx[2] <= "Z") return "A330_GRP4";
+  if(sfx.startsWith("LO")) return "A330_GRP4";
+  if(sfx.startsWith("JO")) return "A330_GRP4";
+  return "A330_GRP2";
+}
+function waterKeyForAircraft(ac){
+  if(!ac) return "";
+  // Bulk variants share same water table
+  if(ac==="A319B") return "A319";
+  if(ac==="A320B") return "A320";
+  if(ac==="A321B") return "A321";
+  if(ac==="A350") return a350GroupByTail(tailSuffix());
+  if(ac==="A330") return a330GroupByTail(tailSuffix());
+  return ac;
+}
+function populateWaterOptions(){
+  const sel = $("waterRatio");
+  if(!sel) return;
+  const key = waterKeyForAircraft($("aircraft")?.value || "");
+  const table = waterDB[key] || {};
+  // Keep current selection if still valid
+  const current = sel.value || "";
+  sel.innerHTML = '<option value="">Seç</option>';
+  Object.keys(table).forEach(r=>{
+    const opt = document.createElement("option");
+    opt.value = r;
+    opt.textContent = r;
+    sel.appendChild(opt);
+  });
+  if(current && table[current]) sel.value = current;
+}
+function updateWaterBox(){
+  const ac=$("aircraft").value;
+  const ratio=$("waterRatio").value;
+  const key=waterKeyForAircraft(ac);
+  const data=waterDB[key];
+  if(!data || !ratio || !data[ratio]){
+    $("waterWeight").textContent="—";
+    $("waterIndex").textContent="—";
+    return;
+  }
+  $("waterWeight").textContent = data[ratio].w + " kg";
+  $("waterIndex").textContent = String(data[ratio].i);
+}
+
+/* groups for totals */
+function loadKeyFromAircraft(){
+  const ac = $("aircraft")?.value || "";
+  if(ac==="B738"||ac==="B739") return "B737";
+  return ac;
+}
+function groupSpecForAircraft(){
+  const key = loadKeyFromAircraft();
+  if(key==="A319"){ return [["11","12"],["41","42"],["51"]]; }
+  if(key==="A320"){ return [["11","12"],["13"],["31","32"],["41","42"],["5"]]; }
+  if(key==="A321"){ return [["11","12"],["21","22","23"],["31","32","33"],["41","42"],["5"]]; }
+  if(key==="A319B"){ return [["1"],["4.5"]]; }
+  if(key==="A320B"){ return [["1"],["3"],["4"],["5"]]; }
+  if(key==="A321B"){ return [["1"],["2"],["3"],["4"],["5"]]; }
+  return compartments.map(c=>[String(c.name)]);
+}
+function labelForGroup(g){ return g.join("+"); }
+function renderGroupTotals(labelToKg){
+  const box = $("groupTotals");
+  const lbl = $("groupTotalsLabel");
+  const labels = Object.keys(labelToKg);
+  if(!labels.length){ box.style.display="none"; lbl.style.display="none"; box.innerHTML=""; return; }
+  lbl.style.display="block"; box.style.display="block";
+  const specLabels = groupSpecForAircraft().map(labelForGroup);
+  const order = specLabels.filter(l=>labels.includes(l));
+  box.innerHTML = '<div class="grid2">' + order.map(l=>{
+    return '<div class="stat" style="min-width:unset;"><div class="k">'+l+'</div><div class="v">'+labelToKg[l].toFixed(1)+' kg</div></div>';
+  }).join("") + '</div>';
+}
+
+/* calculations */
+function calcFuel(){
+  const totalVal = $("totalFuel").value;
+  const taxiVal  = $("taxiFuel").value;
+  const tripVal  = $("tripFuel").value;
+
+  const total = safeNum(totalVal) ?? 0;
+  const taxi  = safeNum(taxiVal) ?? 0;
+  const trip  = safeNum(tripVal);
+
+  const rem = total - taxi;
+
+  $("remainFuelStat").textContent = (totalVal==="" && taxiVal==="") ? "—" : rem.toFixed(0) + " kg";
+  $("tripFuelStat").textContent = (tripVal==="" || trip===null) ? "—" : trip.toFixed(0) + " kg";
+
+  if(totalVal!=="" && taxiVal!=="" && rem < 0){
+    setChip("statusChipL","warn","Fuel: Taxi > Total");
+  }else{
+    setChip("statusChipL","", "Aktif");
+  }
+}
+function calcAvgBag(){
+  const totalKg = safeNum($("bagTotalKg").value);
+  const pcs = safeNum($("bagPieces").value);
+  $("bagPcsStat").textContent = ($("bagPieces").value==="" ? "—" : (pcs ?? 0).toFixed(0));
+  if(totalKg===null || pcs===null || pcs<=0){
+    $("avgBagStat").textContent = "—";
+    return {avg:0, ok:false};
+  }
+  const avg = totalKg / pcs;
+  $("avgBagStat").textContent = avg.toFixed(2) + " kg";
+  return {avg, ok:true};
+}
+function updateMeta(){
+  const flt = ($("flightNo").value || "—").trim().toUpperCase();
+  const tail = ($("tailNo").value || "—").trim().toUpperCase();
+  const crew = $("crewCode").value || "—";
+  const ac = $("aircraft").value || "—";
+  $("sumMeta1").textContent = flt + " / " + tail;
+  $("sumMeta2").textContent = crew + " / " + ac;
+}
+
+/* comps UI */
+function renderCompList(){
+  const list = $("compList");
+  list.innerHTML = "";
+  compartments.forEach((c, idx)=>{
+    const wrap=document.createElement("div");
+    wrap.className="card secondary";
+    wrap.style.padding="12px";
+    wrap.innerHTML = `
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;">
+        <div style="font-weight:950;">Comp ${c.name}</div>
+        <div class="pill">Toplam: <span style="color:var(--accent); font-weight:950;" id="ct_${c.name}">0.0</span> kg</div>
+      </div>
+      <div class="grid2">
+        <div>
+          <label>Bag PCS</label>
+          <input type="number" inputmode="numeric" placeholder="0" id="b_${c.name}">
+        </div>
+        <div>
+          <label>Cargo KG</label>
+          <input type="number" inputmode="numeric" placeholder="0" id="g_${c.name}">
+        </div>
+      </div>
+      <div class="qbtnRow">
+  <button type="button" class="qbtn" data-bag="+1">Bag +1</button>
+  <button type="button" class="qbtn" data-bag="+5">Bag +5</button>
+  <button type="button" class="qbtn" data-bag="+10">Bag +10</button>
+  <button type="button" class="qbtn" data-bag="+20">Bag +20</button>
+</div>
+<div class="qbtnRow">
+  <button type="button" class="qbtn" data-cargo="+10">Cargo +10</button>
+  <button type="button" class="qbtn" data-cargo="+100">Cargo +100</button>
+  <button type="button" class="qbtn" data-cargo="+200">Cargo +200</button>
+  <button type="button" class="qbtn" data-clear="1">Temizle</button>
+</div>
+      <div class="hint">Bag KG otomatik: PCS × Avg.</div>
+    `;
+    list.appendChild(wrap);
+
+    const b = $("b_"+c.name);
+    const g = $("g_"+c.name);
+
+    function updateModel(){
+      c.bags = (b.value===""? null : safeNum(b.value));
+      c.cargo= (g.value===""? null : safeNum(g.value));
+      updateValues();
+    }
+    function flowNext(from){
+      if(!$("flowMode").checked) return;
+      if(from==="b") g.focus();
+      else{
+        const nx=compartments[idx+1];
+        if(nx) $("b_"+nx.name).focus();
+      }
+    }
+
+    b.addEventListener("input", ()=>{ updateModel(); scheduleAutoSave(); if(b.value!=="") flowNext("b"); });
+    g.addEventListener("input", ()=>{ updateModel(); scheduleAutoSave(); if(g.value!=="") flowNext("g"); });
+
+    b.addEventListener("keydown", (e)=>{ if(e.key==="Enter"){ e.preventDefault(); g.focus(); }});
+    g.addEventListener("keydown", (e)=>{ if(e.key==="Enter"){ e.preventDefault(); const nx=compartments[idx+1]; if(nx) $("b_"+nx.name).focus(); }});
+
+    wrap.querySelectorAll(".qbtn").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        if(btn.dataset.clear){
+          b.value=""; g.value=""; c.bags=null; c.cargo=null; updateValues(); b.focus(); return;
+        }
+        if(btn.dataset.bag){
+          const add = Number(String(btn.dataset.bag).replace("+","")) || 0;
+          const cur = (b.value==="" ? 0 : (safeNum(b.value) ?? 0));
+          const next = cur + add;
+          b.value = String(next);
+          c.bags = next;
+          updateValues(); scheduleAutoSave();
+          g.focus();
+          return;
+        }
+        if(btn.dataset.cargo){
+          const add = Number(String(btn.dataset.cargo).replace("+","")) || 0;
+          const cur = (g.value==="" ? 0 : (safeNum(g.value) ?? 0));
+          const next = cur + add;
+          g.value = String(next);
+          c.cargo = next;
+          updateValues(); scheduleAutoSave();
+          // stay on cargo for fast tapping
+          g.focus();
+          return;
+        }
+      });
+    });
+  });
+}
+function rebuildComps(){
+  const ac = $("aircraft").value;
+  compartments = [];
+  let key = ac;
+  if(ac==="B738"||ac==="B739") key="B737";
+  const arr = aircraftComps[key];
+  const list = $("compList");
+  if(!arr){
+    list.style.display="none";
+    list.innerHTML="";
+    renderGroupTotals({});
+    return;
+  }
+  arr.forEach(name=>compartments.push({name, bags:null, cargo:null}));
+  list.style.display="block";
+  renderCompList();
+  const z = {};
+  groupSpecForAircraft().forEach(g=>{ z[labelForGroup(g)] = 0; });
+  renderGroupTotals(z);
+  updateValues();
+}
+function updateValues(){
+  updateMeta();
+  calcFuel();
+  populateWaterOptions();
+  const avgRes = calcAvgBag();
+  const avg = avgRes.avg;
+
+  let totalBag=0, totalCargo=0;
+  const compToTotal = {};
+
+  compartments.forEach(c=>{
+    const bagKg = (c.bags||0) * avg;
+    const cargo = (c.cargo||0);
+    const total = bagKg + cargo;
+    compToTotal[String(c.name)] = total;
+    const tEl = $("ct_"+c.name);
+    if(tEl) tEl.textContent = total.toFixed(1);
+    totalBag += bagKg;
+    totalCargo += cargo;
+  });
+
+  const labelTotals = {};
+  groupSpecForAircraft().forEach(g=>{
+    const label = labelForGroup(g);
+    labelTotals[label] = g.reduce((s,n)=> s + (compToTotal[String(n)]||0), 0);
+  });
+  renderGroupTotals(labelTotals);
+
+  $("sumBag").textContent = totalBag.toFixed(1);
+  $("sumCargo").textContent = totalCargo.toFixed(1);
+  $("sumTotal").textContent = (totalBag+totalCargo).toFixed(1);
+}
+
+/* persistence (simple) */
+const STORE_KEY = "index_mobil_v34_6_STABLE";
+const HISTORY_KEY = "index_mobil_history_v1";
+const PREF_KEY = "index_mobil_prefs_v1";
+
+function saveLocal(isAuto=false){
+  const payload = {
+    flightNo: $("flightNo").value,
+    tailNo: $("tailNo").value,
+    crewCode: $("crewCode").value,
+    aircraft: $("aircraft").value,
+    totalFuel: $("totalFuel").value,
+    taxiFuel: $("taxiFuel").value,
+    tripFuel: $("tripFuel").value,
+    bagTotalKg: $("bagTotalKg").value,
+    bagPieces: $("bagPieces").value,
+    waterRatio: $("waterRatio").value,
+    compartments: compartments
+  };
+  localStorage.setItem(STORE_KEY, JSON.stringify(payload));
+  // history only when meaningful
+  if(!isAuto){ pushHistory(payload); }
+  if(isAuto){ setChip("statusChipL","", "Auto-Save"); setTimeout(()=>setChip("statusChipL","", "Aktif"), 600); }
+  else { setChip("statusChipL","", "Kaydedildi"); setTimeout(()=>setChip("statusChipL","", "Aktif"), 900); }
+}
+
+function applyPayload(p){
+  $("flightNo").value = p.flightNo || "";
+  $("tailNo").value = p.tailNo || "";
+  $("crewCode").value = p.crewCode || "";
+  if($("pantryCode")) $("pantryCode").value = p.pantryCode || "";
+  $("aircraft").value = p.aircraft || "";
+  $("totalFuel").value = p.totalFuel || "";
+  $("taxiFuel").value = p.taxiFuel || "";
+  $("tripFuel").value = p.tripFuel || "";
+  $("bagTotalKg").value = p.bagTotalKg || "";
+  $("bagPieces").value = p.bagPieces || "";
+  rebuildComps();
+  (p.compartments || []).forEach(saved=>{
+    const c = compartments.find(x=>String(x.name)===String(saved.name));
+    if(!c) return;
+    c.bags = (saved.bags===null? null : Number(saved.bags));
+    c.cargo= (saved.cargo===null? null : Number(saved.cargo));
+    const b = $("b_"+c.name); const g = $("g_"+c.name);
+    if(b && c.bags!==null) b.value = String(c.bags);
+    if(g && c.cargo!==null) g.value = String(c.cargo);
+  });
+  populateWaterOptions();
+  if(p.waterRatio) $("waterRatio").value = p.waterRatio;
+  updateWaterBox();
+  updateValues();
+}
+
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) return;
+    const p = JSON.parse(raw);
+    applyPayload(p);
+  }catch(e){ console.error(e); }
+}
+
+let autoTimer = null;
+function getNowStamp(){
+  const d = new Date();
+  return d.toLocaleString("tr-TR", {year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit"});
+}
+function pushHistory(payload){
+  try{
+    const raw = localStorage.getItem(HISTORY_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    const entry = {
+      id: Date.now(),
+      ts: getNowStamp(),
+      flightNo: (payload.flightNo||"").trim().toUpperCase(),
+      tailNo: (payload.tailNo||"").trim().toUpperCase(),
+      crewCode: payload.crewCode||"",
+      aircraft: payload.aircraft||"",
+      payload
+    };
+    // De-dup by (flightNo+tailNo) keep newest
+    const key = (entry.flightNo+"|"+entry.tailNo).trim();
+    const filtered = arr.filter(x => ((x.flightNo||"")+"|"+(x.tailNo||"")).trim() !== key);
+    filtered.unshift(entry);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(filtered.slice(0,5)));
+  }catch(e){ console.error(e); }
+}
+function readHistory(){
+  try{
+    const raw = localStorage.getItem(HISTORY_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+function renderHistory(){
+  const box = $("recentList");
+  if(!box) return;
+  const arr = readHistory();
+  if(!arr.length){
+    box.innerHTML = '<div class="hint">Kayıt yok.</div>';
+    return;
+  }
+  box.innerHTML = arr.map(e=>{
+    const title = `${e.flightNo||"—"} • ${e.tailNo||"—"}`;
+    let sub = `${e.ts} • ${e.crewCode||"—"} • ${e.aircraft||"—"}`;
+try{
+  const p = e.payload || {};
+  const total = safeNum(p.totalFuel); const taxi = safeNum(p.taxiFuel);
+  const rem = ((total??0)-(taxi??0));
+  const waterKey = p.aircraft ? waterKeyForAircraft(p.aircraft) : "";
+  let w = "—";
+  if(p.waterRatio && waterDB[waterKey] && waterDB[waterKey][p.waterRatio]){
+    const ww = waterDB[waterKey][p.waterRatio].w;
+    const wi = waterDB[waterKey][p.waterRatio].i;
+    w = `${ww} / ${wi}`;
+  }
+  sub += ` • Rem ${isFinite(rem)?rem.toFixed(0):"—"} • Water ${w}`;
+}catch(e){}
+
+    return `
+      <div class="card secondary" style="padding:12px; margin-bottom:10px;">
+        <div style="font-weight:950;">${title}</div>
+        <div class="hint" style="margin-top:6px;">${sub}</div>
+        <div class="btns" style="margin-top:10px;">
+          <button class="btn-primary" type="button" data-recall="${e.id}">Geri Yükle</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+  box.querySelectorAll("[data-recall]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = Number(btn.getAttribute("data-recall"));
+      const entry = readHistory().find(x=>x.id===id);
+      if(entry && entry.payload){
+        applyPayload(entry.payload);
+        setChip("statusChip","", "Geri yüklendi");
+        show("load");
+      }
+    });
+  });
+}
+
+function exportBackup(){
+  try{
+    const payload = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+    const history = readHistory();
+    const prefsRaw = localStorage.getItem(PREF_KEY);
+    const pack = {
+      v: 1,
+      ts: new Date().toISOString(),
+      payload,
+      history,
+      prefs: prefsRaw ? JSON.parse(prefsRaw) : prefs
+    };
+    const txt = btoa(unescape(encodeURIComponent(JSON.stringify(pack))));
+    $("backupText").value = txt;
+    $("backupHint").textContent = "✅ Yedek üretildi. Metni kopyalayıp saklayabilirsin.";
+  }catch(e){
+    console.error(e);
+    $("backupHint").textContent = "❌ Yedek üretilemedi.";
+  }
+}
+function importBackup(){
+  try{
+    const txt = ($("backupText").value || "").trim();
+    if(!txt){ $("backupHint").textContent="⚠️ Yedek metni yapıştır."; return; }
+    const jsonStr = decodeURIComponent(escape(atob(txt)));
+    const pack = JSON.parse(jsonStr);
+    if(!pack || pack.v!==1){ $("backupHint").textContent="❌ Format uyuşmuyor."; return; }
+
+    if(pack.prefs){
+      prefs = Object.assign(prefs, pack.prefs);
+      localStorage.setItem(PREF_KEY, JSON.stringify(prefs));
+      applyPrefs();
+    }
+    if(pack.payload){
+      localStorage.setItem(STORE_KEY, JSON.stringify(pack.payload));
+      applyPayload(pack.payload);
+    }
+    if(Array.isArray(pack.history)){
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(pack.history.slice(0,5)));
+    }
+    $("backupHint").textContent = "✅ Geri yüklendi.";
+  }catch(e){
+    console.error(e);
+    $("backupHint").textContent = "❌ Geri yükleme başarısız (metin bozuk olabilir).";
+  }
+}
+$("btnExport").addEventListener("click", exportBackup);
+$("btnImport").addEventListener("click", importBackup);
+
+function scheduleAutoSave(){
+  if(autoTimer) clearTimeout(autoTimer);
+  autoTimer = setTimeout(()=>{ saveLocal(true); }, 500);
+}
+
+function resetAll(){
+  ["flightNo","tailNo"].forEach(id=>$(id).value="");
+  $("crewCode").value="";
+  $("aircraft").value="";
+  ["totalFuel","taxiFuel","tripFuel","bagTotalKg","bagPieces"].forEach(id=>$(id).value="");
+  $("waterRatio").innerHTML='<option value="">Seçiniz</option>';
+  $("waterWeight").textContent="—";
+  $("waterIndex").textContent="—";
+  compartments=[];
+  $("compList").innerHTML="";
+  $("compList").style.display="none";
+  renderGroupTotals({});
+  $("sumBag").textContent="0.0"; $("sumCargo").textContent="0.0"; $("sumTotal").textContent="0.0";
+  localStorage.removeItem(STORE_KEY);
+  updateValues();
+}
+
+/* events */
+$("aircraft").addEventListener("change", ()=>{ rebuildComps(); populateWaterOptions(); updateWaterBox(); updateMeta(); scheduleAutoSave(); });
+$("tailNo").addEventListener("input", ()=>{ populateWaterOptions(); updateMeta(); scheduleAutoSave(); });
+$("flightNo").addEventListener("input", ()=>{ updateMeta(); scheduleAutoSave(); });
+$("crewCode").addEventListener("change", ()=>{ updateMeta(); scheduleAutoSave(); });
+if($("pantryCode")) $("pantryCode").addEventListener("change", ()=>{ updateMeta(); scheduleAutoSave(); });
+$("waterRatio").addEventListener("change", ()=>{ updateWaterBox(); scheduleAutoSave(); });
+
+["totalFuel","taxiFuel","tripFuel","bagTotalKg","bagPieces"].forEach(id=>{
+  $(id).addEventListener("input", ()=>{ updateValues(); scheduleAutoSave(); });
+  $(id).addEventListener("change", ()=>{ updateValues(); scheduleAutoSave(); });
+});
+$("btnSave").addEventListener("click", ()=>saveLocal(false));
+$("btnReset").addEventListener("click", resetAll);
+$("btnClearComps").addEventListener("click", ()=>{
+  compartments.forEach(c=>{ c.bags=null; c.cargo=null; });
+  compartments.forEach(c=>{
+    const b=$("b_"+c.name); const g=$("g_"+c.name);
+    if(b) b.value=""; if(g) g.value="";
+    const t=$("ct_"+c.name); if(t) t.textContent="0.0";
+  });
+  updateValues();
+});
+
+
+/* ===== SUMMARY (PDF/Print) ===== */
+function buildSummaryText(){
+  // Ensure up-to-date
+  updateValues();
+
+  const flt = ($("flightNo").value || "—").trim().toUpperCase();
+  const tail = ($("tailNo").value || "—").trim().toUpperCase();
+  const crew = $("crewCode").value || "—";
+  const ac = $("aircraft").value || "—";
+
+  const totalVal = $("totalFuel").value;
+  const taxiVal  = $("taxiFuel").value;
+  const tripVal  = $("tripFuel").value;
+
+  const total = safeNum(totalVal);
+  const taxi  = safeNum(taxiVal);
+  const rem   = ((total ?? 0) - (taxi ?? 0));
+
+  const waterW = $("waterWeight").textContent || "—";
+  const waterI = $("waterIndex").textContent || "—";
+  const waterR = $("waterRatio").value || "—";
+
+  const bagKg = $("bagTotalKg").value || "—";
+  const bagP  = $("bagPieces").value || "—";
+  const avg   = $("avgBagStat").textContent || "—";
+
+  const loadTotal = $("sumTotal").textContent || "0.0";
+  const sumBag = $("sumBag").textContent || "0.0";
+  const sumCargo = $("sumCargo").textContent || "0.0";
+
+  // group totals from current UI
+  const groups = [];
+  const gt = $("groupTotals");
+  if(gt && gt.style.display!=="none"){
+    gt.querySelectorAll(".stat").forEach(s=>{
+      const k = s.querySelector(".k")?.textContent || "";
+      const v = s.querySelector(".v")?.textContent || "";
+      if(k && v) groups.push(`${k}: ${v}`);
+    });
+  }
+
+  return [
+    "OPS TOOLKIT — FLIGHT SUMMARY",
+    `Flight: ${flt} | Tail: ${tail} | Crew: ${crew} | Pantry: ${($("pantryCode")?.value||"—")} | AC: ${ac}`,
+    "",
+    "FUEL",
+    `Total: ${totalVal||"—"} kg`,
+    `Taxi: ${taxiVal||"—"} kg`,
+    `Remaining (Total−Taxi): ${(totalVal||taxiVal) ? rem.toFixed(0) : "—"} kg`,
+    `Trip (info): ${tripVal||"—"} kg`,
+    "",
+    "WATER",
+    `Ratio: ${waterR}`,
+    `Water: ${waterW} / Index: ${waterI}`,
+    "",
+    "BAGGAGE",
+    `Total: ${bagKg} kg | PCS: ${bagP} | Avg: ${avg}`,
+    "",
+    "LOAD",
+    `Bag calc: ${sumBag} kg | Cargo: ${sumCargo} kg | Total: ${loadTotal} kg`,
+    "",
+    "RADIOACTIVE (if used)",
+    `AC: ${$("radAircraft").value||"—"} | Comp: ${$("radComp").value||"—"} | TI: ${$("radSumTI").textContent||"—"} | Result: ${$("radResult").textContent||"—"}`,
+    "",
+    "COMP GROUP TOTALS",
+    ...(groups.length ? groups.map(g=>" - "+g) : [" - —"]),
+  ].join("\n");
+}
+function refreshSummary(){
+  const flt = ($("flightNo").value || "—").trim().toUpperCase();
+  const tail = ($("tailNo").value || "—").trim().toUpperCase();
+  const crew = $("crewCode").value || "—";
+  const ac = $("aircraft").value || "—";
+  $("sumFT").textContent = `${flt} / ${tail}`;
+  // Summary table (easy check)
+  const tf = $("tFlight"); if(tf) tf.textContent = flt || "—";
+  const tt = $("tTail"); if(tt) tt.textContent = tail || "—";
+  const tc = $("tCrew"); if(tc) tc.textContent = crew || "—";
+  const tp = $("tPantry"); if(tp) tp.textContent = ($("pantryCode")?.value || "—");
+  const ta = $("tAC"); if(ta) ta.textContent = ac || "—";
+  const tw = $("tWater"); if(tw) tw.textContent = ($("waterOut")?.textContent || "—");
+  const ttot = $("tTotalFuel"); if(ttot) ttot.textContent = `${safeNum($("totalFuel").value)??0}`;
+  const ttaxi = $("tTaxiFuel"); if(ttaxi) ttaxi.textContent = `${safeNum($("taxiFuel").value)??0}`;
+  const trem = $("tRemFuel"); if(trem) trem.textContent = `${$("fuelRemaining")?.textContent||"—"}`;
+  const ttrip = $("tTripFuel"); if(ttrip) ttrip.textContent = `${safeNum($("tripFuel").value)??0}`;
+
+  const pc = $("pantryCode")?.value || "—";
+  const spc = $("sumPantryCode"); if(spc) spc.textContent = pc;
+  $("sumCA").textContent = `${crew} / Pantry ${$("pantryCode")?.value||"—"} / ${ac}`;
+
+  const totalVal = $("totalFuel").value;
+  const taxiVal  = $("taxiFuel").value;
+  const total = safeNum(totalVal);
+  const taxi  = safeNum(taxiVal);
+  const rem   = ((total ?? 0) - (taxi ?? 0));
+  $("sumFuelTotal").textContent = (totalVal==="" ? "—" : totalVal + " kg");
+  $("sumFuelTR").textContent = `Taxi ${taxiVal||"—"} / Rem ${(totalVal||taxiVal) ? rem.toFixed(0) : "—"} kg`;
+
+  $("sumTrip").textContent = ($("tripFuel").value || "—") + " kg";
+  const waterW = $("waterWeight").textContent || "—";
+  const waterI = $("waterIndex").textContent || "—";
+  $("sumWater").textContent = `${waterW} / ${waterI}`;
+
+  const bag = $("bagTotalKg").value || "—";
+  const pcs = $("bagPieces").value || "—";
+  const avg = $("avgBagStat").textContent || "—";
+  $("sumBagBox").textContent = `${bag} / ${pcs} / ${avg}`;
+
+  $("sumLoadBox").textContent = `${$("sumTotal").textContent||"0.0"} kg`;
+  const radRes = $("radResult")?.textContent || "—";
+  const radAc = $("radAircraft")?.value || "—";
+  const radComp = $("radComp")?.value || "—";
+  const radTI = $("radSumTI")?.textContent || "—";
+  const sr = $("sumRad"); if(sr) sr.textContent = `${radRes} (AC ${radAc} / Comp ${radComp} / TI ${radTI})`;
+
+  const groupsHTML = $("groupTotals")?.innerHTML || '<div class="hint">—</div>';
+  $("sumGroups").innerHTML = groupsHTML;
+
+  $("summaryText").value = buildSummaryText();
+}
+$("btnPrint").addEventListener("click", ()=>{
+  refreshSummary();
+  // Print only summary screen content
+  window.print();
+});
+$("btnCopySummary").addEventListener("click", ()=>{
+  refreshSummary();
+  const txt = $("summaryText").value || "";
+  const hint = $("copySummaryHint");
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(()=>{ if(hint) hint.textContent="✅ Kopyalandı"; })
+      .catch(()=>{ if(hint) hint.textContent="⚠️ Kopyalanamadı. Metni seçip kopyala."; $("summaryText").focus(); $("summaryText").select(); });
+  }else{
+    if(hint) hint.textContent="⚠️ Tarayıcı izin vermedi. Metni seçip kopyala.";
+    $("summaryText").focus(); $("summaryText").select();
+  }
+});
+
+/* ===== RADIOACTIVE (simple + robust) ===== */
+const radHeights = {
+  "A319":{"1":"1.24","4":"1.24-1.20","51":"1.20-0.82"},
+  "A320":{"1":"1.24","3":"1.24","4":"1.24-1.20","51":"1.20-0.82"},
+  "A321":{"1":"1.24","2":"1.24","3":"1.24","4":"1.24-1.20","51":"1.20-0.82"},
+  "A330-200":{"1":"1.71","2":"1.71","3":"1.67","4":"1.67","51":"1.79","52":"1.81","53":"1.50"},
+  "A330-300":{"1":"1.71","2":"1.71","3":"1.67","4":"1.67","51":"1.79","52":"1.81","53":"1.50"},
+  "A350":{"1":"1.76","2":"1.76","3":"1.75","4":"1.75","51":"1.76"},
+  "B737-800":{"1":"1.11","2":"1.11","3":"1.19","4":"0.95-0.59"},
+  "B737-900":{"1":"1.11","2":"1.11","3":"1.19","4":"0.95-0.59"},
+  "B787":{"1":"1.70","2":"1.70","3":"1.70","4":"1.70","51":"1.70-1.49","52":"1.70-1.49"},
+  "B777":{"1":"1.67","2":"1.67","3":"1.67","4":"1.67","51":"1.67-1.56","52":"1.67-1.56"}
+};
+// TI bands
+const tiBands = [
+  {min:0.1,max:1.0,dist:0.30},{min:1.1,max:2.0,dist:0.50},{min:2.1,max:3.0,dist:0.70},
+  {min:3.1,max:4.0,dist:0.85},{min:4.1,max:5.0,dist:1.00},{min:5.1,max:6.0,dist:1.15},
+  {min:6.1,max:7.0,dist:1.30},{min:7.1,max:8.0,dist:1.45},{min:8.1,max:9.0,dist:1.55},
+  {min:9.1,max:10.0,dist:1.65},{min:10.1,max:11.0,dist:1.75}
+];
+function parseHeightMeters(s){
+  if(!s) return null;
+  const nums = String(s).split("-").map(x=>parseFloat(x)).filter(n=>Number.isFinite(n));
+  if(!nums.length) return null;
+  return Math.min(...nums);
+}
+function parseTISum(text){
+  const s=String(text||"").trim();
+  if(!s) return null;
+  const parts=s.split(/[\+,; ]+/).filter(Boolean);
+  const nums=parts.map(p=>Number(String(p).replace(",", "."))).filter(n=>Number.isFinite(n));
+  if(!nums.length) return null;
+  return nums.reduce((a,b)=>a+b,0);
+}
+function tiToMinDistance(ti){
+  if(!Number.isFinite(ti)) return null;
+  for(const b of tiBands){
+    if(ti>=b.min && ti<=b.max) return b.dist;
+  }
+  return null;
+}
+function populateRadComp(){
+  const ac = $("radAircraft").value;
+  const sel = $("radComp");
+  // clear safely
+  while(sel.options.length) sel.remove(0);
+  sel.add(new Option("Seçiniz",""));
+  const data = radHeights[ac];
+  if(!data){
+    $("radCompHint").textContent = ac ? "Kompartman tablosu yok." : "Uçak tipini seçince kompartmanlar gelir.";
+    return;
+  }
+  $("radCompHint").textContent = "Kompartman seç.";
+  Object.keys(data).forEach(comp=>{
+    sel.add(new Option("Comp "+comp, comp));
+  });
+}
+function updateRadCalc(){
+  const ac=$("radAircraft").value;
+  const comp=$("radComp").value;
+  const ti=parseTISum($("radTI").value);
+  const boxH=safeNum($("radBoxHcm").value);
+
+  $("radSumTI").textContent = (ti===null) ? "—" : ti.toFixed(2);
+
+  const hStr=(radHeights[ac]||{})[comp];
+  const hM=parseHeightMeters(hStr);
+  const hCm=(hM===null)?null:(hM*100);
+  $("radCompCm").textContent = (hCm===null) ? "—" : (hCm.toFixed(0)+" cm");
+
+  const minM=tiToMinDistance(ti);
+  $("radMinM").textContent = (minM===null) ? "—" : (minM.toFixed(2)+" m");
+  // band info
+  const bandEl = $("radBand");
+  const expEl = $("radExplain");
+  if(bandEl) bandEl.textContent = "—";
+  if(expEl) expEl.textContent = "—";
+  if(Number.isFinite(ti)){
+    const band = tiBands.find(b=>ti>=b.min && ti<=b.max);
+    if(band){
+      if(bandEl) bandEl.textContent = `${band.min.toFixed(1)}–${band.max.toFixed(1)}`;
+      if(expEl) expEl.textContent = `Kural: Min Mesafe (${band.dist.toFixed(2)} m) + Kutu Yüksekliği ≤ Kompartman Yüksekliği.`;
+    }else{
+      if(expEl) expEl.textContent = "TI aralığı dışında (0.1–11.0).";
+    }
+  }
+
+  if(minM===null){ $("radNeedCm").textContent="—"; $("radResult").textContent="TI gir (0.1–11.0)."; return; }
+  if(boxH===null || boxH<0){ $("radNeedCm").textContent="—"; $("radResult").textContent="Kutu yüksekliği gir."; return; }
+
+  const need=minM*100 + boxH;
+  $("radNeedCm").textContent = need.toFixed(0)+" cm";
+
+  if(hCm===null){ $("radResult").textContent="Kompartman seç."; return; }
+  if(need<=hCm+1e-6){
+    const pay = (hCm - need);
+    $("radResult").textContent = `✅ UYGUN (Pay: ${pay.toFixed(0)} cm)`;
+  }
+  else{
+    const over = (need - hCm);
+    $("radResult").textContent = `❌ UYGUN DEĞİL (Aşıyor: ${over.toFixed(0)} cm)`;
+  }
+}
+
+$("radAircraft").addEventListener("change", ()=>{ populateRadComp(); updateRadCalc(); });
+$("radComp").addEventListener("change", updateRadCalc);
+["radTI","radBoxHcm"].forEach(id=>{
+  $(id).addEventListener("input", updateRadCalc);
+  $(id).addEventListener("change", updateRadCalc);
+});
+
+
+/* ===== THEME + LANGUAGE ===== */
+let prefs = { theme:"dark", lang:"tr" };
+function loadPrefs(){
+  try{
+    const raw = localStorage.getItem(PREF_KEY);
+    if(raw) prefs = Object.assign(prefs, JSON.parse(raw));
+  }catch(e){}
+  applyPrefs();
+}
+function savePrefs(){
+  try{ localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); }catch(e){}
+}
+function applyPrefs(){
+  document.body.classList.toggle("light", prefs.theme==="light");
+  // simple language: toggle button labels + key titles
+  applyLang();
+}
+$("toggleTheme").addEventListener("click", ()=>{
+  prefs.theme = (prefs.theme==="light") ? "dark" : "light";
+  applyPrefs(); savePrefs();
+});
+$("toggleLang").addEventListener("click", ()=>{
+  prefs.lang = (prefs.lang==="en") ? "tr" : "en";
+  applyPrefs(); savePrefs();
+});
+const STR = {
+  tr: {
+    homeReady:"Hazır",
+    goLoad:"✈️ Balance / Ağırlık Kontrol",
+    goRad:"☢️ Radyoaktif Mesafe",
+    goSummary:"📄 Flight Summary (PDF)",
+    goRecent:"🕘 Son Uçuşlar",
+    goInstall:"📲 Ana Ekrana Ekle",
+    menu:"Menü",
+    loadTitle:"✈️ Balance Kontrol",
+    radTitle:"☢️ Radyoaktif Mesafe",
+    sumTitle:"📄 Flight Summary",
+    recentTitle:"🕘 Son Uçuşlar",
+    installTitle:"📲 Ana Ekrana Ekle",
+    print:"🖨️ Yazdır / PDF",
+    copy:"📋 Metni Kopyala"
+  },
+  en: {
+    homeReady:"Ready",
+    goLoad:"✈️ Balance / Weight Check",
+    goRad:"☢️ Radioactive Distance",
+    goSummary:"📄 Flight Summary (PDF)",
+    goRecent:"🕘 Recent Flights",
+    goInstall:"📲 Add to Home Screen",
+    menu:"Menu",
+    loadTitle:"✈️ Balance Check",
+    radTitle:"☢️ Radioactive Distance",
+    sumTitle:"📄 Flight Summary",
+    recentTitle:"🕘 Recent Flights",
+    installTitle:"📲 Add to Home Screen",
+    print:"🖨️ Print / Save PDF",
+    copy:"📋 Copy Text"
+  }
+};
+function applyLang(){
+  const L = STR[prefs.lang] || STR.tr;
+  const setTxt = (id, txt)=>{ const el=$(id); if(el) el.textContent=txt; };
+  setTxt("statusChip", L.homeReady);
+  setTxt("goLoad", L.goLoad);
+  setTxt("goRad", L.goRad);
+  setTxt("goSummary", L.goSummary);
+  setTxt("goRecent", L.goRecent);
+  setTxt("goInstall", L.goInstall);
+
+  // Titles
+  const titles = document.querySelectorAll(".title");
+  // We only swap known screens by id for safety
+  const loadTitleEl = document.querySelector("#load .title"); if(loadTitleEl) loadTitleEl.textContent = L.loadTitle;
+  const radTitleEl  = document.querySelector("#rad .title");  if(radTitleEl)  radTitleEl.textContent  = L.radTitle;
+  const sumTitleEl  = document.querySelector("#summary .title"); if(sumTitleEl) sumTitleEl.textContent = L.sumTitle;
+  const recentTitleEl = document.querySelector("#recent .title"); if(recentTitleEl) recentTitleEl.textContent = L.recentTitle;
+  const installTitleEl = document.querySelector("#install .title"); if(installTitleEl) installTitleEl.textContent = L.installTitle;
+  const backupTitleEl = document.querySelector("#backup .title"); if(backupTitleEl) backupTitleEl.textContent = (prefs.lang==="en" ? "💾 Backup / Restore" : "💾 Yedekle / Geri Yükle");
+
+  // Menu buttons
+  ["backFromLoad","backFromRad","backFromSummary","backFromRecent","backFromInstall","backFromBackup"].forEach(id=>{
+    const el=$(id); if(el) el.textContent = L.menu;
+  });
+  const pr = $("btnPrint"); if(pr) pr.textContent = L.print;
+  const cp = $("btnCopySummary"); if(cp) cp.textContent = L.copy;
+}
+
+
+/* preventEnterAutoAdvance: do not jump to next input automatically */
+function installNoAutoAdvance(){
+  document.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter"){
+      const t = e.target;
+      if(t && (t.tagName === "INPUT" || t.tagName === "SELECT" || t.tagName === "TEXTAREA")){
+        e.preventDefault();
+        // keep focus where it is
+        return false;
+      }
+    }
+  }, true);
+}
+
+/* boot */
+loadPrefs();
+loadLocal();
+updateMeta();
+populateWaterOptions();
+updateValues();
+</script>
+</body>
+</html>
