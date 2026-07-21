@@ -1,0 +1,2615 @@
+<!DOCTYPE html>
+<!-- saved from url=(0152)file:///C:/Users/birka/Documents/Codex/2026-07-21/referenced-chatgpt-conversation-this-is-untrusted-3/outputs/ops_toolkit_v10_all_improvements_test.html -->
+<html lang="tr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0b0b0b">
+  <title>Ops Toolkit UI Pro</title>
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --card:#151515;
+      --card2:#101010;
+      --text:#ffffff;
+      --muted:#bdbdbd;
+      --border:#2d2d2d;
+      --accent:#00e0ff;
+      --warn:#ffcc00;
+      --bad:#ff5f5f;
+      --ok:#49d17d;
+      --shadow:0 10px 30px rgba(0,0,0,.45);
+      --r:18px;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{
+      margin:0;background:var(--bg);color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+    }
+    .screen{display:none}
+    .screen.active{display:block}
+    .wrap{max-width:760px;margin:0 auto;padding:14px 14px 120px}
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
+      padding:14px;
+      margin-bottom:12px;
+    }
+    .card.secondary{background:var(--card2)}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .title{font-weight:950;font-size:16px}
+    .sub{margin-top:8px;font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+    .pill,.chip{
+      font-size:12px;color:var(--muted);border:1px solid var(--border);
+      padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.03);white-space:nowrap
+    }
+    .chip.warn{color:#fff;border-color:rgba(255,204,0,.55);background:rgba(255,204,0,.12)}
+    .chip.bad{color:#fff;border-color:rgba(255,95,95,.5);background:rgba(255,95,95,.12)}
+    .hint{margin-top:8px;color:var(--muted);font-size:12px;line-height:1.35rem}
+    .divider{height:1px;background:var(--border);margin:12px 0;opacity:.8}
+
+    .hero{
+      display:grid;grid-template-columns:1fr;gap:12px
+    }
+    .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:520px){.menu-grid{grid-template-columns:1fr}}
+    .menu-btn{
+      text-align:left;border:none;cursor:pointer;color:var(--text);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border:1px solid var(--border);border-radius:18px;padding:16px;min-height:84px
+    }
+    .menu-btn.primary{background:linear-gradient(180deg, rgba(0,224,255,.25), rgba(0,224,255,.1));border-color:rgba(0,224,255,.35)}
+    .menu-btn .t{font-weight:950;font-size:15px}
+    .menu-btn .s{font-size:12px;color:var(--muted);margin-top:6px}
+
+    label{display:block;font-size:13px;color:var(--muted);margin:0 0 6px;font-weight:750}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    .subgrid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:560px){.grid2,.grid3{grid-template-columns:1fr}}
+    select,input[type="number"],input[type="text"],textarea{
+      width:100%;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      color:var(--text);
+      border-radius:14px;
+      padding:12px;
+      font-size:16px;
+      outline:none;
+    }
+    option{background:#101010;color:#fff}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    button{
+      appearance:none;border:none;cursor:pointer;border-radius:14px;padding:12px 14px;
+      font-size:14px;font-weight:900;color:var(--text);
+      background:rgba(255,255,255,.08);border:1px solid var(--border);
+      min-height:44px;flex:1 1 auto;
+    }
+    .btn-primary{background:linear-gradient(180deg, rgba(0,224,255,.25), rgba(0,224,255,.12));border-color:rgba(0,224,255,.35)}
+    .btn-danger{background:linear-gradient(180deg, rgba(255,60,60,.22), rgba(255,60,60,.10));border-color:rgba(255,60,60,.35)}
+    .btn-ok{background:linear-gradient(180deg, rgba(73,209,125,.22), rgba(73,209,125,.10));border-color:rgba(73,209,125,.35)}
+
+    .stat{
+      display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:14px;
+      background:rgba(255,255,255,.04);border:1px solid var(--border);min-width:140px
+    }
+    .stat .k{color:var(--muted);font-size:12px;font-weight:750}
+    .stat .v{color:var(--accent);font-size:18px;font-weight:950;font-variant-numeric:tabular-nums}
+    .stat .v.warn{color:var(--warn)}
+    .stat .v.bad{color:var(--bad)}
+    .stat .v.ok{color:var(--ok)}
+
+    .qbtnRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .qbtn{
+      padding:10px 10px;min-height:40px;border-radius:12px;font-size:13px;font-weight:950;
+      background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text);
+      cursor:pointer;flex:0 0 auto;min-width:120px
+    }
+
+    .sumtable{width:100%;border-collapse:collapse;font-size:14px}
+    .sumtable th,.sumtable td{border:1px solid var(--border);padding:10px;text-align:left}
+    .sumtable th{color:var(--muted);font-weight:900}
+    .sumtable td{font-weight:900}
+</style>
+
+<style id="modernUiLayer">
+  :root{
+    --bg:#050505;--card:#111111;--card2:#0b0b0b;--text:#f7fbff;
+    --muted:#a9b1bb;--border:#2d3136;--accent:#2fd5ed;--warn:#ffd45c;
+    --bad:#ff6f7d;--ok:#55d98a;--shadow:0 14px 40px rgba(0,0,0,.34);--r:20px;
+  }
+  html{background:var(--bg);scroll-behavior:smooth}
+  body{min-height:100dvh;background:
+    radial-gradient(circle at 50% -10%,rgba(255,255,255,.055),transparent 28rem),var(--bg);
+    letter-spacing:.005em;padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+  .wrap{max-width:780px;padding:calc(14px + env(safe-area-inset-top)) 14px 118px}
+  .card{background:linear-gradient(145deg,rgba(20,20,20,.98),rgba(10,10,10,.98));
+    border-color:rgba(133,166,200,.2);box-shadow:0 12px 34px rgba(0,0,0,.25);}
+  .card.secondary{background:rgba(10,10,10,.94)}
+  .title{font-size:17px;letter-spacing:-.015em}
+  .tgs-logo-row{display:flex;align-items:center;gap:12px}.tgs-logo-mark{display:inline-flex;align-items:center;justify-content:center;min-width:72px;height:42px;padding:0 10px;border-radius:8px 14px 8px 14px;background:#e30613;color:#fff;font-size:22px;font-weight:1000;font-style:italic;letter-spacing:-.08em;transform:skew(-8deg);box-shadow:0 7px 18px rgba(227,6,19,.28)}.tgs-logo-mark span{transform:skew(8deg)}.tgs-home-title{font-size:16px;line-height:1.2;max-width:360px}
+  .hint,.sub{line-height:1.5}
+  .topbar{position:sticky;top:calc(8px + env(safe-area-inset-top));z-index:25;
+    padding:12px 13px;border-radius:18px;background:rgba(7,7,7,.94);
+    border:1px solid rgba(133,166,200,.19);backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.28)}
+  .topbar+.card{margin-top:12px}
+  .menu-grid{gap:12px}
+  .menu-btn{position:relative;overflow:hidden;min-height:108px;padding:18px 48px 18px 18px;
+    border-radius:22px;background:linear-gradient(145deg,rgba(25,25,25,.99),rgba(10,10,10,.99));
+    border:1px solid rgba(133,166,200,.22);box-shadow:0 10px 28px rgba(0,0,0,.22);
+    transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+  .menu-btn::after{content:'\203A';position:absolute;right:18px;top:50%;transform:translateY(-52%);
+    font-size:30px;color:var(--accent);font-weight:500}
+  .menu-btn.primary{background:linear-gradient(145deg,rgba(25,25,25,.99),rgba(8,8,8,.99));
+    border-color:rgba(47,213,237,.42)}
+  .menu-btn:active{transform:scale(.975)}
+  .menu-btn .t{font-size:16px;line-height:1.25}
+  .menu-btn .s{font-size:12.5px;line-height:1.45;max-width:92%}
+  label{font-size:12px;letter-spacing:.035em;text-transform:none;color:#b6c5d7}
+  select,input[type="number"],input[type="text"],textarea{min-height:48px;border-radius:14px;
+    background:#090909;border-color:#343434;font-size:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+    transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
+  select:focus,input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(47,213,237,.14);background:#0d0d0d}
+  input.ui-valid,select.ui-valid{border-color:rgba(85,217,138,.65)}
+  input.ui-invalid,select.ui-invalid{border-color:var(--bad);box-shadow:0 0 0 3px rgba(255,111,125,.12)}
+  button{min-height:44px;font-weight:850;border-radius:14px;transition:transform .14s ease,filter .14s ease}
+  button:active{transform:scale(.97)}
+  .stat{border-radius:16px;background:rgba(8,8,8,.94);border-color:rgba(160,160,160,.22)}
+  .stat .k{color:#9fb0c5;letter-spacing:.025em}.stat .v{font-variant-numeric:tabular-nums}
+  #compList>div{border-radius:18px!important;background:rgba(8,8,8,.96)!important;border-color:rgba(160,160,160,.22)!important}
+  #groupTotals{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  #groupTotals .stat,#groupTotals>div{background:#090909!important;border:1px solid rgba(160,160,160,.22)!important;box-shadow:0 8px 22px rgba(0,0,0,.28)}
+  #groupTotals .v,#groupTotals [id^="gt_"],#sumTotal,#sumBag,#sumCargo,[id^="ct_"]{color:#ffd43b!important;text-shadow:none;font-weight:950!important}
+  #sumGroups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  #sumGroups>*,#sumGroups .stat,#sumGroups .pill{background:#090909!important;border:1px solid rgba(160,160,160,.22)!important;border-radius:15px!important;padding:11px!important;color:var(--text)!important;box-shadow:0 8px 22px rgba(0,0,0,.28)}
+  #sumGroups span,#sumGroups .v,#sumGroups [id^="gt_"],#sumGroups [id^="ct_"]{color:#ffd43b!important;text-shadow:none;font-size:17px!important;font-weight:950!important}
+  #sumTotal{font-size:24px!important}
+  .stat:has(#sumTotal){border-color:rgba(160,160,160,.22);background:#090909}
+  #summary .card{break-inside:avoid}
+  #summary table{border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:14px}
+  #summary th{color:#aab3bd;background:#0a0a0a}#summary td{background:rgba(12,12,12,.96);font-weight:800}
+  #summary .title{font-size:19px}
+  .ui-collapse-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;
+    color:var(--text);background:transparent;border:0;padding:0 0 10px;text-align:left;font-size:15px}
+  .ui-collapse-toggle .ui-chevron{color:var(--accent);font-size:22px;transition:transform .18s ease}
+  .ui-collapsible.is-collapsed .ui-chevron{transform:rotate(-90deg)}
+  .ui-collapse-body{display:block}.ui-collapsible.is-collapsed .ui-collapse-body{display:none}
+  .ui-results-bar{position:sticky;top:82px;z-index:20;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:5px;margin:10px 0 12px;padding:7px;border:1px solid rgba(47,213,237,.25);border-radius:16px;
+    background:rgba(5,5,5,.94);backdrop-filter:blur(12px);box-shadow:0 9px 24px rgba(0,0,0,.35)}
+  .ui-result{text-align:center;min-width:0;padding:5px 2px}.ui-result small{display:block;color:#8fa4bb;font-size:9px;text-transform:uppercase}
+  .ui-result strong{display:block;overflow:hidden;text-overflow:ellipsis;color:#f5fbff;font-size:12px;margin-top:2px;font-variant-numeric:tabular-nums}
+  .ui-result:nth-child(1) strong,.ui-result:nth-child(4) strong{color:var(--warn)}
+  .ui-unit-badge{float:right;color:var(--accent);font-size:10px;font-weight:900;border:1px solid rgba(47,213,237,.28);border-radius:999px;padding:2px 7px;background:rgba(47,213,237,.07)}
+  .briefing-banner{margin:12px 0;padding:15px 16px;border-radius:18px;border:1px solid rgba(47,213,237,.28);background:linear-gradient(135deg,#111,#080808)}
+  .briefing-banner small{display:block;color:#9fb0c5;font-size:10px;letter-spacing:.14em}.briefing-banner strong{display:block;margin-top:5px;font-size:18px;letter-spacing:.01em}.briefing-banner span{display:block;margin-top:4px;color:#b8c8d9;font-size:12px}
+  .dg-result{margin-top:12px;padding:16px;border-radius:17px;border:1px solid var(--border);background:#080808}
+  .dg-result.ok{border-color:rgba(85,217,138,.55)}.dg-result.warn{border-color:rgba(255,212,92,.6)}.dg-result.bad{border-color:rgba(255,111,125,.65)}
+  .dg-result-title{font-size:19px;font-weight:950}.dg-result.ok .dg-result-title{color:var(--ok)}.dg-result.warn .dg-result-title{color:var(--warn)}.dg-result.bad .dg-result-title{color:var(--bad)}
+  .dg-result-rule{margin-top:8px;color:var(--text);font-size:14px;line-height:1.5}.dg-result-source{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.45}
+  .ops-check{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+  .ops-check-item{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--border);border-radius:13px;background:#080808;font-size:12px;font-weight:850}
+  .ops-check-item::before{content:'•';font-size:20px;color:var(--muted)}
+  .ops-check-item.ok::before{color:var(--ok)}.ops-check-item.warn::before{color:var(--warn)}.ops-check-item.bad::before{color:var(--bad)}
+  .ops-check.compact{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.ops-check.compact .ops-check-item{padding:7px 8px;font-size:10.5px}.ops-check.compact .ops-check-item::before{font-size:15px}
+  .ops-alert{margin-top:9px;padding:10px 12px;border:1px solid rgba(255,212,92,.38);border-radius:13px;background:rgba(255,212,92,.07);color:#ffe48a;font-size:12px;line-height:1.5}
+  .ops-alert.bad{border-color:rgba(255,111,125,.5);background:rgba(255,111,125,.08);color:#ff9aa4}
+  .quick-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.quick-tags button{flex:0 0 auto;min-height:38px;padding:8px 11px;font-size:12px;color:var(--warn);background:#080808}
+  .summary-section{margin-top:12px;padding:14px;border:1px solid rgba(160,160,160,.22);border-radius:17px;background:#080808}
+  .summary-section-title{font-size:12px;color:#9fb0c5;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .summary-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.summary-kpi{padding:10px;border:1px solid var(--border);border-radius:13px}.summary-kpi small{display:block;color:var(--muted);font-size:10px}.summary-kpi strong{display:block;margin-top:4px;color:var(--warn);font-size:15px}
+  .revision-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.revision-strip span{font-size:10px;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:6px 9px;background:#080808}
+  .history-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.history-actions button{flex:1 1 120px}
+  .theme-light{--bg:#edf1f5;--card:#fff;--card2:#f7f9fb;--text:#101317;--muted:#5e6975;--border:#cfd6de;--shadow:0 10px 25px rgba(20,35,50,.12)}
+  body.theme-light{background:#edf1f5;color:#101317}body.theme-light .card,body.theme-light .topbar,body.theme-light .bottom-nav,body.theme-light input,body.theme-light select,body.theme-light textarea,body.theme-light .stat,body.theme-light .ops-check-item,body.theme-light .summary-section{background:#fff!important;color:#101317!important}
+  body.theme-light option{background:#fff;color:#101317}body.theme-light .menu-btn{background:#fff;color:#101317}body.theme-light .hint,body.theme-light label{color:#5e6975}
+  @media(max-width:560px){.summary-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ops-check.compact{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .desk-preview{display:none;width:100%;max-height:360px;object-fit:contain;margin-top:10px;border-radius:14px;border:1px solid var(--border);background:#050505}
+  .desk-preview.show{display:block}
+  .desk-editor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}
+  .desk-editor{padding:8px;border:1px solid var(--border);border-radius:12px;background:#080808}
+  .desk-editor strong{display:block;color:var(--accent);font-size:12px;margin-bottom:6px}
+  .desk-editor textarea{min-height:54px;font-size:13px;padding:8px;resize:vertical}
+  .desk-result{padding:16px;border:1px solid var(--border);border-radius:16px;background:#080808;margin-top:10px}
+  .desk-result.found{border-color:rgba(85,217,138,.55)}
+  .desk-result.not-found{border-color:rgba(255,111,125,.55)}
+  .desk-result .desk-main{font-size:21px;font-weight:950;color:var(--ok)}
+  .desk-result .desk-sub{margin-top:6px;color:var(--muted);font-size:13px}
+  .bottom-nav{position:fixed;z-index:60;left:50%;bottom:max(8px,env(safe-area-inset-bottom));transform:translateX(-50%);
+    width:min(calc(100% - 20px),760px);display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:7px;
+    border:1px solid rgba(133,166,200,.23);border-radius:21px;background:rgba(5,5,5,.97);backdrop-filter:blur(18px);box-shadow:0 16px 46px rgba(0,0,0,.58)}
+  .bottom-nav button{border:0;background:transparent;color:#8297ae;padding:6px 2px;min-height:50px;font-size:10px}
+  .bottom-nav button span{display:block;font-size:19px;line-height:20px;margin-bottom:3px}
+  .bottom-nav button.active{color:var(--accent);background:rgba(47,213,237,.09)}
+  @media(max-width:560px){.grid2,.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}.menu-grid{grid-template-columns:1fr 1fr}.menu-btn{min-height:116px;padding:16px 38px 16px 15px}.menu-btn .s{font-size:11.5px}.card{padding:13px}.ui-results-bar{top:78px}}
+  @media(max-width:390px){.menu-grid{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}.bottom-nav button{font-size:9px}.desk-editor-grid{grid-template-columns:1fr}}
+  @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+  <style media="print">
+    body{background:#fff !important;color:#000 !important}
+    .screen{display:none !important}
+    #summary.screen{display:block !important}
+    #summary .wrap{max-width:none;padding:0}
+    button,.btns,.bottom-nav,.hint#printHint,textarea#summaryText{display:none !important}
+    .card{box-shadow:none !important;border:1px solid #ccc !important}
+  </style>
+</head>
+<body>
+
+<section class="screen active" id="home">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="tgs-logo-row"><div class="tgs-logo-mark" aria-label="TGS"><span>TGS</span></div><div class="title tgs-home-title">Harekat Operasyon Kontrol Paneli</div></div>
+          <div class="sub">
+            <span class="pill" id="clockPill">Saat: 19:04:30</span>
+            <span class="pill" id="datePill">21.07.2026 Salı</span>
+            <span class="chip" id="statusChip">Hazır</span>
+          </div>
+        </div>
+      </div>
+      <div class="hint">Apronda düzen varsa, arkasında güçlü bir harekat vardır.</div>
+      <div class="hero">
+        <div class="menu-grid">
+          <button class="menu-btn primary" id="goLoad" type="button">
+            <div class="t">✈️ Balance / Ağırlık Kontrol</div>
+            <div class="s">Ana giriş ekranı</div>
+          </button>
+          <button class="menu-btn primary" id="goRad" type="button">
+            <div class="t">☢️ Radyoaktif Mesafe</div>
+            <div class="s">TI ve mesafe kontrolü</div>
+          </button>
+          <button class="menu-btn" id="goSummary" type="button">
+            <div class="t">📄 Balans Özeti</div>
+            <div class="s">Tek bakış özet ve PDF</div>
+          </button>
+          <button class="menu-btn" id="btnNewFlight" type="button">
+            <div class="t">🆕 Yeni Uçuş</div>
+            <div class="s">Alanları temizle</div>
+          </button>
+          <button class="menu-btn" id="goRecent" type="button">
+            <div class="t">🕘 Son Uçuşlar</div>
+            <div class="s">Kayıtlı uçuşları geri çağır</div>
+          </button>
+          <button class="menu-btn" id="goCustoms" type="button">
+            <div class="t">🛃 TK Gümrüklü / Gümrüksüz</div>
+            <div class="s">İstasyon kodundan durum kontrolü</div>
+          </button>
+          <button class="menu-btn" id="goStation" type="button">
+            <div class="t">🌍 İstasyon Yeri</div>
+            <div class="s">3’lü koddan şehir / ülke / havalimanı bul</div>
+          </button>
+          <button class="menu-btn" id="goDgSeparation" type="button">
+            <div class="t">⚠️ Tehlikeli Maddeler Ayrımı</div>
+            <div class="s">Aynı kompartıman, hold ve mesafe kontrolü</div>
+          </button>
+          <button class="menu-btn" id="goAbout" type="button">
+            <div class="t">ℹ️ Hakkında</div>
+            <div class="s">Geliştirici, tema ve tablo revizyonları</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="load">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">✈️ Balance Kontrol</div>
+          <div class="sub">
+            <span class="pill" id="clockPillL">Saat: 19:04:30</span>
+            <span class="pill" id="datePillL">21.07.2026 Salı</span>
+            <span class="chip warn" id="statusChipL">Kontrol Gerekli</span>
+          </div>
+        </div>
+        <button id="backFromLoad" type="button">Menü</button>
+      </div>
+
+      <div class="grid3">
+        <div>
+          <label>Sefer No (TK)</label>
+          <input type="text" id="flightNo" placeholder="örn. TK0012" autocapitalize="characters">
+        </div>
+        <div>
+          <label>Uçak Kuyruğu (Tail)</label>
+          <input type="text" id="tailNo" placeholder="örn. TC-LGA" autocapitalize="characters">
+        </div>
+        <div>
+          <label>Crew / Pantry</label>
+          <div class="subgrid2">
+            <div class="subfield">
+              <select id="crewCode">
+                <option value="">Seçiniz</option>
+                <optgroup label="2/ ...">
+                  <option>2/0</option><option>2/4</option><option>2/5</option><option>2/6</option><option>2/8</option>
+                  <option>2/10</option><option>2/11</option><option>2/12</option><option>2/14</option>
+                </optgroup>
+                <optgroup label="3/ ...">
+                  <option>3/0</option><option>3/4</option><option>3/5</option><option>3/6</option><option>3/8</option>
+                  <option>3/10</option><option>3/11</option><option>3/12</option><option>3/14</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="subfield">
+              <select id="pantryCode">
+                <option value="">Seçiniz</option>
+                <option value="A">A</option>
+                <option value="L">L</option>
+                <option value="M">M</option>
+                <option value="D">D</option>
+                <option value="F">F</option>
+                <option value="S">S</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div>
+          <label>Uçak Tipi</label>
+          <select id="aircraft">
+            <option value="">Seçiniz</option>
+            <option value="B738">B-737 / 800</option>
+            <option value="B739">B-737 / 900</option>
+            <option value="A320">A-320</option>
+            <option value="A321">A-321</option>
+            <option value="A330">A-330</option>
+            <option value="B787">B-787</option>
+            <option value="B777">B-777</option>
+            <option value="A350">A-350</option>
+            <optgroup label="Bulk">
+              <option value="A319B">A319 Bulk</option>
+              <option value="A320B">A320 Bulk</option>
+              <option value="A321B">A321 Bulk</option>
+            </optgroup>
+          </select>
+        </div>
+        <div>
+          <label>İşlem</label>
+          <div class="btns" style="margin-top:0">
+            <button class="btn-primary" id="btnSave" type="button">Kaydet</button>
+            <button class="btn-danger" id="btnReset" type="button">Sıfırla</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card secondary" id="criticalCheckCard">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+        <div style="font-weight:950">Kritik Kontrol</div>
+        <span class="chip warn" id="opsCompactStatus">! 5 kontrol</span>
+      </div>
+      <details id="opsCheckDetails" style="margin-top:9px">
+        <summary class="hint" style="cursor:pointer;margin:0">Detayları göster</summary>
+        <div class="ops-check compact" id="opsCheckGrid"><div class="ops-check-item bad">TK / Tail</div><div class="ops-check-item bad">Crew / Pantry</div><div class="ops-check-item bad">Aircraft / Water</div><div class="ops-check-item bad">Fuel</div><div class="ops-check-item bad">Bagaj</div><div class="ops-check-item ok">Kompartıman PCS</div><div class="ops-check-item ok">PETC / Özel Yük</div></div>
+        <div id="opsAlertBox" class="ops-alert">TK / Tail eksik veya kontrol edilmeli. • Crew / Pantry eksik veya kontrol edilmeli. • Aircraft / Water eksik veya kontrol edilmeli. • Fuel eksik veya kontrol edilmeli. • Bagaj eksik veya kontrol edilmeli.</div>
+      </details>
+    </div>
+
+    <div class="card secondary ui-collapsible"><button type="button" class="ui-collapse-toggle" aria-expanded="true"><span>Fuel Kontrol</span><span class="ui-chevron">v</span></button><div class="ui-collapse-body">
+      
+      <div class="grid2">
+        <div>
+          <label>Total Fuel (kg)<span class="ui-unit-badge">KG</span></label>
+          <input type="number" id="totalFuel" placeholder="örn. 8200">
+        </div>
+        <div>
+          <label>Taxi Fuel (kg)<span class="ui-unit-badge">KG</span></label>
+          <input type="number" id="taxiFuel" placeholder="örn. 300">
+        </div>
+      </div>
+      <div class="grid2" style="margin-top:10px">
+        <div>
+          <label>Trip Fuel (kg) (Bilgi)<span class="ui-unit-badge">KG</span></label>
+          <input type="number" id="tripFuel" placeholder="örn. 7600">
+          <div class="hint">Bilgi amaçlı. Hesaplamaya dahil değil.</div>
+        </div>
+        <div>
+          <label>Sonuçlar</label>
+          <div class="grid2">
+            <div class="stat"><div class="k">Remaining</div><div class="v warn" id="remainFuelStat">—</div></div>
+            <div class="stat"><div class="k">Trip (info)</div><div class="v ok" id="tripFuelStat">—</div></div>
+          </div>
+          <div class="hint">Remaining = Total − Taxi</div>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="card secondary ui-collapsible"><button type="button" class="ui-collapse-toggle" aria-expanded="true"><span>Bagaj Kontrol</span><span class="ui-chevron">v</span></button><div class="ui-collapse-body">
+      
+      <div class="grid3">
+        <div>
+          <label>Toplam Bagaj (kg)<span class="ui-unit-badge">KG</span></label>
+          <input type="number" id="bagTotalKg" placeholder="örn. 2450">
+        </div>
+        <div>
+          <label>Bagaj PCS<span class="ui-unit-badge">PCS</span></label>
+          <input type="number" id="bagPieces" placeholder="örn. 122">
+        </div>
+        <div>
+          <label>Avg Bagaj (Manuel kg)<span class="ui-unit-badge">KG</span></label>
+          <input type="number" id="manualAvgBag" inputmode="decimal" step="0.01" placeholder="örn. 18.5">
+          <div class="hint">Total ve PCS boşsa kullanılır.</div>
+        </div>
+      </div>
+      <div class="grid2" style="margin-top:10px">
+        <div>
+          <label>Hesap</label>
+          <div class="grid2">
+            <div class="stat"><div class="k">Avg Bagaj</div><div class="v warn" id="avgBagStat">—</div></div>
+            <div class="stat"><div class="k">PCS Toplam</div><div class="v" id="bagPcsStat">—</div></div>
+          </div>
+          <div class="hint">Öncelik: Total KG / PCS. Bunlar yoksa manuel Avg.</div>
+        </div>
+        <div>
+          <label>Özet</label>
+          <div class="grid2">
+            <div class="stat"><div class="k">TK / Tail</div><div class="v" id="sumMeta1">— / —</div></div>
+            <div class="stat"><div class="k">Crew / AC</div><div class="v" id="sumMeta2">— / — / —</div></div>
+          </div>
+          <div class="hint">Tek bakış kontrol.</div>
+        </div>
+      </div>
+      <div class="grid3" style="margin-top:10px">
+        <div class="stat"><div class="k">Avg Kaynağı</div><div class="v" id="bagAvgMode">—</div></div>
+        <div class="stat"><div class="k">Dağıtılan PCS</div><div class="v" id="distributedPcs">0</div></div>
+        <div class="stat"><div class="k">PCS Farkı</div><div class="v ok" id="bagPcsDiff">—</div></div>
+      </div>
+    </div></div>
+
+    <div class="card secondary">
+      <div class="grid2">
+        <div>
+          <label>Su Oranı</label>
+          <select id="waterRatio"><option value="">Seçiniz</option></select>
+          <div class="hint">Uçak tipi + tail girince seçenekler gelir.</div>
+          <div class="hint" id="waterMatchInfo" style="color: var(--bad);">Uçak tipi bekleniyor.</div>
+          <div class="hint">Su tablosu güncelleme: <b>08.01.2026</b></div>
+        </div>
+        <div>
+          <label>Su (Ağırlık / Index)</label>
+          <div class="grid2">
+            <div class="stat"><div class="k">Su Ağırlığı</div><div class="v" id="waterWeight">—</div></div>
+            <div class="stat"><div class="k">Su Index</div><div class="v warn" id="waterIndex">—</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <div style="font-weight:950">Kompartman Girişi</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <button id="btnClearComps" type="button">Komp Sıfırla</button>
+        </div>
+      </div>
+      <div class="hint">Sadece Bag PCS + Cargo KG gir. Otomatik atlama yok.</div>
+
+      <div class="hint" id="groupTotalsLabel" style="margin-top:10px; display:none; font-weight:850;">Kompartman toplamları</div>
+      <div id="groupTotals" style="margin-top:8px; display:none;"></div>
+      <div id="compList" style="margin-top:12px; display:none;"></div>
+
+      <div class="divider"></div>
+      <div class="stat"><div class="k">Toplam Yük (Bagaj + Kargo)</div><div class="v" id="sumTotal">0.0</div></div>
+      <div class="grid2" style="margin-top:10px">
+        <div class="stat"><div class="k">Kompartıman PCS Toplamı</div><div class="v" id="compPcsTotal">0</div></div>
+        <div class="stat"><div class="k">Bagaj Dağıtım Kontrolü</div><div class="v warn" id="bagDistributionCheck">PCS bekleniyor</div></div>
+      </div>
+
+      <details style="margin-top:10px; background: rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:14px; padding: 10px 12px;">
+        <summary style="cursor:pointer; font-weight:900; color: var(--muted);">Toplamlar (detay)</summary>
+        <div class="grid2" style="margin-top:10px;">
+          <div class="stat"><div class="k">Toplam Bagaj</div><div class="v" id="sumBag">0.0</div></div>
+          <div class="stat"><div class="k">Toplam Kargo</div><div class="v" id="sumCargo">0.0</div></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="card secondary ui-collapsible"><button type="button" class="ui-collapse-toggle" aria-expanded="true"><span>Özel Yük / PETC</span><span class="ui-chevron">v</span></button><div class="ui-collapse-body">
+      
+
+      <div class="grid2">
+        <div>
+          <label>PETC Ekle</label>
+          <div class="grid2">
+            <div class="subfield">
+              <select id="avihType">
+                <option value="">Seçiniz</option>
+                <option value="Kedi">Kedi</option>
+                <option value="Köpek">Köpek</option>
+              </select>
+            </div>
+            <div class="subfield"><input type="number" id="petcCount" min="1" inputmode="numeric" placeholder="Adet"></div>
+          </div>
+          <div class="btns" style="margin-top:8px">
+            <div class="subfield">
+              <button class="btn-ok" id="btnAddAvih" type="button">+ PETC Ekle</button>
+            </div>
+          </div>
+          <div class="hint">Birden fazla PETC ekleyebilirsin.</div>
+          <div id="avihList" style="margin-top:10px;"><div class="hint">PETC eklenmedi.</div></div>
+        </div>
+        <div>
+          <label>Özel Yük Kargo</label>
+          <div class="subgrid2">
+            <div class="subfield">
+              <input type="text" id="specialCargo" placeholder="örn. HUM / ICE / AVI / DGR / canlı hayvan">
+            </div>
+            <div class="subfield">
+              <button class="btn-ok" id="btnAddCargo" type="button">+ Yük Ekle</button>
+            </div>
+          </div>
+          <div class="hint">Özel yükleri tek tek ekle.</div>
+          <div id="specialCargoList" style="margin-top:10px;"><div class="hint">Özel yük eklenmedi.</div></div>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="card secondary ui-collapsible"><button type="button" class="ui-collapse-toggle" aria-expanded="true"><span>Operasyon Notu</span><span class="ui-chevron">v</span></button><div class="ui-collapse-body">
+      
+      <textarea id="opsNote" rows="3" placeholder="Kaptan bilgisi, gate/pax notu, son dakika remark veya özel durum..."></textarea>
+      <div class="hint">Kaydedilir ve Balans Özeti'nde gösterilir.</div>
+    </div></div>
+  </div>
+</section>
+
+<section class="screen" id="rad">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">☢️ Radyoaktif Mesafe</div>
+          <div class="sub">
+            <span class="pill" id="clockPillR">Saat: 19:04:30</span>
+            <span class="pill" id="datePillR">21.07.2026 Salı</span>
+            <span class="chip" id="statusChipR">Aktif</span>
+          </div>
+        </div>
+        <button id="backFromRad" type="button">Menü</button>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label>Uçak Tipi</label>
+          <select id="radAircraft">
+            <option value="">Seçiniz</option>
+            <option value="A319">A319</option>
+            <option value="A320">A320</option>
+            <option value="A321">A321</option>
+            <option value="A330-200">A330-200</option>
+            <option value="A330-300">A330-300</option>
+            <option value="A350">A350</option>
+            <option value="B737-800">B737-800</option>
+            <option value="B737-900">B737-900</option>
+            <option value="B787">B787</option>
+            <option value="B777">B777</option>
+          </select>
+        </div>
+        <div>
+          <label>Kompartman</label>
+          <select id="radComp"><option value="">Seçiniz</option></select>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div>
+          <label>TI değerleri</label>
+          <input type="text" id="radTI" placeholder="örn. 1.5 + 0.3 + 0.2">
+        </div>
+        <div>
+          <label>Kutu yüksekliği (cm)<span class="ui-unit-badge">CM</span></label>
+          <input type="number" id="radBoxHcm" placeholder="örn. 42">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div class="stat"><div class="k">Sum TI</div><div class="v" id="radSumTI">—</div></div>
+        <div class="stat"><div class="k">TI Band</div><div class="v" id="radBand">—</div></div>
+        <div class="stat"><div class="k">Min Mesafe (m)</div><div class="v" id="radMinM">—</div></div>
+        <div class="stat"><div class="k">Gerekli Toplam (cm)</div><div class="v warn" id="radNeedCm">—</div></div>
+        <div class="stat"><div class="k">Komp. Yüksekliği (cm)</div><div class="v" id="radCompCm">—</div></div>
+        <div class="stat"><div class="k">TI Kalemleri</div><div class="v" id="radTiParts" style="font-size:14px">—</div></div>
+      </div>
+      <div class="hint" id="radExplain" style="margin-top:10px;">—</div>
+
+      <div class="divider"></div>
+      <div class="stat"><div class="k">Sonuç</div><div class="v" id="radResult">—</div></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="screen" id="recent">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">🕘 Son Uçuşlar</div>
+          <div class="sub">
+            <span class="pill" id="clockPillH">Saat: 19:04:30</span>
+            <span class="pill" id="datePillH">21.07.2026 Salı</span>
+            <span class="chip" id="statusChipH">Hazır</span>
+          </div>
+        </div>
+        <button id="backFromRecent" type="button">Menü</button>
+      </div>
+      <div class="hint">Kaydedilen son uçuşlar. Birine dokun → geri yükle.</div>
+      <div class="divider"></div>
+      <label>TK / Tail ile ara</label>
+      <input type="text" id="historySearch" placeholder="örn. TK1453 veya TC-LGA" autocapitalize="characters">
+      <div class="divider"></div>
+      <div id="recentList"></div>
+      <div class="btns" style="margin-top:12px;">
+        <button class="btn-danger" id="btnClearHistory" type="button">Geçmişi Sil</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="screen" id="customs">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">🛃 TK Gümrüklü / Gümrüksüz</div>
+          <div class="sub">
+            <span class="pill" id="clockPillC">Saat: 19:04:30</span>
+            <span class="pill" id="datePillC">21.07.2026 Salı</span>
+            <span class="chip" id="statusChipC">Hazır</span>
+          </div>
+        </div>
+        <button id="backFromCustoms" type="button">Menü</button>
+      </div>
+
+      <div class="hint">İstasyonun 3’lü kodunu yaz. Sistem bu istasyonun gümrüklü mü gümrüksüz mü olduğunu gösterir.</div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div>
+          <label>İstasyon Kodu</label>
+          <input type="text" id="customsCode" placeholder="örn. IST / ADF / SAW" autocapitalize="characters" maxlength="3">
+        </div>
+        <div>
+          <label>Sonuç</label>
+          <div class="stat" style="min-width:unset;">
+            <div class="k">Durum</div>
+            <div class="v" id="customsResult">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="stat" style="min-width:unset;">
+        <div class="k">İstasyon Bilgisi</div>
+        <div class="v" id="customsName" style="font-size:16px;">—</div>
+        <div class="hint" id="customsHint">3 harfli kod girildiğinde istasyon adı burada görünür.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="screen" id="station">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">🌍 İstasyon Yeri</div>
+          <div class="sub">
+            <span class="pill" id="clockPillST">Saat: 19:04:30</span>
+            <span class="pill" id="datePillST">21.07.2026 Salı</span>
+            <span class="chip" id="statusChipST">Hazır</span>
+          </div>
+        </div>
+        <button id="backFromStation" type="button">Menü</button>
+      </div>
+
+      <div class="hint">3’lü havalimanı kodunu yaz. Sistem istasyonun şehir / ülke / havalimanı bilgisini gösterir.</div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div>
+          <label>İstasyon Kodu</label>
+          <input type="text" id="stationCode" placeholder="örn. IST / JFK / NRT / CDG" autocapitalize="characters" maxlength="3">
+        </div>
+        <div>
+          <label>Durum</label>
+          <div class="stat" style="min-width:unset;">
+            <div class="k">Sonuç</div>
+            <div class="v" id="stationStatus">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div class="stat" style="min-width:unset;">
+          <div class="k">Şehir / Ülke</div>
+          <div class="v" id="stationPlace" style="font-size:16px;">—</div>
+        </div>
+        <div class="stat" style="min-width:unset;">
+          <div class="k">Havalimanı</div>
+          <div class="v" id="stationAirport" style="font-size:16px;">—</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="hint" id="stationHint">Kod girildiğinde detay burada görünür.</div>
+      <div class="divider"></div>
+      <div class="hint"><b>Son aranan istasyonlar</b></div>
+      <div class="quick-tags" id="stationRecentCodes"><span class="hint">—</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="dgseparation">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">⚠️ Tehlikeli Maddeler Ayrımı</div>
+          <div class="sub">
+            <span class="pill" id="clockPillDG">Saat: 19:04:30</span>
+            <span class="pill" id="datePillDG">21.07.2026 Salı</span>
+            <span class="chip" id="statusChipDG">Kontrol</span>
+          </div>
+        </div>
+        <button id="backFromDg" type="button">Menü</button>
+      </div>
+
+      <div class="hint">İki özel yükü ve yükleme koşulunu seç. Sistem aynı kompartıman/hold uygunluğunu ve gereken ayrımı gösterir.</div>
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div><label>Özel Yük 1</label><select id="dgLoad1"><option value="">Yük seç</option><option value="RCX">RCX — Patlayıcı (yalnız kargo)</option><option value="REX">REX — Patlayıcı (yalnız kargo)</option><option value="RGX">RGX — Patlayıcı (yalnız kargo)</option><option value="RXC">RXC — Patlayıcı (yalnız kargo)</option><option value="RXD">RXD — Patlayıcı (yalnız kargo)</option><option value="RXE">RXE — Patlayıcı (yalnız kargo)</option><option value="RXG">RXG — Patlayıcı (yalnız kargo)</option><option value="RXB">RXB — Patlayıcı (yalnız kargo)</option><option value="RBI">RBI — Sınıf 9 (yalnız kargo)</option><option value="RBM">RBM — Sınıf 9 (yalnız kargo)</option><option value="RXS">RXS — Sınıf 1.4S</option><option value="RFG">RFG — Yanıcı gaz</option><option value="RNG_RCL">RNG / RCL</option><option value="RPG">RPG — Zehirli gaz</option><option value="RFL">RFL — Yanıcı sıvı</option><option value="RFS">RFS — Yanıcı katı</option><option value="RSC">RSC — Kendiliğinden yanıcı</option><option value="RFW">RFW — Islanınca tehlikeli</option><option value="ROX">ROX — Oksitleyici</option><option value="ROP">ROP — Organik peroksit</option><option value="RPB">RPB — Zehirli madde</option><option value="RIS">RIS — Bulaşıcı madde</option><option value="RRY">RRY — Radyoaktif</option><option value="RCM">RCM — Aşındırıcı</option><option value="ICE">ICE — Kuru buz</option><option value="FIL">FIL — Fotoğraf filmi/plakası</option><option value="HUM">HUM — İnsan naaşı</option><option value="EAT">EAT / PEM / PES / PEP — Gıda</option><option value="HEG">HEG — Kuluçkalık yumurta</option><option value="AVI">AVI — Canlı hayvan</option><option value="PETC">PETC — Kedi/köpek</option><option value="LHO">LHO — Sıvı organ</option></select></div>
+        <div><label>Özel Yük 2</label><select id="dgLoad2"><option value="">Yük seç</option><option value="RCX">RCX — Patlayıcı (yalnız kargo)</option><option value="REX">REX — Patlayıcı (yalnız kargo)</option><option value="RGX">RGX — Patlayıcı (yalnız kargo)</option><option value="RXC">RXC — Patlayıcı (yalnız kargo)</option><option value="RXD">RXD — Patlayıcı (yalnız kargo)</option><option value="RXE">RXE — Patlayıcı (yalnız kargo)</option><option value="RXG">RXG — Patlayıcı (yalnız kargo)</option><option value="RXB">RXB — Patlayıcı (yalnız kargo)</option><option value="RBI">RBI — Sınıf 9 (yalnız kargo)</option><option value="RBM">RBM — Sınıf 9 (yalnız kargo)</option><option value="RXS">RXS — Sınıf 1.4S</option><option value="RFG">RFG — Yanıcı gaz</option><option value="RNG_RCL">RNG / RCL</option><option value="RPG">RPG — Zehirli gaz</option><option value="RFL">RFL — Yanıcı sıvı</option><option value="RFS">RFS — Yanıcı katı</option><option value="RSC">RSC — Kendiliğinden yanıcı</option><option value="RFW">RFW — Islanınca tehlikeli</option><option value="ROX">ROX — Oksitleyici</option><option value="ROP">ROP — Organik peroksit</option><option value="RPB">RPB — Zehirli madde</option><option value="RIS">RIS — Bulaşıcı madde</option><option value="RRY">RRY — Radyoaktif</option><option value="RCM">RCM — Aşındırıcı</option><option value="ICE">ICE — Kuru buz</option><option value="FIL">FIL — Fotoğraf filmi/plakası</option><option value="HUM">HUM — İnsan naaşı</option><option value="EAT">EAT / PEM / PES / PEP — Gıda</option><option value="HEG">HEG — Kuluçkalık yumurta</option><option value="AVI">AVI — Canlı hayvan</option><option value="PETC">PETC — Kedi/köpek</option><option value="LHO">LHO — Sıvı organ</option></select></div>
+      </div>
+      <div class="grid2" style="margin-top:10px">
+        <div><label>Yükleme Şekli</label><select id="dgLoadMode"><option value="bulk">Bulk kompartıman</option><option value="loose">Yığma / loose</option><option value="uld">ULD</option></select></div>
+        <div><label>Konum</label><select id="dgLocation"><option value="sameComp">Aynı kompartıman</option><option value="sameHold">Aynı hold, farklı kompartıman</option><option value="differentHold">Farklı hold (FWD/AFT)</option></select></div>
+      </div>
+      <div class="grid2" style="margin-top:10px">
+        <div><label>Radyoaktif Kategori</label><select id="dgRadioCat"><option value="cat23">Kategori II / III</option><option value="cat1">Kategori I White</option></select></div>
+        <div><label>Uçuş Süresi</label><select id="dgDuration"><option value="short">24 saat veya daha az</option><option value="long">24 saatten fazla</option></select></div>
+      </div>
+      <div class="grid2" style="margin-top:10px">
+        <div><label>Canlı Türü</label><select id="dgAnimalType"><option value="general">Genel canlı hayvan</option><option value="pet">Kedi / Köpek</option><option value="insect">Böcek / Arı</option><option value="egg">Kuluçkalık yumurta</option></select></div>
+        <div><label>Kuru Buz (kg, varsa)</label><input id="dgDryIceKg" type="number" inputmode="decimal" min="0" placeholder="örn. 150"></div>
+      </div>
+      <label style="margin-top:12px;display:flex;gap:10px;align-items:center"><input id="dgVentilated" type="checkbox" style="width:auto"> Havalandırmalı hold şartı sağlanıyor</label>
+
+      <div id="dgResult" class="dg-result warn">
+        <div class="dg-result-title">Seçim bekleniyor</div>
+        <div class="dg-result-rule">İki yük seçildiğinde ayrım sonucu burada görünür.</div>
+      </div>
+      <div class="divider"></div>
+      <details>
+        <summary><b>Tablodaki semboller ve anlamları</b></summary>
+        <div class="hint" style="margin-top:10px;line-height:1.65">
+          <b style="color:#5fa8ff">↔ Mavi ok:</b> Radyoaktif - film/plaka için IATA DGR 10.9.E minimum mesafesi.<br>
+          <b style="color:#42d884">↔¹ Yeşil ok:</b> Yığma yükte en az 1 m; ULD'de arada bir fiziksel pozisyon veya boş lock alanı.<br>
+          <b style="color:#ff8b35">↔² Turuncu ok:</b> Not 2; bazı yükler aynı bulk kompartımana giremez, diğer yüklemelerde ayrım gerekir.<br>
+          <b style="color:#ff4fa3">↔³ Pembe ok:</b> Radyoaktif ayrımı; IATA DGR 10.9.C/10.9.D.<br>
+          <b style="color:#d96565">✖ Kahverengi çarpı:</b> Kedi/köpek ile HUM (küller hariç) aynı hold'a yüklenmez.<br>
+          <b style="color:#ff3434">✹ Kırmızı yıldız:</b> AVI/HEG ile ICE veya RNG/RCL özel ayrım ve istisna kuralları.<br>
+          <b style="color:#5fa8ff">✥ Mavi dört ok:</b> Ayrı ULD/pozisyon ve en az 2 m mesafe.<br>
+          <b style="color:#9b54d6">◆ Mor baklava:</b> Gıda ile AVI/HUM; bulk yasağı, diğerlerinde 1 m/1 ULD pozisyonu.<br>
+          <b style="color:#5b78ff">÷ Mavi bölme:</b> Kat. II/III radyoaktif ile canlı; süreye göre 0,5 m veya 1 m.<br>
+          <b>Boş hücre:</b> Bu tablo bakımından özel ayrım gerektirmez; diğer DGR/LAR/NOTOC şartları devam eder.
+        </div>
+      </details>
+      <div class="hint" style="margin-top:12px">Kaynak: THY LS.67.044 Rev.05 — yürürlük 03.02.2025. Operasyon öncesi güncel kontrollü doküman ve NOTOC ile doğrulayın.</div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="about">
+  <div class="wrap"><div class="card">
+    <div class="topbar"><div><div class="title">ℹ️ Hakkında</div><div class="sub"><span class="pill" id="clockPillA">Saat: 19:04:30</span><span class="pill" id="datePillA">21.07.2026 Salı</span><span class="chip">Test sürümü</span></div></div><button id="backFromAbout" type="button">Menü</button></div>
+    <div class="divider"></div>
+    <div class="summary-section">
+      <div class="summary-section-title">Geliştirici</div>
+      <div class="grid2">
+        <div class="stat"><div class="k">Ad Soyad</div><div class="v" style="font-size:16px;color:var(--warn)">Birkan Osman Cem</div></div>
+        <div class="stat"><div class="k">İletişim</div><div class="v" style="font-size:16px"><a href="tel:05387336612" style="color:var(--ok);text-decoration:none">0538 733 66 12</a></div></div>
+        <div class="stat"><div class="k">Sicil</div><div class="v" style="font-size:16px;color:var(--warn)">56513</div></div>
+        <div class="stat"><div class="k">E-posta</div><div class="v" style="font-size:14px;word-break:break-word"><a href="mailto:birkan.cem@tgs.aero" style="color:var(--ok);text-decoration:none">birkan.cem@tgs.aero</a></div></div>
+      </div>
+    </div>
+    <div class="summary-section">
+      <div class="summary-section-title">Öneri ve Geri Bildirimler</div>
+      <div class="hint" style="margin:0 0 10px">Uygulamayla ilgili hata, geliştirme önerisi veya saha geri bildirimi gönderebilirsin.</div>
+      <a href="mailto:birkan.cem@tgs.aero?subject=Ops%20Toolkit%20%C3%96neri%20ve%20Geri%20Bildirim" style="display:flex;align-items:center;justify-content:center;min-height:46px;padding:12px 14px;border-radius:14px;border:1px solid rgba(85,217,138,.4);background:rgba(85,217,138,.1);color:var(--ok);font-weight:900;text-decoration:none">✉️ E-posta Gönder</a>
+    </div>
+    <div class="summary-section">
+      <div class="summary-section-title">Görünüm</div>
+      <button id="btnThemeToggle" type="button">☀️ Gündüz / Gece Teması</button>
+    </div>
+    <div class="revision-strip"><span>Ops Toolkit: v10 Full Test</span><span>Su tablosu: 08.01.2026</span><span>DG ayrım: LS.67.044 Rev.05</span><span>Radyoaktif yükseklik tablosu: Görsel referans</span></div>
+    <div class="hint" style="margin-top:12px">Ops Toolkit, saha kontrollerini hızlandırmak ve hesap hatalarını azaltmak amacıyla geliştirilmiştir.</div>
+  </div></div>
+</section>
+
+<section class="screen" id="summary">
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div>
+          <div class="title">📄 Balans Özeti</div>
+          <div class="sub">
+            <span class="pill" id="clockPillS">Saat: 19:04:30</span>
+            <span class="pill" id="datePillS">21.07.2026 Salı</span>
+            <span class="chip" id="statusChipS">Hazır</span>
+          </div>
+        </div>
+        <button id="backFromSummary" type="button">Menü</button>
+      </div>
+
+      <div class="hint">Tek bakış kontrol. PDF için yazdır kullan.</div>
+      <div class="divider"></div>
+
+      <div class="grid2">
+        <div class="stat"><div class="k">Flight / Tail</div><div class="v" id="sumFT">—</div></div>
+        <div class="stat"><div class="k">Crew / AC</div><div class="v" id="sumCA">—</div></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div style="overflow:auto">
+        <table class="sumtable">
+          <tbody>
+            <tr><th>Flight</th><td id="tFlight">—</td><th>Tail</th><td id="tTail">—</td></tr>
+            <tr><th>Crew</th><td id="tCrew">—</td><th>Pantry</th><td id="tPantry">—</td></tr>
+            <tr><th>Aircraft</th><td id="tAC">—</td><th>Water</th><td id="tWater">—</td></tr>
+            <tr><th>Total Fuel</th><td id="tTotalFuel">—</td><th>Taxi Fuel</th><td id="tTaxiFuel">—</td></tr>
+            <tr><th>Remaining</th><td id="tRemFuel">—</td><th>Trip Fuel</th><td id="tTripFuel">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="summary-section">
+        <div class="summary-section-title">Briefing Durumu</div>
+        <div class="briefing-banner" id="summaryReadyBanner"><small>OPS CHECK</small><strong id="summaryReadyTitle">Kontrol bekleniyor</strong><span id="summaryReadyDetail">Balance alanlarını tamamlayın.</span></div>
+      </div>
+
+      <div class="summary-section">
+        <div class="summary-section-title">Ağırlık Kontrolü</div>
+        <div class="summary-kpi-grid">
+          <div class="summary-kpi"><small>Avg Bagaj</small><strong id="sAvgBag">—</strong></div>
+          <div class="summary-kpi"><small>Bagaj PCS</small><strong id="sBagPcs">—</strong></div>
+          <div class="summary-kpi"><small>Comp PCS</small><strong id="sCompPcs">—</strong></div>
+          <div class="summary-kpi"><small>Toplam Bagaj</small><strong id="sTotalBag">—</strong></div>
+          <div class="summary-kpi"><small>Toplam Kargo</small><strong id="sTotalCargo">—</strong></div>
+          <div class="summary-kpi"><small>Toplam Yük</small><strong id="sTotalLoad">—</strong></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="stat" style="min-width:unset;">
+        <div class="k">Comp Group Totals</div>
+        <div id="sumGroups"></div>
+        <div class="hint">Balance ekranındaki kompartman/grup toplamları.</div>
+      </div>
+
+
+      <div class="divider"></div>
+
+      <div class="stat" style="min-width:unset;" id="sumSpecialBlock">
+        <div class="k">Özel Yük / PETC</div>
+        <div class="grid2" style="margin-top:10px;">
+          <div class="stat" style="min-width:unset;">
+            <div class="k">PETC Listesi</div>
+            <div id="sumAvihList"></div>
+          </div>
+          <div class="stat" style="min-width:unset;">
+            <div class="k">Özel Yük Kargo Listesi</div>
+            <div id="sumSpecialCargoList"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-section" id="summaryOperationalSection">
+        <div class="summary-section-title">Operasyonel Kontroller</div>
+        <div class="stat" id="summaryRadBlock" style="display:none"><div class="k">Radyoaktif Sonuç</div><div class="v" id="sRadResult">—</div></div>
+        <div class="stat" style="margin-top:10px"><div class="k">Operasyon Notu</div><div class="v" id="sOpsNote" style="font-size:14px;color:var(--warn)">—</div></div>
+      </div>
+
+<div class="btns">
+        <button class="btn-primary" id="btnPrint" type="button">🖨️ Yazdır / PDF</button>
+      </div>
+      <div class="hint" id="printHint">—</div>
+    </div>
+  </div>
+</section>
+
+<script>
+"use strict";
+const $ = (id)=>document.getElementById(id);
+
+function safeNum(v){
+  const s = String(v ?? "").trim();
+  if(!s) return null;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : null;
+}
+function setChip(id, kind, text){
+  const el = $(id); if(!el) return;
+  el.classList.remove("warn","bad");
+  if(kind) el.classList.add(kind);
+  el.textContent = text;
+}
+function updateClock(){
+  const now = new Date();
+  const c = "Saat: " + now.toLocaleTimeString("tr-TR", {hour:"2-digit", minute:"2-digit", second:"2-digit"});
+  const d = now.toLocaleDateString("tr-TR", {weekday:"long", year:"numeric", month:"2-digit", day:"2-digit"});
+  ["clockPill","clockPillL","clockPillR","clockPillS","clockPillH","clockPillC","clockPillST","clockPillDG","clockPillA"].forEach(id=>{ const el=$(id); if(el) el.textContent=c; });
+  ["datePill","datePillL","datePillR","datePillS","datePillH","datePillC","datePillST","datePillDG","datePillA"].forEach(id=>{ const el=$(id); if(el) el.textContent=d; });
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+function show(name){
+  ["home","load","rad","recent","customs","station","dgseparation","about","summary"].forEach(s=>$(s).classList.remove("active"));
+  $(name).classList.add("active");
+  if(name==="summary") refreshSummary();
+}
+$("goLoad").addEventListener("click", ()=>show("load"));
+$("goRad").addEventListener("click", ()=>show("rad"));
+$("goSummary").addEventListener("click", ()=>show("summary"));
+$("goRecent").addEventListener("click", ()=>{ renderHistory(); show("recent"); });
+$("goCustoms").addEventListener("click", ()=>show("customs"));
+$("goStation").addEventListener("click", ()=>show("station"));
+$("goDgSeparation").addEventListener("click", ()=>{ updateDgSeparation(); show("dgseparation"); });
+$("goAbout").addEventListener("click", ()=>show("about"));
+$("backFromLoad").addEventListener("click", ()=>show("home"));
+$("backFromRad").addEventListener("click", ()=>show("home"));
+$("backFromSummary").addEventListener("click", ()=>show("home"));
+$("backFromRecent").addEventListener("click", ()=>show("home"));
+$("backFromCustoms").addEventListener("click", ()=>show("home"));
+$("backFromStation").addEventListener("click", ()=>show("home"));
+$("backFromDg").addEventListener("click", ()=>show("home"));
+$("backFromAbout").addEventListener("click", ()=>show("home"));
+
+const dgLoads = [
+  ["","Yük seç"],
+  ["RCX","RCX — Patlayıcı (yalnız kargo)"],["REX","REX — Patlayıcı (yalnız kargo)"],["RGX","RGX — Patlayıcı (yalnız kargo)"],
+  ["RXC","RXC — Patlayıcı (yalnız kargo)"],["RXD","RXD — Patlayıcı (yalnız kargo)"],["RXE","RXE — Patlayıcı (yalnız kargo)"],
+  ["RXG","RXG — Patlayıcı (yalnız kargo)"],["RXB","RXB — Patlayıcı (yalnız kargo)"],["RBI","RBI — Sınıf 9 (yalnız kargo)"],["RBM","RBM — Sınıf 9 (yalnız kargo)"],
+  ["RXS","RXS — Sınıf 1.4S"],["RFG","RFG — Yanıcı gaz"],["RNG_RCL","RNG / RCL"],["RPG","RPG — Zehirli gaz"],
+  ["RFL","RFL — Yanıcı sıvı"],["RFS","RFS — Yanıcı katı"],["RSC","RSC — Kendiliğinden yanıcı"],["RFW","RFW — Islanınca tehlikeli"],
+  ["ROX","ROX — Oksitleyici"],["ROP","ROP — Organik peroksit"],["RPB","RPB — Zehirli madde"],["RIS","RIS — Bulaşıcı madde"],
+  ["RRY","RRY — Radyoaktif"],["RCM","RCM — Aşındırıcı"],["ICE","ICE — Kuru buz"],["FIL","FIL — Fotoğraf filmi/plakası"],
+  ["HUM","HUM — İnsan naaşı"],["EAT","EAT / PEM / PES / PEP — Gıda"],["HEG","HEG — Kuluçkalık yumurta"],
+  ["AVI","AVI — Canlı hayvan"],["PETC","PETC — Kedi/köpek"],["LHO","LHO — Sıvı organ"]
+];
+const dgCargoOnly = new Set(["RCX","REX","RGX","RXC","RXD","RXE","RXG","RXB","RBI","RBM"]);
+const dgSymbolMap = Object.create(null);
+function dgKey(a,b){ return [a,b].sort().join("|"); }
+function addDgSymbol(a,b,symbol){ dgSymbolMap[dgKey(a,b)]=symbol; }
+function addDgMany(left,right,symbol){ left.forEach(a=>right.forEach(b=>{ if(a!==b) addDgSymbol(a,b,symbol); })); }
+const dgExplosiveA=["RCX","REX","RGX","RXC","RXD","RXE","RXG"];
+addDgMany(dgExplosiveA,["RXB"],"BLUE_2M");
+addDgMany(dgExplosiveA,["RBI","RBM","RFG","RPG","RNG_RCL","RFL","RFS","RSC","RFW","ROX","ROP","RCM"],"GREEN1");
+addDgMany(["RXB"],["RBI","RBM","RFG","RPG","RNG_RCL","RFL","RFS","RSC","RFW","ROX","ROP","RCM"],"GREEN1");
+addDgMany(["RBI","RBM"],["RFG","RFL","RFS","ROX"],"GREEN1");
+addDgSymbol("RFL","ROX","GREEN1"); addDgSymbol("RSC","ROX","GREEN1"); addDgSymbol("RFW","RCM","GREEN1");
+addDgSymbol("RPG","EAT","ORANGE2"); addDgSymbol("RPG","AVI","ORANGE2"); addDgSymbol("RPG","PETC","ORANGE2"); addDgSymbol("AVI","AVI","ORANGE2"); addDgSymbol("PETC","PETC","ORANGE2");
+addDgSymbol("RNG_RCL","HEG","RED_STAR"); addDgSymbol("RNG_RCL","AVI","RED_STAR"); addDgSymbol("RNG_RCL","PETC","RED_STAR");
+addDgSymbol("ICE","HEG","RED_STAR"); addDgSymbol("ICE","AVI","RED_STAR"); addDgSymbol("ICE","PETC","RED_STAR");
+addDgSymbol("HUM","AVI","BROWN_X"); addDgSymbol("HUM","PETC","BROWN_X");
+addDgSymbol("EAT","HUM","PURPLE"); addDgSymbol("EAT","AVI","PURPLE"); addDgSymbol("EAT","PETC","PURPLE");
+addDgSymbol("RRY","HEG","BLUE_DIV"); addDgSymbol("RRY","AVI","BLUE_DIV"); addDgSymbol("RRY","PETC","BLUE_DIV");
+addDgSymbol("RRY","FIL","BLUE_FILM"); addDgSymbol("RRY","RCM","PINK3"); addDgSymbol("RRY","LHO","PINK3");
+function fillDgLoads(){
+  ["dgLoad1","dgLoad2"].forEach(id=>{
+    const el=$(id); if(!el || el.options.length) return;
+    dgLoads.forEach(item=>{ const op=document.createElement("option"); op.value=item[0]; op.textContent=item[1]; el.appendChild(op); });
+  });
+}
+function setDgResult(kind,title,rule,source){
+  const el=$("dgResult"); el.className="dg-result "+kind;
+  el.innerHTML='<div class="dg-result-title">'+title+'</div><div class="dg-result-rule">'+rule+'</div><div class="dg-result-source">'+source+'</div>';
+  const chip=$("statusChipDG"); chip.textContent=kind==="bad"?"Yüklenmez":kind==="warn"?"Ayrım":"Uygun"; chip.className="chip "+(kind==="bad"?"bad":kind==="warn"?"warn":"");
+}
+function dgCargoNote(a,b){ return (dgCargoOnly.has(a)||dgCargoOnly.has(b)) ? " • DİKKAT: Seçim yalnız kargo uçağı bölümündedir." : ""; }
+function updateDgSeparation(){
+  const a=$("dgLoad1").value, b=$("dgLoad2").value, mode=$("dgLoadMode").value, loc=$("dgLocation").value;
+  if(!a||!b){ setDgResult("warn","İKİ YÜKÜ SEÇİN","Matris kesişimini kontrol etmek için iki özel yük seçilmelidir.","LS.67.044 Rev.05"); return; }
+  const symbol=dgSymbolMap[dgKey(a,b)]||"NONE", cargoNote=dgCargoNote(a,b);
+  if(symbol==="BLUE_2M"){
+    setDgResult("warn","✥ MAVİ DÖRT OK — 2 METRE AYRIM","Yükler ayrı ULD'lerde olmalı; ULD'lerin arasına başka kargo konmalı ve en az 2 m bırakılmalıdır. ULD yoksa yan yana olmayan ayrı pozisyonlarda en az 2 m bırakın.","Matris sembolü: mavi dört yönlü ok"+cargoNote); return;
+  }
+  if(symbol==="GREEN1"){
+    const rule=mode==="uld" ? "Yükler arasında bir fiziksel ULD pozisyonu veya boş lock-system alanı bırakın." : "Yığma/loose yüklemede yükler arasında en az 1 metre mesafe bırakın.";
+    setDgResult("warn","↔¹ YEŞİL OK — AYRIM GEREKİR",rule+(loc==="differentHold"?" Farklı hold seçimi ayrımı güçlendirir; gerçek mesafeyi yine doğrulayın.":""),"Not 1 — ortaklık kuralı"+cargoNote); return;
+  }
+  if(symbol==="ORANGE2"){
+    if(mode==="bulk"&&loc==="sameComp") setDgResult("bad","↔² TURUNCU OK — AYNI BULK'A YÜKLENMEZ","Bu iki yük aynı bulk kompartımana birlikte yüklenemez.","Not 2"+cargoNote);
+    else if(mode==="uld") setDgResult("warn","↔² TURUNCU OK — YAKIN ULD'YE YÜKLEMEYİN","Yükleri bitişik/yakın ULD'lere koymayın. Arada güvenli pozisyon ayrımı bırakın.","Not 2"+cargoNote);
+    else setDgResult("warn","↔² TURUNCU OK — AYRIM GEREKİR","Yığma yüklemede aralarında mesafe bırakın. AVI/AVI ise doğal düşmanlar birbirini görmemeli; aynı bulk kompartıman kullanılamaz.","Not 2"+cargoNote); return;
+  }
+  if(symbol==="BROWN_X"){
+    const definite=a==="PETC"||b==="PETC"||$("dgAnimalType").value==="pet";
+    if(loc!=="differentHold") setDgResult(definite?"bad":"warn","✖ KAHVERENGİ ÇARPI — AYNI HOLD YASAĞI",definite?"Kedi/köpek ile HUM (küller hariç) aynı hold'a yüklenemez; FWD ve AFT olarak ayırın.":"Matris AVI-HUM kesişiminde çarpı vardır. Açıklama kedi/köpek için geçerlidir; canlı türü kesin değilse aynı hold'a yüklemeyin.","LAR 10.3.5 incompatibility chart");
+    else setDgResult("ok","✖ KAHVERENGİ ÇARPI — FARKLI HOLD","FWD/AFT ayrımı sağlanmıştır. HUM'un kül olup olmadığını ve canlı türünü doğrulayın.","Kedi/köpek - HUM kuralı"); return;
+  }
+  if(symbol==="RED_STAR"){
+    const kg=parseFloat($("dgDryIceKg").value)||0, vent=$("dgVentilated").checked, animal=$("dgAnimalType").value, isIce=(a==="ICE"||b==="ICE");
+    if(isIce&&animal==="insect") setDgResult("ok","✹ KIRMIZI YILDIZ — BÖCEK/ARI İSTİSNASI","Böcek ve arılar kuru buzla birlikte yüklenebilir. Havalandırma ve NOTOC şartlarını doğrulayın.","Kırmızı yıldız istisnası");
+    else if(mode==="bulk"&&loc==="sameComp") setDgResult("bad","✹ KIRMIZI YILDIZ — AYNI BULK'A YÜKLENMEZ","AVI/HEG ile ICE veya RNG/RCL aynı bulk kompartımana birlikte yüklenemez.","Kırmızı yıldız kuralı");
+    else if(isIce&&kg>0&&kg<=200&&vent) setDgResult("warn","✹ KIRMIZI YILDIZ — ŞARTLI ≤200 KG İSTİSNASI","Havalandırmalı hold'da, bulk hariç, en fazla 200 kg kuru buzla birlikte yükleme mümkündür. Canlı/hatching eggs kuru buzun üst seviyesinde olmalı.","LAR istisnası");
+    else if(mode==="uld") setDgResult("warn","✹ KIRMIZI YILDIZ — 1 ULD POZİSYONU","Araya bir fiziksel ULD pozisyonu veya boş lock-system alanı bırakın. Canlı/hatching eggs kuru buzun üst seviyesinde olmalı.","Kırmızı yıldız kuralı");
+    else setDgResult("warn","✹ KIRMIZI YILDIZ — EN AZ 1 METRE","Yığma yükte en az 1 m bırakın ve uçuş yönüne göre karşılıklı yerleştirin. Canlı/hatching eggs kuru buzun üst seviyesinde olmalı.","Kırmızı yıldız kuralı"); return;
+  }
+  if(symbol==="PURPLE"){
+    if(mode==="bulk"&&loc==="sameComp") setDgResult("bad","◆ MOR BAKLAVA — AYNI BULK'A YÜKLENMEZ","EAT/PEM/PES/PEP ile AVI/HUM (küller hariç) aynı bulk kompartımana yüklenemez.","Mor baklava kuralı");
+    else if(mode==="uld") setDgResult("warn","◆ MOR BAKLAVA — 1 ULD POZİSYONU","Araya bir fiziksel ULD pozisyonu veya boş lock-system alanı bırakın.","Mor baklava kuralı");
+    else setDgResult("warn","◆ MOR BAKLAVA — EN AZ 1 METRE","Yığma/loose yüklemede en az 1 metre ayrım bırakın.","Mor baklava kuralı"); return;
+  }
+  if(symbol==="BLUE_DIV"){
+    if($("dgRadioCat").value==="cat1") setDgResult("ok","÷ MAVİ BÖLME — KAT. I WHITE İSTİSNASI","Kategori I White etiketli radyoaktif maddeler için canlı hayvan ayrım mesafesi gerekmez.","LAR 10.3.4");
+    else { const long=$("dgDuration").value==="long", dist=long?"1,0 metre":"0,5 metre"; setDgResult("warn","÷ MAVİ BÖLME — MİN. "+dist.toUpperCase(),(long?"24 saatten uzun":"24 saat veya daha kısa")+" uçuşta Kategori II/III radyoaktif ile canlı arasında en az "+dist+" bırakın.","DGR 9.3.13.2 / LAR 10.3.5"); } return;
+  }
+  if(symbol==="BLUE_FILM"){ setDgResult("warn","↔ MAVİ OK — IATA MESAFESİ","Radyoaktif madde ile fotoğraf filmi/plakası arasındaki minimum mesafeyi TI/Sum TI ve süreye göre IATA DGR Tablo 10.9.E'den belirleyin.","Mavi çift ok — DGR 10.9.E"); return; }
+  if(symbol==="PINK3"){ setDgResult("warn","↔³ PEMBE OK — RADYOAKTİF AYRIMI","IATA minimum ayrımı uygulanır: yolcu ve kargo uçağında DGR Tablo 10.9.C; yalnız kargo uçağında Tablo 10.9.D.","Not 3 — pembe ok"); return; }
+  if(dgCargoOnly.has(a)||dgCargoOnly.has(b)) setDgResult("warn","SADECE KARGO UÇAĞI — HÜCREDE SEMBOL YOK","Seçilen kesişimde ek ayrım sembolü yoktur; ancak bu IMP kodu yalnız kargo uçağı bölümündedir. Yolcu uçağına uygun kabul etmeyin.","Gölgeli SADECE KARGO UÇAĞI bölümü");
+  else setDgResult("ok","BOŞ HÜCRE — ÖZEL AYRIM GEREKMEZ","Matris kesişiminde sembol yoktur. Bu yalnız ayrım tablosu sonucudur; paket, miktar, alt sınıf, havalandırma, DGR/LAR ve NOTOC şartları ayrıca kontrol edilmelidir.","LS.67.044: işaretsiz kesişimde ayrım gerekmez");
+}
+fillDgLoads();
+["dgLoad1","dgLoad2","dgLoadMode","dgLocation","dgRadioCat","dgDuration","dgAnimalType","dgDryIceKg","dgVentilated"].forEach(id=>$(id).addEventListener("change",updateDgSeparation));
+$("dgDryIceKg").addEventListener("input",updateDgSeparation);
+
+const aircraftComps = {
+  "B737": ["1","2","3","4"],
+  "A319": ["11","12","41","42","51"],
+  "A320": ["11","12","13","31","32","41","42","5"],
+  "A321": ["11","12","21","22","23","31","32","33","41","42","5"],
+  "A330": ["1","2","3","4","5"],
+  "A350": ["1","2","3","4","5"],
+  "B777": ["1","2","3","4","5"],
+  "B787": ["1","2","3","4","5"],
+  "A319B": ["1","4","5"],
+  "A320B": ["1","3","4","5"],
+  "A321B": ["1","2","3","4","5"]
+};
+let compartments = [];
+
+function tailSuffix(){
+  const t = ($("tailNo").value || "").toUpperCase().replaceAll(" ", "");
+  const m = t.match(/([A-Z0-9]{3})$/);
+  return m ? m[1] : "";
+}
+const waterDB = {
+  "B738": {"25%":{w:-177,i:-2.5},"50%":{w:-118,i:-1.7},"75%":{w:-59,i:-0.8}},
+  "B739": {"25%":{w:-178,i:-2.7},"50%":{w:-119,i:-1.8},"75%":{w:-59,i:-0.9}},
+  "A319": {"25%":{w:-150,i:-1.7},"50%":{w:-100,i:-1.1},"75%":{w:-50,i:-0.6}},
+  "A320": {"25%":{w:-150,i:0.5},"50%":{w:-100,i:0.3},"75%":{w:-50,i:0.2}},
+  "A321": {"25%":{w:-150,i:-2.3},"50%":{w:-100,i:-1.6},"75%":{w:-50,i:-0.8}},
+  "B787": {"1/8":{w:-924,i:-3.9},"2/8":{w:-792,i:-3.3},"3/8":{w:-660,i:-2.8},"4/8":{w:-528,i:-2.2},"5/8":{w:-396,i:-1.7},"6/8":{w:-264,i:-1.1},"7/8":{w:-132,i:-0.6}},
+  "B777": {"1/8":{w:-1172,i:-3.9},"2/8":{w:-1004,i:-3.3},"3/8":{w:837,i:-2.8},"4/8":{w:-670,i:-2.2},"5/8":{w:-502,i:-1.6},"6/8":{w:-335,i:-1.1},"7/8":{w:-167,i:-0.5}},
+  "A350_AC": {"1/10":{w:-954,i:-4.4},"2/10":{w:-848,i:-3.9},"3/10":{w:-742,i:-3.4},"4/10":{w:-636,i:-2.9},"5/10":{w:-530,i:-2.4},"6/10":{w:-424,i:-1.9},"7/10":{w:-318,i:-1.5},"8/10":{w:-212,i:-1.0},"9/10":{w:-106,i:-0.5}},
+  "A350_BD": {"1/10":{w:-1350,i:-6.0},"2/10":{w:-1200,i:-5.4},"3/10":{w:-1050,i:-4.7},"4/10":{w:-900,i:-4.0},"5/10":{w:-750,i:-3.3},"6/10":{w:-600,i:-2.7},"7/10":{w:-450,i:-2.0},"8/10":{w:-300,i:-1.3},"9/10":{w:-150,i:-0.7}},
+  "A330_JNA_JNB": {"25%":{w:-525,i:-2.6},"50%":{w:-350,i:-1.7},"75%":{w:-175,i:-0.9}},
+  "A330_GRP2": {"25%":{w:-525,i:-1.6},"50%":{w:-350,i:-1.1},"75%":{w:-175,i:-0.5}},
+  "A330_JNF_JNG_JIL_JIM_JIN": {"25%":{w:-788,i:-3.5},"50%":{w:-525,i:-2.4},"75%":{w:-263,i:-1.2}},
+  "A330_GRP4": {"25%":{w:-525,i:-2.0},"50%":{w:-350,i:-1.4},"75%":{w:-175,i:-0.9}},
+  "A330_TC_LON": {"25%":{w:788,i:-4.2},"50%":{w:525,i:-2.8},"75%":{w:263,i:-1.4}}
+};
+function a350GroupByTail(sfx){
+  const ac=["LGA","LGB","LGC","LGD","LGE","LGF","LGG","LGH","LGM","LGN","LGO","LGP","LGI","LGJ","LGK","LGL"];
+  const bd=["LGR","LGS","LGT","LGU","LGV","LGY","LGZ","LHA","LHB","LHC","LHD","LHE","LHF","LHG","LHH","LHJ","LHI"];
+  if(ac.includes(sfx)) return "A350_AC";
+  if(bd.includes(sfx)) return "A350_BD";
+  return "";
+}
+function a330GroupByTail(sfx){
+  if(sfx==="JNA"||sfx==="JNB") return "A330_JNA_JNB";
+  if(["JNF","JNG","JIL","JIM","JIN"].includes(sfx)) return "A330_JNF_JNG_JIL_JIM_JIN";
+  if(sfx==="LON") return "A330_TC_LON";
+  if(["JNC","JND","JNE","JIO","JIP","JIR","JIS","JIT","JIV","JIY","JIZ","LNB","LOH","LOI","LOM"].includes(sfx)) return "A330_GRP2";
+  if(sfx.startsWith("JN") && sfx[2] >= "H" && sfx[2] <= "Z") return "A330_GRP4";
+  if(["LNC","LND","LNE","LNF","LNG","JOA","JOB","JOC","JOD","JOE","JOF","JOG","JOH","JOI","JOJ","JOK","JOL","JOM","LOA","LOB","LOC","LOD","LOE","LOF","LOG","LOJ","LOK"].includes(sfx)) return "A330_GRP4";
+  return "";
+}
+function waterKeyForAircraft(ac){
+  if(!ac) return "";
+  if(ac==="A319B") return "A319";
+  if(ac==="A320B") return "A320";
+  if(ac==="A321B") return "A321";
+  if(ac==="A350") return a350GroupByTail(tailSuffix());
+  if(ac==="A330") return a330GroupByTail(tailSuffix());
+  return ac;
+}
+function populateWaterOptions(){
+  const sel = $("waterRatio");
+  if(!sel) return;
+  const aircraftValue = $("aircraft").value || "";
+  const key = waterKeyForAircraft(aircraftValue);
+  const table = waterDB[key] || {};
+  const current = sel.value || "";
+  sel.innerHTML = '<option value="">Seçiniz</option>';
+  Object.keys(table).forEach(r=>{
+    const opt = document.createElement("option");
+    opt.value = r;
+    opt.textContent = r;
+    sel.appendChild(opt);
+  });
+  if(aircraftValue){
+    const fullOpt = document.createElement("option");
+    fullOpt.value = "FULL";
+    fullOpt.textContent = "FULL (%100)";
+    sel.appendChild(fullOpt);
+  }
+  if(current && (table[current] || current==="FULL")) sel.value = current;
+}
+function updateWaterBox(){
+  const aircraftValue = $("aircraft").value || "";
+  const key = waterKeyForAircraft(aircraftValue);
+  const ratio = $("waterRatio").value;
+  if(ratio==="FULL"){
+    $("waterWeight").textContent="Karşılık yok";
+    $("waterIndex").textContent="Karşılık yok";
+    return;
+  }
+  const data = waterDB[key];
+  if(!data || !ratio || !data[ratio]){
+    $("waterWeight").textContent="—";
+    $("waterIndex").textContent=((aircraftValue==="A330"||aircraftValue==="A350") && !key) ? "Tail gerekli" : "—";
+    return;
+  }
+  $("waterWeight").textContent = data[ratio].w + " kg";
+  $("waterIndex").textContent = String(data[ratio].i);
+}
+
+function loadKeyFromAircraft(){
+  const ac = $("aircraft").value || "";
+  if(ac==="B738"||ac==="B739") return "B737";
+  return ac;
+}
+function groupSpecForAircraft(){
+  const key = loadKeyFromAircraft();
+  if(key==="A319"){ return [["11","12"],["41","42"],["51"]]; }
+  if(key==="A320"){ return [["11","12","13"],["31","32"],["41","42"],["5"]]; }
+  if(key==="A321"){ return [["11","12"],["21","22","23"],["31","32","33"],["41","42"],["5"]]; }
+  if(key==="A319B"){ return [["1"],["4"],["5"]]; }
+  if(key==="A320B"){ return [["1"],["3"],["4"],["5"]]; }
+  if(key==="A321B"){ return [["1"],["2"],["3"],["4"],["5"]]; }
+  return compartments.map(c=>[String(c.name)]);
+}
+function labelForGroup(g){ return g.join("+"); }
+function renderGroupTotals(labelToKg){
+  const box = $("groupTotals"), lbl = $("groupTotalsLabel");
+  const labels = Object.keys(labelToKg);
+  if(!labels.length){ box.style.display="none"; lbl.style.display="none"; box.innerHTML=""; return; }
+  lbl.style.display="block"; box.style.display="block";
+  const specLabels = groupSpecForAircraft().map(labelForGroup);
+  const order = specLabels.filter(l=>labels.includes(l));
+  box.innerHTML = '<div class="grid2">' + order.map(l=>
+    '<div class="stat"><div class="k">'+l+'</div><div class="v">'+labelToKg[l].toFixed(1)+' kg</div></div>'
+  ).join("") + '</div>';
+}
+
+function calcFuel(){
+  const totalVal = $("totalFuel").value;
+  const taxiVal = $("taxiFuel").value;
+  const tripVal = $("tripFuel").value;
+  const total = safeNum(totalVal) ?? 0;
+  const taxi = safeNum(taxiVal) ?? 0;
+  const trip = safeNum(tripVal);
+  const rem = total - taxi;
+  $("remainFuelStat").textContent = (totalVal==="" && taxiVal==="") ? "—" : rem.toFixed(0) + " kg";
+  $("tripFuelStat").classList.add("ok"); $("tripFuelStat").textContent = (tripVal==="" || trip===null) ? "—" : trip.toFixed(0) + " kg";
+  if(totalVal!=="" && taxiVal!=="" && rem < 0) setChip("statusChipL","warn","Fuel: Taxi > Total");
+  else setChip("statusChipL","","Aktif");
+}
+function calcAvgBag(){
+  const totalKg = safeNum($("bagTotalKg").value);
+  const pcs = safeNum($("bagPieces").value);
+  const manualAvg = safeNum($("manualAvgBag").value);
+  $("bagPcsStat").textContent = ($("bagPieces").value==="" ? "—" : (pcs ?? 0).toFixed(0));
+  if(totalKg!==null && pcs!==null && pcs>0){
+    const avg = totalKg / pcs;
+    $("avgBagStat").textContent = avg.toFixed(2) + " kg";
+    return {avg};
+  }
+  if(manualAvg!==null && manualAvg>0){
+    $("avgBagStat").textContent = manualAvg.toFixed(2) + " kg (manuel)";
+    return {avg:manualAvg};
+  }
+  $("avgBagStat").textContent = "—";
+  return {avg:0};
+}
+function updateMeta(){
+  const flt = ($("flightNo").value || "—").trim().toUpperCase();
+  const tail = ($("tailNo").value || "—").trim().toUpperCase();
+  const crew = $("crewCode").value || "—";
+  const pantry = $("pantryCode").value || "—";
+  const ac = $("aircraft").value || "—";
+  $("sumMeta1").textContent = flt + " / " + tail;
+  $("sumMeta2").textContent = crew + " / " + pantry + " / " + ac;
+}
+
+function renderCompList(){
+  const list = $("compList");
+  list.innerHTML = "";
+  compartments.forEach((c)=>{
+    const wrap = document.createElement("div");
+    const selectedAircraft = $("aircraft").value;
+    const compName = String(c.name);
+    let eicKg = null;
+    if ((selectedAircraft === "A320" || selectedAircraft === "A321") && compName !== "5") eicKg = 65;
+    if ((selectedAircraft === "B738" || selectedAircraft === "B739") && compName === "4") eicKg = 23;
+    const eicButton = eicKg === null
+      ? ""
+      : `<button type="button" class="qbtn" data-cargo="+${eicKg}">EIC +${eicKg}</button>`;
+    wrap.className="card secondary";
+    wrap.style.padding="12px";
+    wrap.innerHTML = `
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;">
+        <div style="font-weight:950;">Comp ${c.name}</div>
+        <div class="pill">Toplam: <span style="color:var(--accent); font-weight:950;" id="ct_${c.name}">0.0</span> kg</div>
+      </div>
+      <div class="grid2">
+        <div>
+          <label>Bag PCS</label>
+          <input type="number" inputmode="numeric" placeholder="0" id="b_${c.name}">
+        </div>
+        <div>
+          <label>Cargo KG</label>
+          <input type="number" inputmode="numeric" placeholder="0" id="g_${c.name}">
+        </div>
+      </div>
+      <div class="qbtnRow">
+        ${eicButton}
+        <button type="button" class="qbtn" data-clear="1">Temizle</button>
+      </div>
+      <div class="hint">Bag KG otomatik: PCS × Avg.</div>
+    `;
+    list.appendChild(wrap);
+
+    const b = $("b_"+c.name);
+    const g = $("g_"+c.name);
+
+    function updateModel(){
+      c.bags = (b.value==="" ? null : safeNum(b.value));
+      c.cargo = (g.value==="" ? null : safeNum(g.value));
+      updateValues();
+      saveLocal();
+    }
+
+    b.addEventListener("input", updateModel);
+    g.addEventListener("input", updateModel);
+    b.addEventListener("keydown", (e)=>{ if(e.key==="Enter") e.preventDefault(); });
+    g.addEventListener("keydown", (e)=>{ if(e.key==="Enter") e.preventDefault(); });
+
+    wrap.querySelectorAll(".qbtn").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        if(btn.dataset.clear){
+          b.value=""; g.value=""; c.bags=null; c.cargo=null; updateValues(); saveLocal(); return;
+        }
+        if(btn.dataset.cargo){
+          const add = Number(String(btn.dataset.cargo).replace("+","")) || 0;
+          const cur = (g.value==="" ? 0 : (safeNum(g.value) ?? 0));
+          const next = cur + add;
+          g.value = String(next);
+          c.cargo = next;
+          updateValues();
+          saveLocal();
+        }
+      });
+    });
+  });
+}
+function rebuildComps(){
+  const ac = $("aircraft").value;
+  let key = ac;
+  if(ac==="B738"||ac==="B739") key="B737";
+  const arr = aircraftComps[key];
+  compartments = [];
+  if(!arr){
+    $("compList").style.display="none";
+    $("compList").innerHTML="";
+    renderGroupTotals({});
+    return;
+  }
+  arr.forEach(name=>compartments.push({name,bags:null,cargo:null}));
+  $("compList").style.display="block";
+  renderCompList();
+  const z = {};
+  groupSpecForAircraft().forEach(g=>{ z[labelForGroup(g)] = 0; });
+  renderGroupTotals(z);
+  updateValues();
+}
+
+function updateValues(){
+  updateMeta();
+  calcFuel();
+  populateWaterOptions();
+  const avg = calcAvgBag().avg;
+  let totalBag=0, totalCargo=0;
+  const compToTotal = {};
+  compartments.forEach(c=>{
+    const bagKg = (c.bags||0) * avg;
+    const cargo = (c.cargo||0);
+    const total = bagKg + cargo;
+    compToTotal[String(c.name)] = total;
+    const tEl = $("ct_"+c.name);
+    if(tEl) tEl.textContent = total.toFixed(1);
+    totalBag += bagKg;
+    totalCargo += cargo;
+  });
+  const labelTotals = {};
+  groupSpecForAircraft().forEach(g=>{
+    const label = labelForGroup(g);
+    labelTotals[label] = g.reduce((s,n)=> s + (compToTotal[String(n)]||0), 0);
+  });
+  renderGroupTotals(labelTotals);
+  $("sumBag").textContent = totalBag.toFixed(1);
+  $("sumCargo").textContent = totalCargo.toFixed(1);
+  $("sumTotal").textContent = (totalBag+totalCargo).toFixed(1);
+}
+
+
+const HISTORY_KEY = "ops_toolkit_ui_pro_history_v1";
+function getNowStamp(){
+  const d = new Date();
+  return d.toLocaleString("tr-TR", {year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit"});
+}
+function pushHistory(payload){
+  try{
+    const raw = localStorage.getItem(HISTORY_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    const entry = {
+      id: Date.now(),
+      ts: getNowStamp(),
+      flightNo: (payload.flightNo||"").trim().toUpperCase(),
+      tailNo: (payload.tailNo||"").trim().toUpperCase(),
+      crewCode: payload.crewCode||"",
+      pantryCode: payload.pantryCode||"",
+      aircraft: payload.aircraft||"",
+      payload
+    };
+    const key = (entry.flightNo+"|"+entry.tailNo).trim();
+    const filtered = arr.filter(x => ((x.flightNo||"")+"|"+(x.tailNo||"")).trim() !== key);
+    filtered.unshift(entry);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(filtered.slice(0,10)));
+  }catch(e){ console.error(e); }
+}
+function readHistory(){
+  try{
+    const raw = localStorage.getItem(HISTORY_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+function sanitizeHistory(){
+  const seen = new Set();
+  const cleaned = readHistory().filter(entry=>{
+    const flight = String(entry.flightNo||"").trim().toUpperCase();
+    const tail = String(entry.tailNo||"").trim().toUpperCase();
+    if(!flight || !tail) return false;
+    const key = `${flight}|${tail}`;
+    if(seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0,10);
+  try{ localStorage.setItem(HISTORY_KEY, JSON.stringify(cleaned)); }catch(e){}
+  return cleaned;
+}
+function renderHistory(){
+  const box = $("recentList");
+  if(!box) return;
+  const arr = sanitizeHistory();
+  if(!arr.length){
+    box.innerHTML = '<div class="hint">Kayıt yok.</div>';
+    return;
+  }
+  box.innerHTML = arr.map(e=>{
+    const title = `${e.flightNo||"—"} • ${e.tailNo||"—"}`;
+    const sub = `${e.ts} • ${e.crewCode||"—"} / ${e.pantryCode||"—"} • ${e.aircraft||"—"}`;
+    return `
+      <div class="card secondary" style="padding:12px; margin-bottom:10px;">
+        <div style="font-weight:950;">${title}</div>
+        <div class="hint" style="margin-top:6px;">${sub}</div>
+        <div class="btns" style="margin-top:10px;">
+          <button class="btn-primary" type="button" data-recall="${e.id}">Geri Yükle</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+  box.querySelectorAll("[data-recall]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = Number(btn.getAttribute("data-recall"));
+      const entry = readHistory().find(x=>x.id===id);
+      if(entry && entry.payload){
+        applyPayload(entry.payload);
+        setChip("statusChip","", "Geri yüklendi");
+        show("load");
+      }
+    });
+  });
+}
+
+const STORE_KEY = "ops_toolkit_ui_pro_v1";
+
+function chipHtml(text, removeFn){
+  return `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.04);">
+    <div style="font-weight:850; color: var(--warn);">${text}</div>
+    <button type="button" class="qbtn" onclick="${removeFn}" style="min-width:70px;">Sil</button>
+  </div>`;
+}
+function getAvihItems(){
+  try{ return JSON.parse(localStorage.getItem("ops_ui_pro_avih_list") || "[]"); }catch(e){ return []; }
+}
+function setAvihItems(arr){
+  localStorage.setItem("ops_ui_pro_avih_list", JSON.stringify(arr));
+}
+function getSpecialCargoItems(){
+  try{ return JSON.parse(localStorage.getItem("ops_ui_pro_specialcargo_list") || "[]"); }catch(e){ return []; }
+}
+function setSpecialCargoItems(arr){
+  localStorage.setItem("ops_ui_pro_specialcargo_list", JSON.stringify(arr));
+}
+function renderAvihList(){
+  const box = $("avihList");
+  if(!box) return;
+  const arr = getAvihItems();
+  if(!arr.length){ box.innerHTML = '<div class="hint">PETC eklenmedi.</div>'; return; }
+  box.innerHTML = arr.map((x,i)=>chipHtml(x, `removeAvih(${i})`)).join("");
+}
+function renderSpecialCargoList(){
+  const box = $("specialCargoList");
+  if(!box) return;
+  const arr = getSpecialCargoItems();
+  if(!arr.length){ box.innerHTML = '<div class="hint">Özel yük eklenmedi.</div>'; return; }
+  box.innerHTML = arr.map((x,i)=>chipHtml(x, `removeSpecialCargo(${i})`)).join("");
+}
+function removeAvih(i){
+  const arr = getAvihItems();
+  arr.splice(i,1);
+  setAvihItems(arr);
+  renderAvihList();
+  saveLocal();
+}
+function removeSpecialCargo(i){
+  const arr = getSpecialCargoItems();
+  arr.splice(i,1);
+  setSpecialCargoItems(arr);
+  renderSpecialCargoList();
+  saveLocal();
+}
+function renderSummaryLists(){
+  const av = $("sumAvihList");
+  const sc = $("sumSpecialCargoList");
+  if(av){
+    const arr = getAvihItems();
+    av.innerHTML = arr.length ? arr.map(x=>`<div class="hint" style="margin-top:6px;color:var(--warn);font-weight:850;">• ${x}</div>`).join("") : '<div class="hint">—</div>';
+  }
+  if(sc){
+    const arr = getSpecialCargoItems();
+    sc.innerHTML = arr.length ? arr.map(x=>`<div class="hint" style="margin-top:6px;color:var(--warn);font-weight:850;">• ${x}</div>`).join("") : '<div class="hint">—</div>';
+  }
+}
+
+function saveLocal(addToHistory){
+  const payload = {
+    flightNo:$("flightNo").value,
+    tailNo:$("tailNo").value,
+    crewCode:$("crewCode").value,
+    pantryCode:$("pantryCode").value,
+    aircraft:$("aircraft").value,
+    totalFuel:$("totalFuel").value,
+    taxiFuel:$("taxiFuel").value,
+    tripFuel:$("tripFuel").value,
+    bagTotalKg:$("bagTotalKg").value,
+    bagPieces:$("bagPieces").value,
+    manualAvgBag:$("manualAvgBag").value,
+    waterRatio:$("waterRatio").value,
+    avihType:$("avihType").value,
+    specialCargo:$("specialCargo").value,
+    petcCount:$("petcCount").value,
+    opsNote:$("opsNote").value,
+    avihItems:getAvihItems(),
+    specialCargoItems:getSpecialCargoItems(),
+    compartments
+  };
+  localStorage.setItem(STORE_KEY, JSON.stringify(payload));
+  if(addToHistory === true && payload.flightNo && payload.tailNo) pushHistory(payload);
+}
+function applyPayload(p){
+  $("flightNo").value = p.flightNo || "";
+  $("tailNo").value = p.tailNo || "";
+  $("crewCode").value = p.crewCode || "";
+  $("pantryCode").value = p.pantryCode || "";
+  $("aircraft").value = p.aircraft || "";
+  $("totalFuel").value = p.totalFuel || "";
+  $("taxiFuel").value = p.taxiFuel || "";
+  $("tripFuel").value = p.tripFuel || "";
+  $("bagTotalKg").value = p.bagTotalKg || "";
+  $("bagPieces").value = p.bagPieces || "";
+  $("manualAvgBag").value = p.manualAvgBag || "";
+  if($("avihType")) $("avihType").value = p.avihType || "";
+  if($("specialCargo")) $("specialCargo").value = p.specialCargo || "";
+  if($("petcCount")) $("petcCount").value = p.petcCount || "";
+  if($("opsNote")) $("opsNote").value = p.opsNote || "";
+  setAvihItems(p.avihItems || []);
+  setSpecialCargoItems(p.specialCargoItems || []);
+  renderAvihList();
+  renderSpecialCargoList();
+  rebuildComps();
+  (p.compartments || []).forEach(saved=>{
+    const c = compartments.find(x=>String(x.name)===String(saved.name));
+    if(!c) return;
+    c.bags = saved.bags===null ? null : Number(saved.bags);
+    c.cargo = saved.cargo===null ? null : Number(saved.cargo);
+    const b = $("b_"+c.name), g = $("g_"+c.name);
+    if(b && c.bags!==null) b.value = String(c.bags);
+    if(g && c.cargo!==null) g.value = String(c.cargo);
+  });
+  populateWaterOptions();
+  if(p.waterRatio) $("waterRatio").value = p.waterRatio;
+  updateWaterBox();
+  updateValues();
+}
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) return;
+    applyPayload(JSON.parse(raw));
+  }catch(e){ console.error(e); }
+}
+function resetAll(){
+  localStorage.removeItem(STORE_KEY);
+  ["flightNo","tailNo","totalFuel","taxiFuel","tripFuel","bagTotalKg","bagPieces","manualAvgBag","petcCount","opsNote"].forEach(id=>$(id).value="");
+  if($("avihType")) $("avihType").value="";
+  if($("specialCargo")) $("specialCargo").value="";
+  setAvihItems([]);
+  setSpecialCargoItems([]);
+  renderAvihList();
+  renderSpecialCargoList();
+  $("crewCode").value="";
+  $("pantryCode").value="";
+  $("aircraft").value="";
+  $("waterRatio").innerHTML='<option value="">Seçiniz</option>';
+  $("waterWeight").textContent="—";
+  $("waterIndex").textContent="—";
+  compartments=[];
+  $("compList").innerHTML="";
+  $("compList").style.display="none";
+  renderGroupTotals({});
+  updateValues();
+}
+$("btnNewFlight").addEventListener("click", ()=>{ resetAll(); show("load"); });
+$("btnSave").addEventListener("click", ()=>{
+  saveLocal(true);
+  setChip("statusChipL","ok","Kaydedildi");
+});
+$("btnReset").addEventListener("click", resetAll);
+$("btnClearComps").addEventListener("click", ()=>{
+  compartments.forEach(c=>{ c.bags=null; c.cargo=null; });
+  compartments.forEach(c=>{
+    const b=$("b_"+c.name), g=$("g_"+c.name), t=$("ct_"+c.name);
+    if(b) b.value="";
+    if(g) g.value="";
+    if(t) t.textContent="0.0";
+  });
+  updateValues();
+  saveLocal();
+});
+
+["aircraft","crewCode","pantryCode","waterRatio"].forEach(id=> $(id).addEventListener("change", ()=>{
+  if(id==="aircraft"){ rebuildComps(); populateWaterOptions(); updateWaterBox(); }
+  if(id==="waterRatio"){ updateWaterBox(); }
+  updateMeta(); saveLocal();
+}));
+["tailNo"].forEach(id=> $(id).addEventListener("input", ()=>{
+  populateWaterOptions(); updateWaterBox(); updateMeta(); saveLocal();
+}));
+["flightNo","totalFuel","taxiFuel","tripFuel","bagTotalKg","bagPieces","manualAvgBag","specialCargo","petcCount","opsNote"].forEach(id=> $(id).addEventListener("input", ()=>{
+  updateValues(); saveLocal();
+}));
+if($("avihType")) $("avihType").addEventListener("change", ()=>{ updateValues(); saveLocal(); });
+
+
+
+const STATION_DB = {
+  // Türkiye
+  "IST": {city:"İstanbul", country:"Türkiye", airport:"İstanbul Airport"},
+  "SAW": {city:"İstanbul", country:"Türkiye", airport:"Sabiha Gökçen Airport"},
+  "ESB": {city:"Ankara", country:"Türkiye", airport:"Esenboğa Airport"},
+  "ADB": {city:"İzmir", country:"Türkiye", airport:"Adnan Menderes Airport"},
+  "AYT": {city:"Antalya", country:"Türkiye", airport:"Antalya Airport"},
+  "ASR": {city:"Kayseri", country:"Türkiye", airport:"Kayseri Erkilet Airport"},
+  "ADA": {city:"Adana", country:"Türkiye", airport:"Adana Airport"},
+  "ADF": {city:"Adıyaman", country:"Türkiye", airport:"Adıyaman Airport"},
+  "AJI": {city:"Ağrı", country:"Türkiye", airport:"Ağrı Ahmed-i Hani Airport"},
+  "GZP": {city:"Alanya", country:"Türkiye", airport:"Gazipaşa-Alanya Airport"},
+  "AOE": {city:"Eskişehir", country:"Türkiye", airport:"Anadolu Airport"},
+  "BAL": {city:"Batman", country:"Türkiye", airport:"Batman Airport"},
+  "BGG": {city:"Bingöl", country:"Türkiye", airport:"Bingöl Airport"},
+  "BJV": {city:"Bodrum", country:"Türkiye", airport:"Milas-Bodrum Airport"},
+  "YEI": {city:"Bursa", country:"Türkiye", airport:"Yenişehir Airport"},
+  "CKZ": {city:"Çanakkale", country:"Türkiye", airport:"Çanakkale Airport"},
+  "COV": {city:"Mersin/Adana", country:"Türkiye", airport:"Çukurova Airport"},
+  "DLM": {city:"Dalaman", country:"Türkiye", airport:"Dalaman Airport"},
+  "DNZ": {city:"Denizli", country:"Türkiye", airport:"Çardak Airport"},
+  "DIY": {city:"Diyarbakır", country:"Türkiye", airport:"Diyarbakır Airport"},
+  "EDO": {city:"Edremit", country:"Türkiye", airport:"Körfez Airport"},
+  "ERC": {city:"Erzincan", country:"Türkiye", airport:"Erzincan Airport"},
+  "ERZ": {city:"Erzurum", country:"Türkiye", airport:"Erzurum Airport"},
+  "EZS": {city:"Elazığ", country:"Türkiye", airport:"Elazığ Airport"},
+  "GZT": {city:"Gaziantep", country:"Türkiye", airport:"Oğuzeli Airport"},
+  "HTY": {city:"Hatay", country:"Türkiye", airport:"Hatay Airport"},
+  "YKO": {city:"Hakkari", country:"Türkiye", airport:"Yüksekova Airport"},
+  "IGD": {city:"Iğdır", country:"Türkiye", airport:"Şehit Bülent Aydın Airport"},
+  "ISE": {city:"Isparta", country:"Türkiye", airport:"Süleyman Demirel Airport"},
+  "KCM": {city:"Kahramanmaraş", country:"Türkiye", airport:"Kahramanmaraş Airport"},
+  "KSY": {city:"Kars", country:"Türkiye", airport:"Harakani Airport"},
+  "KFS": {city:"Kastamonu", country:"Türkiye", airport:"Kastamonu Airport"},
+  "KCO": {city:"Kocaeli", country:"Türkiye", airport:"Cengiz Topel Airport"},
+  "KYA": {city:"Konya", country:"Türkiye", airport:"Konya Airport"},
+  "KZR": {city:"Kütahya", country:"Türkiye", airport:"Zafer Airport"},
+  "MLX": {city:"Malatya", country:"Türkiye", airport:"Erhaç Airport"},
+  "MQM": {city:"Mardin", country:"Türkiye", airport:"Mardin Airport"},
+  "MZH": {city:"Amasya/Merzifon", country:"Türkiye", airport:"Merzifon Airport"},
+  "MSR": {city:"Muş", country:"Türkiye", airport:"Muş Sultan Alparslan Airport"},
+  "NAV": {city:"Nevşehir", country:"Türkiye", airport:"Kapadokya Airport"},
+  "NKT": {city:"Şırnak", country:"Türkiye", airport:"Şerafettin Elçi Airport"},
+  "NOP": {city:"Sinop", country:"Türkiye", airport:"Sinop Airport"},
+  "OGU": {city:"Ordu-Giresun", country:"Türkiye", airport:"Ordu-Giresun Airport"},
+  "RZV": {city:"Rize-Artvin", country:"Türkiye", airport:"Rize-Artvin Airport"},
+  "SZF": {city:"Samsun", country:"Türkiye", airport:"Çarşamba Airport"},
+  "SXZ": {city:"Siirt", country:"Türkiye", airport:"Siirt Airport"},
+  "TJK": {city:"Tokat", country:"Türkiye", airport:"Tokat Airport"},
+  "TZX": {city:"Trabzon", country:"Türkiye", airport:"Trabzon Airport"},
+  "TEQ": {city:"Tekirdağ/Çorlu", country:"Türkiye", airport:"Çorlu Airport"},
+  "USQ": {city:"Uşak", country:"Türkiye", airport:"Uşak Airport"},
+  "VAS": {city:"Sivas", country:"Türkiye", airport:"Nuri Demirağ Airport"},
+  "VAN": {city:"Van", country:"Türkiye", airport:"Ferit Melen Airport"},
+  "ONQ": {city:"Zonguldak", country:"Türkiye", airport:"Çaycuma Airport"},
+  "GNY": {city:"Şanlıurfa", country:"Türkiye", airport:"GAP Airport"},
+
+  // Europe
+  "AMS": {city:"Amsterdam", country:"Netherlands", airport:"Amsterdam Schiphol Airport"},
+  "ATH": {city:"Athens", country:"Greece", airport:"Athens International Airport"},
+  "BCN": {city:"Barcelona", country:"Spain", airport:"Barcelona El Prat Airport"},
+  "BSL": {city:"Basel", country:"Switzerland", airport:"EuroAirport Basel Mulhouse Freiburg"},
+  "BUS": {city:"Batumi", country:"Georgia", airport:"Batumi International Airport"},
+  "BEG": {city:"Belgrade", country:"Serbia", airport:"Belgrade Nikola Tesla Airport"},
+  "BER": {city:"Berlin", country:"Germany", airport:"Berlin Brandenburg Airport"},
+  "BHX": {city:"Birmingham", country:"United Kingdom", airport:"Birmingham Airport"},
+  "BLQ": {city:"Bologna", country:"Italy", airport:"Bologna Guglielmo Marconi Airport"},
+  "BRU": {city:"Brussels", country:"Belgium", airport:"Brussels Airport"},
+  "OTP": {city:"Bucharest", country:"Romania", airport:"Henri Coandă Airport"},
+  "BUD": {city:"Budapest", country:"Hungary", airport:"Budapest Ferenc Liszt Airport"},
+  "CPH": {city:"Copenhagen", country:"Denmark", airport:"Copenhagen Airport"},
+  "DUB": {city:"Dublin", country:"Ireland", airport:"Dublin Airport"},
+  "DUS": {city:"Düsseldorf", country:"Germany", airport:"Düsseldorf Airport"},
+  "EDI": {city:"Edinburgh", country:"United Kingdom", airport:"Edinburgh Airport"},
+  "FRA": {city:"Frankfurt", country:"Germany", airport:"Frankfurt Airport"},
+  "GVA": {city:"Geneva", country:"Switzerland", airport:"Geneva Airport"},
+  "HAM": {city:"Hamburg", country:"Germany", airport:"Hamburg Airport"},
+  "HEL": {city:"Helsinki", country:"Finland", airport:"Helsinki Airport"},
+  "IST": {city:"İstanbul", country:"Türkiye", airport:"İstanbul Airport"},
+  "LIS": {city:"Lisbon", country:"Portugal", airport:"Humberto Delgado Airport"},
+  "LHR": {city:"London", country:"United Kingdom", airport:"Heathrow Airport"},
+  "LGW": {city:"London", country:"United Kingdom", airport:"Gatwick Airport"},
+  "LJU": {city:"Ljubljana", country:"Slovenia", airport:"Ljubljana Airport"},
+  "LUX": {city:"Luxembourg", country:"Luxembourg", airport:"Luxembourg Airport"},
+  "LYS": {city:"Lyon", country:"France", airport:"Lyon Saint-Exupéry Airport"},
+  "MAD": {city:"Madrid", country:"Spain", airport:"Adolfo Suárez Madrid-Barajas Airport"},
+  "MAN": {city:"Manchester", country:"United Kingdom", airport:"Manchester Airport"},
+  "MRS": {city:"Marseille", country:"France", airport:"Marseille Provence Airport"},
+  "MXP": {city:"Milan", country:"Italy", airport:"Milan Malpensa Airport"},
+  "MUC": {city:"Munich", country:"Germany", airport:"Munich Airport"},
+  "NAP": {city:"Naples", country:"Italy", airport:"Naples Airport"},
+  "NCE": {city:"Nice", country:"France", airport:"Nice Côte d'Azur Airport"},
+  "OSL": {city:"Oslo", country:"Norway", airport:"Oslo Gardermoen Airport"},
+  "CDG": {city:"Paris", country:"France", airport:"Charles de Gaulle Airport"},
+  "PRG": {city:"Prague", country:"Czech Republic", airport:"Václav Havel Airport Prague"},
+  "FCO": {city:"Rome", country:"Italy", airport:"Leonardo da Vinci–Fiumicino Airport"},
+  "SOF": {city:"Sofia", country:"Bulgaria", airport:"Sofia Airport"},
+  "SKP": {city:"Skopje", country:"North Macedonia", airport:"Skopje International Airport"},
+  "TBS": {city:"Tbilisi", country:"Georgia", airport:"Tbilisi International Airport"},
+  "TIA": {city:"Tirana", country:"Albania", airport:"Tirana International Airport"},
+  "VCE": {city:"Venice", country:"Italy", airport:"Venice Marco Polo Airport"},
+  "VIE": {city:"Vienna", country:"Austria", airport:"Vienna International Airport"},
+  "WAW": {city:"Warsaw", country:"Poland", airport:"Warsaw Chopin Airport"},
+  "ZRH": {city:"Zurich", country:"Switzerland", airport:"Zurich Airport"},
+
+  // Americas
+  "ATL": {city:"Atlanta", country:"United States", airport:"Hartsfield–Jackson Atlanta International Airport"},
+  "BOG": {city:"Bogotá", country:"Colombia", airport:"El Dorado International Airport"},
+  "BOS": {city:"Boston", country:"United States", airport:"Logan International Airport"},
+  "EZE": {city:"Buenos Aires", country:"Argentina", airport:"Ezeiza International Airport"},
+  "CUN": {city:"Cancún", country:"Mexico", airport:"Cancún International Airport"},
+  "CCS": {city:"Caracas", country:"Venezuela", airport:"Simón Bolívar International Airport"},
+  "ORD": {city:"Chicago", country:"United States", airport:"O'Hare International Airport"},
+  "DFW": {city:"Dallas", country:"United States", airport:"Dallas/Fort Worth International Airport"},
+  "DEN": {city:"Denver", country:"United States", airport:"Denver International Airport"},
+  "DTW": {city:"Detroit", country:"United States", airport:"Detroit Metropolitan Airport"},
+  "HAV": {city:"Havana", country:"Cuba", airport:"José Martí International Airport"},
+  "IAH": {city:"Houston", country:"United States", airport:"George Bush Intercontinental Airport"},
+  "LAX": {city:"Los Angeles", country:"United States", airport:"Los Angeles International Airport"},
+  "MEX": {city:"Mexico City", country:"Mexico", airport:"Benito Juárez International Airport"},
+  "MIA": {city:"Miami", country:"United States", airport:"Miami International Airport"},
+  "YUL": {city:"Montreal", country:"Canada", airport:"Montréal–Trudeau Airport"},
+  "JFK": {city:"New York", country:"United States", airport:"John F. Kennedy International Airport"},
+  "EWR": {city:"Newark", country:"United States", airport:"Newark Liberty International Airport"},
+  "PTY": {city:"Panama City", country:"Panama", airport:"Tocumen International Airport"},
+  "SFO": {city:"San Francisco", country:"United States", airport:"San Francisco International Airport"},
+  "SCL": {city:"Santiago", country:"Chile", airport:"Arturo Merino Benítez International Airport"},
+  "GRU": {city:"São Paulo", country:"Brazil", airport:"São Paulo/Guarulhos International Airport"},
+  "SEA": {city:"Seattle", country:"United States", airport:"Seattle-Tacoma International Airport"},
+  "YYZ": {city:"Toronto", country:"Canada", airport:"Toronto Pearson International Airport"},
+  "YVR": {city:"Vancouver", country:"Canada", airport:"Vancouver International Airport"},
+  "IAD": {city:"Washington, D.C.", country:"United States", airport:"Washington Dulles International Airport"},
+
+  // Africa
+  "ABJ": {city:"Abidjan", country:"Côte d'Ivoire", airport:"Félix-Houphouët-Boigny International Airport"},
+  "ABV": {city:"Abuja", country:"Nigeria", airport:"Nnamdi Azikiwe International Airport"},
+  "ACC": {city:"Accra", country:"Ghana", airport:"Kotoka International Airport"},
+  "ALY": {city:"Alexandria", country:"Egypt", airport:"Borg El Arab Airport"},
+  "ADD": {city:"Addis Ababa", country:"Ethiopia", airport:"Bole International Airport"},
+  "ALG": {city:"Algiers", country:"Algeria", airport:"Houari Boumediene Airport"},
+  "TNR": {city:"Antananarivo", country:"Madagascar", airport:"Ivato International Airport"},
+  "ASM": {city:"Asmara", country:"Eritrea", airport:"Asmara International Airport"},
+  "BKO": {city:"Bamako", country:"Mali", airport:"Modibo Keita International Airport"},
+  "BJL": {city:"Banjul", country:"Gambia", airport:"Banjul International Airport"},
+  "BEN": {city:"Benghazi", country:"Libya", airport:"Benina International Airport"},
+  "CAI": {city:"Cairo", country:"Egypt", airport:"Cairo International Airport"},
+  "CPT": {city:"Cape Town", country:"South Africa", airport:"Cape Town International Airport"},
+  "CMN": {city:"Casablanca", country:"Morocco", airport:"Mohammed V International Airport"},
+  "CKY": {city:"Conakry", country:"Guinea", airport:"Ahmed Sékou Touré International Airport"},
+  "CZL": {city:"Constantine", country:"Algeria", airport:"Mohamed Boudiaf International Airport"},
+  "COO": {city:"Cotonou", country:"Benin", airport:"Cadjehoun Airport"},
+  "DKR": {city:"Dakar", country:"Senegal", airport:"Blaise Diagne International Airport"},
+  "DAR": {city:"Dar es Salaam", country:"Tanzania", airport:"Julius Nyerere International Airport"},
+  "JIB": {city:"Djibouti", country:"Djibouti", airport:"Djibouti–Ambouli International Airport"},
+  "DLA": {city:"Douala", country:"Cameroon", airport:"Douala International Airport"},
+  "DUR": {city:"Durban", country:"South Africa", airport:"King Shaka International Airport"},
+  "EBB": {city:"Entebbe", country:"Uganda", airport:"Entebbe International Airport"},
+  "FNA": {city:"Freetown", country:"Sierra Leone", airport:"Lungi International Airport"},
+  "HRG": {city:"Hurghada", country:"Egypt", airport:"Hurghada International Airport"},
+  "JNB": {city:"Johannesburg", country:"South Africa", airport:"O. R. Tambo International Airport"},
+  "JUB": {city:"Juba", country:"South Sudan", airport:"Juba International Airport"},
+  "KGL": {city:"Kigali", country:"Rwanda", airport:"Kigali International Airport"},
+  "JRO": {city:"Kilimanjaro", country:"Tanzania", airport:"Kilimanjaro International Airport"},
+  "FIH": {city:"Kinshasa", country:"DR Congo", airport:"N'djili Airport"},
+  "LOS": {city:"Lagos", country:"Nigeria", airport:"Murtala Muhammed International Airport"},
+  "LBV": {city:"Libreville", country:"Gabon", airport:"Libreville International Airport"},
+  "LAD": {city:"Luanda", country:"Angola", airport:"Quatro de Fevereiro Airport"},
+  "LUN": {city:"Lusaka", country:"Zambia", airport:"Kenneth Kaunda International Airport"},
+  "MPM": {city:"Maputo", country:"Mozambique", airport:"Maputo International Airport"},
+  "RAK": {city:"Marrakesh", country:"Morocco", airport:"Marrakesh Menara Airport"},
+  "MRU": {city:"Mauritius", country:"Mauritius", airport:"Sir Seewoosagur Ramgoolam International Airport"},
+  "MRA": {city:"Misurata", country:"Libya", airport:"Misrata Airport"},
+  "MGQ": {city:"Mogadishu", country:"Somalia", airport:"Aden Adde International Airport"},
+  "MBA": {city:"Mombasa", country:"Kenya", airport:"Moi International Airport"},
+  "NBO": {city:"Nairobi", country:"Kenya", airport:"Jomo Kenyatta International Airport"},
+  "NDJ": {city:"N'Djamena", country:"Chad", airport:"N'Djamena International Airport"},
+  "NIM": {city:"Niamey", country:"Niger", airport:"Diori Hamani International Airport"},
+  "NKC": {city:"Nouakchott", country:"Mauritania", airport:"Nouakchott–Oumtounsy International Airport"},
+  "ORN": {city:"Oran", country:"Algeria", airport:"Ahmed Ben Bella Airport"},
+  "OUA": {city:"Ouagadougou", country:"Burkina Faso", airport:"Ouagadougou Airport"},
+  "PNR": {city:"Pointe-Noire", country:"Republic of the Congo", airport:"Pointe Noire Airport"},
+  "PZU": {city:"Port Sudan", country:"Sudan", airport:"Port Sudan New International Airport"},
+  "SEZ": {city:"Seychelles", country:"Seychelles", airport:"Seychelles International Airport"},
+  "SSH": {city:"Sharm El-Sheikh", country:"Egypt", airport:"Sharm El Sheikh International Airport"},
+  "TIP": {city:"Tripoli", country:"Libya", airport:"Mitiga International Airport"},
+  "TUN": {city:"Tunis", country:"Tunisia", airport:"Tunis–Carthage International Airport"},
+  "NSI": {city:"Yaoundé", country:"Cameroon", airport:"Yaoundé Nsimalen International Airport"},
+  "ZNZ": {city:"Zanzibar", country:"Tanzania", airport:"Abeid Amani Karume International Airport"},
+
+  // Asia & Middle East
+  "AUH": {city:"Abu Dhabi", country:"UAE", airport:"Abu Dhabi International Airport"},
+  "SCO": {city:"Aktau", country:"Kazakhstan", airport:"Aktau Airport"},
+  "ALP": {city:"Aleppo", country:"Syria", airport:"Aleppo International Airport"},
+  "ALA": {city:"Almaty", country:"Kazakhstan", airport:"Almaty International Airport"},
+  "AMM": {city:"Amman", country:"Jordan", airport:"Queen Alia International Airport"},
+  "ASB": {city:"Ashgabat", country:"Turkmenistan", airport:"Ashgabat International Airport"},
+  "NQZ": {city:"Astana", country:"Kazakhstan", airport:"Nursultan Nazarbayev International Airport"},
+  "BAH": {city:"Bahrain", country:"Bahrain", airport:"Bahrain International Airport"},
+  "BGW": {city:"Baghdad", country:"Iraq", airport:"Baghdad International Airport"},
+  "GYD": {city:"Baku", country:"Azerbaijan", airport:"Heydar Aliyev International Airport"},
+  "BKK": {city:"Bangkok", country:"Thailand", airport:"Suvarnabhumi Airport"},
+  "BSR": {city:"Basra", country:"Iraq", airport:"Basra International Airport"},
+  "PEK": {city:"Beijing", country:"China", airport:"Beijing Capital International Airport"},
+  "BEY": {city:"Beirut", country:"Lebanon", airport:"Beirut–Rafic Hariri International Airport"},
+  "FRU": {city:"Bishkek", country:"Kyrgyzstan", airport:"Manas International Airport"},
+  "BHK": {city:"Bukhara", country:"Uzbekistan", airport:"Bukhara International Airport"},
+  "CMB": {city:"Colombo", country:"Sri Lanka", airport:"Bandaranaike International Airport"},
+  "DAM": {city:"Damascus", country:"Syria", airport:"Damascus International Airport"},
+  "DMM": {city:"Dammam", country:"Saudi Arabia", airport:"King Fahd International Airport"},
+  "DAC": {city:"Dhaka", country:"Bangladesh", airport:"Hazrat Shahjalal International Airport"},
+  "DPS": {city:"Denpasar", country:"Indonesia", airport:"Ngurah Rai International Airport"},
+  "DOH": {city:"Doha", country:"Qatar", airport:"Hamad International Airport"},
+  "DXB": {city:"Dubai", country:"UAE", airport:"Dubai International Airport"},
+  "DYU": {city:"Dushanbe", country:"Tajikistan", airport:"Dushanbe International Airport"},
+  "EBL": {city:"Erbil", country:"Iraq", airport:"Erbil International Airport"},
+  "FEG": {city:"Fergana", country:"Uzbekistan", airport:"Fergana International Airport"},
+  "CAN": {city:"Guangzhou", country:"China", airport:"Guangzhou Baiyun International Airport"},
+  "HAN": {city:"Hanoi", country:"Vietnam", airport:"Noi Bai International Airport"},
+  "SGN": {city:"Ho Chi Minh City", country:"Vietnam", airport:"Tan Son Nhat International Airport"},
+  "HKG": {city:"Hong Kong", country:"Hong Kong", airport:"Hong Kong International Airport"},
+  "IFN": {city:"Isfahan", country:"Iran", airport:"Isfahan International Airport"},
+  "ISB": {city:"Islamabad", country:"Pakistan", airport:"Islamabad International Airport"},
+  "CGK": {city:"Jakarta", country:"Indonesia", airport:"Soekarno–Hatta International Airport"},
+  "JED": {city:"Jeddah", country:"Saudi Arabia", airport:"King Abdulaziz International Airport"},
+  "KBL": {city:"Kabul", country:"Afghanistan", airport:"Hamid Karzai International Airport"},
+  "KHI": {city:"Karachi", country:"Pakistan", airport:"Jinnah International Airport"},
+  "KTM": {city:"Kathmandu", country:"Nepal", airport:"Tribhuvan International Airport"},
+  "KZN": {city:"Kazan", country:"Russia", airport:"Kazan International Airport"},
+  "KIK": {city:"Kirkuk", country:"Iraq", airport:"Kirkuk Airport"},
+  "KUL": {city:"Kuala Lumpur", country:"Malaysia", airport:"Kuala Lumpur International Airport"},
+  "KWI": {city:"Kuwait", country:"Kuwait", airport:"Kuwait International Airport"},
+  "LHE": {city:"Lahore", country:"Pakistan", airport:"Allama Iqbal International Airport"},
+  "ECN": {city:"Lefkoşa", country:"TRNC", airport:"Ercan Airport"},
+  "MLE": {city:"Malé", country:"Maldives", airport:"Velana International Airport"},
+  "MNL": {city:"Manila", country:"Philippines", airport:"Ninoy Aquino International Airport"},
+  "MED": {city:"Medina", country:"Saudi Arabia", airport:"Prince Mohammad bin Abdulaziz Airport"},
+  "MHD": {city:"Mashhad", country:"Iran", airport:"Mashhad International Airport"},
+  "BOM": {city:"Mumbai", country:"India", airport:"Chhatrapati Shivaji Maharaj International Airport"},
+  "MCT": {city:"Muscat", country:"Oman", airport:"Muscat International Airport"},
+  "NAJ": {city:"Nakhchivan", country:"Azerbaijan", airport:"Nakhchivan International Airport"},
+  "NJF": {city:"Najaf", country:"Iraq", airport:"Al Najaf International Airport"},
+  "DEL": {city:"New Delhi", country:"India", airport:"Indira Gandhi International Airport"},
+  "KIX": {city:"Osaka", country:"Japan", airport:"Kansai International Airport"},
+  "PNH": {city:"Phnom Penh", country:"Cambodia", airport:"Phnom Penh International Airport"},
+  "HKT": {city:"Phuket", country:"Thailand", airport:"Phuket International Airport"},
+  "RUH": {city:"Riyadh", country:"Saudi Arabia", airport:"King Khalid International Airport"},
+  "SKD": {city:"Samarkand", country:"Uzbekistan", airport:"Samarkand International Airport"},
+  "PVG": {city:"Shanghai", country:"China", airport:"Shanghai Pudong International Airport"},
+  "SYZ": {city:"Shiraz", country:"Iran", airport:"Shiraz International Airport"},
+  "SIN": {city:"Singapore", country:"Singapore", airport:"Singapore Changi Airport"},
+  "ISU": {city:"Sulaymaniyah", country:"Iraq", airport:"Sulaymaniyah International Airport"},
+  "TPE": {city:"Taipei", country:"Taiwan", airport:"Taoyuan International Airport"},
+  "TBZ": {city:"Tabriz", country:"Iran", airport:"Tabriz International Airport"},
+  "TAS": {city:"Tashkent", country:"Uzbekistan", airport:"Tashkent International Airport"},
+  "NRT": {city:"Tokyo", country:"Japan", airport:"Narita International Airport"},
+  "HND": {city:"Tokyo", country:"Japan", airport:"Haneda Airport"},
+  "YAS": {city:"Turkistan", country:"Kazakhstan", airport:"Hazret Sultan International Airport"},
+  "UBN": {city:"Ulaanbaatar", country:"Mongolia", airport:"Chinggis Khaan International Airport"},
+  "UGC": {city:"Urgench", country:"Uzbekistan", airport:"Urgench International Airport"},
+  "YNB": {city:"Yanbu", country:"Saudi Arabia", airport:"Prince Abdul Mohsin bin Abdulaziz Airport"},
+
+  // Australia
+  "MEL": {city:"Melbourne", country:"Australia", airport:"Melbourne Airport"},
+  "SYD": {city:"Sydney", country:"Australia", airport:"Sydney Airport"}
+};
+
+function updateStationLookup(){
+  const code = (($("stationCode")?.value || "").trim().toUpperCase());
+  const status = $("stationStatus");
+  const place = $("stationPlace");
+  const airport = $("stationAirport");
+  const hint = $("stationHint");
+  const chip = $("statusChipST");
+  if(!code){
+    if(status){ status.textContent = "—"; status.className = "v"; }
+    if(place) place.textContent = "—";
+    if(airport) airport.textContent = "—";
+    if(hint) hint.textContent = "Kod girildiğinde detay burada görünür.";
+    if(chip) chip.textContent = "Hazır";
+    return;
+  }
+  const data = STATION_DB[code];
+  if(!data){
+    if(status){ status.textContent = "Bulunamadı"; status.className = "v bad"; }
+    if(place) place.textContent = code;
+    if(airport) airport.textContent = "—";
+    if(hint) hint.textContent = "Kod listede yok veya henüz eklenmedi.";
+    if(chip) chip.textContent = "Kod yok";
+    return;
+  }
+  if(status){ status.textContent = "Bulundu"; status.className = "v ok"; }
+  if(place) place.textContent = `${data.city} / ${data.country}`;
+  if(airport) airport.textContent = data.airport;
+  if(hint) hint.textContent = `${code} istasyonu bulundu.`;
+  if(chip) chip.textContent = "Bulundu";
+}
+
+const CUSTOMS_DB = {
+  // Gümrüklü
+  "ESB": {name:"Ankara", type:"Gümrüklü"},
+  "GZP": {name:"Alanya", type:"Gümrüklü"},
+  "AYT": {name:"Antalya", type:"Gümrüklü"},
+  "BJV": {name:"Bodrum", type:"Gümrüklü"},
+  "COV": {name:"Çukurova", type:"Gümrüklü"},
+  "DLM": {name:"Dalaman", type:"Gümrüklü"},
+  "DNZ": {name:"Denizli", type:"Gümrüklü"},
+  "DIY": {name:"Diyarbakır", type:"Gümrüklü"},
+  "EDO": {name:"Edremit", type:"Gümrüklü"},
+  "EZS": {name:"Elazığ", type:"Gümrüklü"},
+  "ERC": {name:"Erzincan", type:"Gümrüklü"},
+  "ERZ": {name:"Erzurum", type:"Gümrüklü"},
+  "AOE": {name:"Eskişehir", type:"Gümrüklü"},
+  "GZT": {name:"Gaziantep", type:"Gümrüklü"},
+  "HTY": {name:"Hatay", type:"Gümrüklü"},
+  "IGD": {name:"Iğdır", type:"Gümrüklü"},
+  "ISE": {name:"Isparta", type:"Gümrüklü"},
+  "IST": {name:"İstanbul", type:"Gümrüklü"},
+  "ADB": {name:"İzmir", type:"Gümrüklü"},
+  "KCM": {name:"Kahramanmaraş", type:"Gümrüklü"},
+  "KSY": {name:"Kars", type:"Gümrüklü"},
+  "ASR": {name:"Kayseri", type:"Gümrüklü"},
+  "KCO": {name:"Kocaeli", type:"Gümrüklü"},
+  "KYA": {name:"Konya", type:"Gümrüklü"},
+  "KZR": {name:"Kütahya", type:"Gümrüklü"},
+  "MLX": {name:"Malatya", type:"Gümrüklü"},
+  "MQM": {name:"Mardin", type:"Gümrüklü"},
+  "NAV": {name:"Nevşehir", type:"Gümrüklü"},
+  "OGU": {name:"Ordu-Giresun", type:"Gümrüklü"},
+  "RZV": {name:"Rize-Artvin", type:"Gümrüklü"},
+  "SAW": {name:"Sabiha Gökçen", type:"Gümrüklü"},
+  "SZF": {name:"Samsun", type:"Gümrüklü"},
+  "NOP": {name:"Sinop", type:"Gümrüklü"},
+  "VAS": {name:"Sivas", type:"Gümrüklü"},
+  "GNY": {name:"Şanlıurfa", type:"Gümrüklü"},
+  "TEQ": {name:"Tekirdağ/Çorlu", type:"Gümrüklü"},
+  "TJK": {name:"Tokat", type:"Gümrüklü"},
+  "TZX": {name:"Trabzon", type:"Gümrüklü"},
+  "VAN": {name:"Van", type:"Gümrüklü"},
+
+  // Gümrüksüz
+  "ADF": {name:"Adıyaman", type:"Gümrüksüz"},
+  "AJI": {name:"Ağrı", type:"Gümrüksüz"},
+  "BAL": {name:"Batman", type:"Gümrüklü"},
+  "BGG": {name:"Bingöl", type:"Gümrüksüz"},
+  "YEI": {name:"Bursa", type:"Gümrüksüz"},
+  "CKZ": {name:"Çanakkale", type:"Gümrüksüz"},
+  "YKO": {name:"Hakkari", type:"Gümrüksüz"},
+  "KFS": {name:"Kastamonu", type:"Gümrüksüz"},
+  "MZH": {name:"Merzifon", type:"Gümrüksüz"},
+  "MSR": {name:"Muş", type:"Gümrüksüz"},
+  "SXZ": {name:"Siirt", type:"Gümrüksüz"},
+  "NKT": {name:"Şırnak", type:"Gümrüksüz"},
+  "USQ": {name:"Uşak", type:"Gümrüksüz"},
+  "ONQ": {name:"Zonguldak", type:"Gümrüksüz"}
+};
+
+function updateCustomsLookup(){
+  const code = (($("customsCode")?.value || "").trim().toUpperCase());
+  const result = $("customsResult");
+  const name = $("customsName");
+  const hint = $("customsHint");
+  const chip = $("statusChipC");
+  if(!code){
+    if(result) { result.textContent = "—"; result.className = "v"; }
+    if(name) name.textContent = "—";
+    if(hint) hint.textContent = "3 harfli kod girildiğinde istasyon adı burada görünür.";
+    if(chip) chip.textContent = "Hazır";
+    return;
+  }
+  const data = CUSTOMS_DB[code];
+  if(!data){
+    if(result) { result.textContent = "Bulunamadı"; result.className = "v bad"; }
+    if(name) name.textContent = code;
+    if(hint) hint.textContent = "Bu kod listede yok.";
+    if(chip) chip.textContent = "Kod yok";
+    return;
+  }
+  if(result){
+    result.textContent = data.type;
+    result.className = data.type === "Gümrüklü" ? "v ok" : "v warn";
+  }
+  if(name) name.textContent = `${data.name} (${code})`;
+  if(hint) hint.textContent = `İstasyon durumu: ${data.type}`;
+  if(chip) chip.textContent = "Bulundu";
+}
+
+const radCompHeights = {
+  "A319":{"1":124,"4":124,"51":120},
+  "A320":{"1":124,"3":124,"4":124,"51":120},
+  "A321":{"1":124,"2":124,"3":124,"4":124,"51":120},
+  "A330-200":{"1":171,"2":171,"3":167,"4":167,"51":179,"52":181,"53":150},
+  "A330-300":{"1":171,"2":171,"3":167,"4":167,"51":179,"52":181,"53":150},
+  "A350":{"1":176,"2":176,"3":175,"4":175,"51":176},
+  "B737-800":{"1":111,"2":111,"3":119,"4":95},
+  "B737-900":{"1":111,"2":111,"3":119,"4":95},
+  "B787":{"1":170,"2":170,"3":170,"4":170,"51":170},
+  "B777":{"1":167,"2":167,"3":167,"4":167,"51":167}
+};
+const radCompRanges = {
+  "A319":{"4":"124-120","51":"120-82"},
+  "A320":{"4":"124-120","51":"120-82"},
+  "A321":{"4":"124-120","51":"120-82"},
+  "B737-800":{"4":"95-59"},
+  "B737-900":{"4":"95-59"},
+  "B787":{"51":"170-149"},
+  "B777":{"51":"167-156"}
+};
+const tiBands = [
+  {min:0.1,max:1.0,dist:0.30},
+  {min:1.1,max:2.0,dist:0.50},
+  {min:2.1,max:3.0,dist:0.70},
+  {min:3.1,max:4.0,dist:0.85},
+  {min:4.1,max:5.0,dist:1.00},
+  {min:5.1,max:6.0,dist:1.15},
+  {min:6.1,max:7.0,dist:1.30},
+  {min:7.1,max:8.0,dist:1.45},
+  {min:8.1,max:9.0,dist:1.55},
+  {min:9.1,max:10.0,dist:1.65},
+  {min:10.1,max:11.0,dist:1.75}
+];
+function tiToMinDistance(ti){
+  if(ti < 0.1 || ti > 11.0) return null;
+  const band = tiBands.find(b=>ti<=b.max);
+  return band ? band.dist : null;
+}
+function fillRadComps(){
+  const ac = $("radAircraft").value;
+  const sel = $("radComp");
+  sel.innerHTML = '<option value="">Seçiniz</option>';
+  const table = radCompHeights[ac] || {};
+  Object.keys(table).forEach(k=>{
+    const opt = document.createElement("option");
+    const range = (radCompRanges[ac]||{})[k];
+    opt.value = k;
+    opt.textContent = range ? `${k} (maks. ${table[k]} cm / ${range} cm)` : `${k} (maks. ${table[k]} cm)`;
+    sel.appendChild(opt);
+  });
+}
+function sumTI(text){
+  const nums = String(text||"").replace(/,/g,".").match(/\d+(\.\d+)?/g);
+  if(!nums) return null;
+  return nums.map(Number).reduce((a,b)=>a+b,0);
+}
+function updateRad(){
+  const ac = $("radAircraft").value;
+  const comp = $("radComp").value;
+  const ti = sumTI($("radTI").value);
+  const h = safeNum($("radBoxHcm").value);
+  const compH = (radCompHeights[ac]||{})[comp];
+
+  $("radSumTI").textContent = ti===null ? "—" : ti.toFixed(1);
+  const band = ti===null || ti<0.1 || ti>11.0 ? null : tiBands.find(b=>ti<=b.max);
+  $("radBand").textContent = band ? `${band.min.toFixed(1)}–${band.max.toFixed(1)}` : "—";
+  const minM = ti===null ? null : tiToMinDistance(ti);
+  $("radMinM").textContent = minM===null ? "—" : `${minM.toFixed(2)} m`;
+  const compRange = ((radCompRanges[ac]||{})[comp]);
+  $("radCompCm").textContent = compH===undefined ? "—" : `${compH} maks.${compRange ? ` (${compRange})` : ""}`;
+  if(minM===null || h===null || compH===undefined){
+    $("radNeedCm").textContent = "—";
+    $("radResult").textContent = "—";
+    $("radExplain").textContent = ti!==null && (ti<0.1 || ti>11.0) ? "TI / Sum TI değeri 0.1 ile 11.0 arasında olmalı." : "TI, kutu yüksekliği ve kompartıman seç.";
+    return;
+  }
+  const need = minM*100 + h;
+  $("radNeedCm").textContent = `${need.toFixed(0)}`;
+  if(need <= compH){
+    const pay = compH - need;
+    $("radResult").textContent = `✅ UYGUN (Pay: ${pay.toFixed(0)} cm)`;
+    $("radExplain").textContent = `Hesap: ${(minM*100).toFixed(0)} cm minimum mesafe + ${h.toFixed(0)} cm kutu yüksekliği = ${need.toFixed(0)} cm. Bu değer ${compH} cm maksimum kompartıman yüksekliğini aşmıyor.`;
+  }else{
+    const over = need - compH;
+    $("radResult").textContent = `❌ UYGUN DEĞİL (Aşıyor: ${over.toFixed(0)} cm)`;
+    $("radExplain").textContent = `Hesap: ${(minM*100).toFixed(0)} cm minimum mesafe + ${h.toFixed(0)} cm kutu yüksekliği = ${need.toFixed(0)} cm. Bu değer ${compH} cm maksimum kompartıman yüksekliğini ${over.toFixed(0)} cm aşıyor.`;
+  }
+}
+["radAircraft","radComp"].forEach(id=> $(id).addEventListener("change", ()=>{
+  if(id==="radAircraft") fillRadComps();
+  updateRad();
+}));
+["radTI","radBoxHcm"].forEach(id=> $(id).addEventListener("input", updateRad));
+
+function refreshSummary(){
+  const flt = ($("flightNo").value || "—").trim().toUpperCase();
+  const tail = ($("tailNo").value || "—").trim().toUpperCase();
+  const crew = $("crewCode").value || "—";
+  const pantry = $("pantryCode").value || "—";
+  const ac = $("aircraft").value || "—";
+  const total = $("totalFuel").value || "—";
+  const taxi = $("taxiFuel").value || "—";
+  const trip = $("tripFuel").value || "—";
+  const rem = $("remainFuelStat").textContent || "—";
+  const waterRatioValue = $("waterRatio").value || "";
+  const water = waterRatioValue==="FULL" ? "FULL (%100)" : `${waterRatioValue || "—"} • ${$("waterWeight").textContent || "—"} / ${$("waterIndex").textContent || "—"}`;
+
+  $("sumFT").textContent = `${flt} / ${tail}`;
+  $("sumCA").textContent = `${crew} / ${ac}`;
+  $("tFlight").textContent = flt;
+  $("tTail").textContent = tail;
+  $("tCrew").textContent = crew;
+  $("tPantry").textContent = pantry;
+  $("tAC").textContent = ac;
+  $("tWater").textContent = water;
+  $("tTotalFuel").textContent = total;
+  $("tTaxiFuel").textContent = taxi;
+  $("tRemFuel").textContent = rem;
+  $("tTripFuel").textContent = trip;
+
+  renderSummaryLists();
+
+  
+  const sg = $("sumGroups");
+  if(sg){
+    const gt = $("groupTotals");
+    if(gt && gt.innerHTML.trim()){
+      sg.innerHTML = gt.innerHTML;
+    }else{
+      sg.innerHTML = '<div class="hint">Grup toplamı yok.</div>';
+    }
+  }
+
+  $("printHint").textContent = `Toplam yük: ${$("sumTotal").textContent || "0.0"} kg`;
+}
+$("btnPrint").addEventListener("click", ()=>{ refreshSummary(); window.print(); });
+
+loadLocal();
+renderAvihList();
+renderSpecialCargoList();
+populateWaterOptions();
+updateWaterBox();
+updateMeta();
+updateValues();
+$("btnClearHistory").addEventListener("click", ()=>{ localStorage.removeItem(HISTORY_KEY); renderHistory(); });
+if($("btnAddAvih")) $("btnAddAvih").addEventListener("click", ()=>{
+  const val = ($("avihType").value || "").trim();
+  if(!val) return;
+  const count = Math.max(1, Number($("petcCount").value)||1);
+  const arr = getAvihItems();
+  arr.push(val+" ×"+count);
+  setAvihItems(arr);
+  $("avihType").value = "";
+  $("petcCount").value = "";
+  renderAvihList();
+  saveLocal();
+});
+if($("btnAddCargo")) $("btnAddCargo").addEventListener("click", ()=>{
+  const val = ($("specialCargo").value || "").trim();
+  if(!val) return;
+  const arr = getSpecialCargoItems();
+  arr.push(val);
+  setSpecialCargoItems(arr);
+  $("specialCargo").value = "";
+  renderSpecialCargoList();
+  saveLocal();
+});
+
+const DESK_LIST_KEY = "ops_toolkit_desk_list_v1";
+const deskChannelMap = {1:1,2:1,3:2,4:2,5:3,6:3,7:3,8:4,9:4,10:5,11:5,12:6,13:6};
+let deskImageDataUrl = "";
+
+function emptyDeskData(){
+  const data = {};
+  for(let i=1;i<=13;i++) data[i]=[];
+  return data;
+}
+function normalizeFlight(value){
+  const digits = String(value||"").toUpperCase().replace(/^TK\s*/,"").replace(/\D/g,"");
+  if(!digits) return "";
+  return String(parseInt(digits,10));
+}
+function getDeskData(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(DESK_LIST_KEY)||"null");
+    return saved && saved.desks ? saved.desks : emptyDeskData();
+  }catch(e){ return emptyDeskData(); }
+}
+function setDeskStatus(text,kind){
+  setChip("statusChipD",kind||"",text);
+  const hint=$("deskOcrHint"); if(hint) hint.textContent=text;
+}
+function renderDeskEditors(data){
+  const box=$("deskEditorGrid"); if(!box) return;
+  const desks=data||getDeskData();
+  box.innerHTML="";
+  for(let channel=1;channel<=6;channel++){
+    const flights=[];
+    for(let desk=1;desk<=13;desk++){
+      if(deskChannelMap[desk]===channel) (desks[desk]||[]).forEach(flight=>flights.push(flight));
+    }
+    const wrap=document.createElement("div");
+    wrap.className="desk-editor";
+    wrap.innerHTML=`<strong>Kanal ${channel}</strong><textarea id="deskChannelEdit_${channel}" inputmode="numeric" placeholder="Uçuşlar">${flights.join(" ")}</textarea>`;
+    box.appendChild(wrap);
+  }
+}
+function collectDeskEditors(){
+  const desks=emptyDeskData();
+  const firstDeskForChannel={1:1,2:3,3:5,4:8,5:10,6:12};
+  for(let channel=1;channel<=6;channel++){
+    const field=$("deskChannelEdit_"+channel);
+    const matches=String(field?field.value:"").match(/\d{1,4}/g)||[];
+    desks[firstDeskForChannel[channel]]=matches.map(normalizeFlight).filter(Boolean);
+  }
+  return desks;
+}
+function saveDeskList(){
+  const desks=collectDeskEditors();
+  localStorage.setItem(DESK_LIST_KEY,JSON.stringify({savedAt:new Date().toISOString(),desks}));
+  setDeskStatus("Masa listesi kaydedildi.","");
+  searchDeskFlight();
+}
+function clearDeskList(){
+  localStorage.removeItem(DESK_LIST_KEY);
+  deskImageDataUrl="";
+  const preview=$("deskImagePreview"); if(preview){preview.removeAttribute("src");preview.classList.remove("show");}
+  if($("deskImageInput")) $("deskImageInput").value="";
+  renderDeskEditors(emptyDeskData());
+  if($("deskFlightSearch")) $("deskFlightSearch").value="";
+  searchDeskFlight();
+  setDeskStatus("Liste temizlendi.","");
+}
+function searchDeskFlight(){
+  const box=$("deskSearchResult"); if(!box) return;
+  const query=normalizeFlight($("deskFlightSearch").value);
+  box.classList.remove("found","not-found");
+  if(!query){
+    box.innerHTML='<div class="desk-main">—</div><div class="desk-sub">Uçuş numarasını yaz.</div>';
+    return;
+  }
+  const desks=getDeskData();
+  const channels=[];
+  for(let desk=1;desk<=13;desk++){
+    (desks[desk]||[]).forEach(flight=>{
+      if(normalizeFlight(flight)===query && !channels.includes(deskChannelMap[desk])) channels.push(deskChannelMap[desk]);
+    });
+  }
+  if(!channels.length){
+    box.classList.add("not-found");
+    box.innerHTML=`<div class="desk-main" style="color:var(--bad)">TK${query} bulunamadı</div><div class="desk-sub">Listeyi ve masa alanlarını kontrol et.</div>`;
+    return;
+  }
+  box.classList.add("found");
+  box.innerHTML=channels.map(channel=>`<div><div class="desk-main">KANAL ${channel}</div><div class="desk-sub">TK${query}</div></div>`).join('<div class="divider"></div>');
+}
+function previewDeskImage(file){
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    deskImageDataUrl=String(reader.result||"");
+    const preview=$("deskImagePreview");
+    preview.src=deskImageDataUrl; preview.classList.add("show");
+    setDeskStatus("Fotoğraf hazır. Otomatik Oku düğmesine bas.","");
+  };
+  reader.readAsDataURL(file);
+}
+function splitDetectedTokens(item){
+  const raw=String(item.rawValue||item.text||"");
+  const box=item.boundingBox||{x:0,y:0,width:1,height:1};
+  const matches=[...raw.matchAll(/\d{1,4}/g)];
+  return matches.map((match,index)=>({
+    text:normalizeFlight(match[0]),
+    x:box.x+box.width*((index+0.5)/Math.max(matches.length,1)),
+    y:box.y+box.height/2,
+    raw
+  })).filter(x=>x.text);
+}
+function loadTesseractOcr(){
+  if(window.Tesseract) return Promise.resolve(window.Tesseract);
+  return new Promise((resolve,reject)=>{
+    const existing=document.getElementById("tesseractOcrScript");
+    if(existing){
+      existing.addEventListener("load",()=>resolve(window.Tesseract),{once:true});
+      existing.addEventListener("error",()=>reject(new Error("OCR motoru yüklenemedi")),{once:true});
+      return;
+    }
+    const script=document.createElement("script");
+    script.id="tesseractOcrScript";
+    script.src="https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/tesseract.min.js";
+    script.crossOrigin="anonymous";
+    script.onload=()=>resolve(window.Tesseract);
+    script.onerror=()=>reject(new Error("OCR motoru yüklenemedi"));
+    document.head.appendChild(script);
+  });
+}
+function tsvToLineBlocks(tsv){
+  const groups=new Map();
+  String(tsv||"").split(/\r?\n/).slice(1).forEach(row=>{
+    const cols=row.split("\t");
+    if(cols.length<12 || cols[0]!=="5") return;
+    const text=String(cols.slice(11).join("\t")||"").trim();
+    if(!text) return;
+    const key=[cols[2],cols[3],cols[4]].join("-");
+    const left=Number(cols[6])||0,top=Number(cols[7])||0,width=Number(cols[8])||1,height=Number(cols[9])||1;
+    if(!groups.has(key)) groups.set(key,{words:[],left,top,right:left+width,bottom:top+height});
+    const group=groups.get(key);
+    group.words.push({text,left}); group.left=Math.min(group.left,left); group.top=Math.min(group.top,top);
+    group.right=Math.max(group.right,left+width); group.bottom=Math.max(group.bottom,top+height);
+  });
+  return [...groups.values()].map(group=>({
+    rawValue:group.words.sort((a,b)=>a.left-b.left).map(x=>x.text).join(" "),
+    boundingBox:{x:group.left,y:group.top,width:group.right-group.left,height:group.bottom-group.top}
+  }));
+}
+function buildChannelCrop(source,region){
+  const sx=Math.round(source.width*region[0]);
+  const sy=Math.round(source.height*0.145);
+  const sw=Math.round(source.width*(region[1]-region[0]));
+  const sh=Math.round(source.height*0.69);
+  const zoom=3;
+  const crop=document.createElement("canvas");
+  crop.width=Math.max(300,sw*zoom); crop.height=Math.max(900,sh*zoom);
+  const ctx=crop.getContext("2d",{alpha:false,willReadFrequently:true});
+  ctx.fillStyle="#fff"; ctx.fillRect(0,0,crop.width,crop.height);
+  ctx.filter="grayscale(1) contrast(1.75) brightness(1.08)";
+  ctx.drawImage(source,sx,sy,sw,sh,0,0,crop.width,crop.height);
+  ctx.filter="none";
+  const image=ctx.getImageData(0,0,crop.width,crop.height);
+  const pixels=image.data;
+  for(let i=0;i<pixels.length;i+=4){
+    const value=pixels[i];
+    const out=value<175 ? 0 : 255;
+    pixels[i]=out; pixels[i+1]=out; pixels[i+2]=out; pixels[i+3]=255;
+  }
+  ctx.putImageData(image,0,0);
+  return crop;
+}
+async function readChannelsWithOcr(canvas){
+  setDeskStatus("OCR motoru hazırlanıyor; ilk kullanım biraz sürebilir…","");
+  const OCR=await loadTesseractOcr();
+  let activeChannel=1;
+  const worker=await OCR.createWorker("eng",1,{
+    workerPath:"https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/worker.min.js",
+    corePath:"https://cdn.jsdelivr.net/npm/tesseract.js-core@7",
+    langPath:"https://tessdata.projectnaptha.com/4.0.0_fast",
+    logger:message=>{
+      if(message && message.status==="recognizing text") setDeskStatus(`Kanal ${activeChannel} okunuyor: %${Math.round((message.progress||0)*100)}`,"");
+    }
+  });
+  const regions=[[0.035,0.150],[0.170,0.292],[0.312,0.505],[0.505,0.645],[0.642,0.775],[0.775,0.915]];
+  const desks=emptyDeskData();
+  const firstDeskForChannel={1:1,2:3,3:5,4:8,5:10,6:12};
+  try{
+    await worker.setParameters({
+      tessedit_char_whitelist:"0123456789 -'",
+      tessedit_pageseg_mode:"6",
+      preserve_interword_spaces:"1"
+    });
+    for(let channel=1;channel<=6;channel++){
+      activeChannel=channel;
+      const crop=buildChannelCrop(canvas,regions[channel-1]);
+      const result=await worker.recognize(crop);
+      const values=(String(result.data.text||"").match(/\d{1,4}/g)||[])
+        .map(normalizeFlight).filter(value=>value && Number(value)<=9999);
+      desks[firstDeskForChannel[channel]]=values;
+      await new Promise(resolve=>setTimeout(resolve,25));
+    }
+    return desks;
+  }finally{
+    await worker.terminate();
+  }
+}
+async function readDeskImage(){
+  if(!deskImageDataUrl){ setDeskStatus("Önce A4 fotoğrafını seç.","warn"); return; }
+  setDeskStatus("Fotoğraf okunuyor…","");
+  try{
+    const image=new Image(); image.src=deskImageDataUrl;
+    await image.decode();
+    const scale=Math.min(1,1800/Math.max(image.naturalWidth,image.naturalHeight));
+    const canvas=document.createElement("canvas");
+    canvas.width=Math.round(image.naturalWidth*scale); canvas.height=Math.round(image.naturalHeight*scale);
+    canvas.getContext("2d",{alpha:false}).drawImage(image,0,0,canvas.width,canvas.height);
+    const desks=await readChannelsWithOcr(canvas);
+    renderDeskEditors(desks);
+    localStorage.setItem(DESK_LIST_KEY,JSON.stringify({savedAt:new Date().toISOString(),desks}));
+    searchDeskFlight();
+    const total=Object.values(desks).reduce((sum,list)=>sum+list.length,0);
+    setDeskStatus(`Fotoğraf okundu ve ${total} uçuş kaydedildi. Uçuş numarasını arayabilirsin.`,"");
+  }catch(error){
+    console.error(error);
+    const reason=String(error&&error.message||error||"Bilinmeyen hata").slice(0,120);
+    setDeskStatus(`Fotoğraf okunamadı: ${reason}`,"warn");
+  }
+}
+if($("deskImageInput")) $("deskImageInput").addEventListener("change",e=>previewDeskImage(e.target.files&&e.target.files[0]));
+if($("btnDeskOcr")) $("btnDeskOcr").addEventListener("click",readDeskImage);
+if($("btnDeskSave")) $("btnDeskSave").addEventListener("click",saveDeskList);
+if($("btnDeskClear")) $("btnDeskClear").addEventListener("click",clearDeskList);
+if($("deskFlightSearch")) $("deskFlightSearch").addEventListener("input",searchDeskFlight);
+renderDeskEditors();
+searchDeskFlight();
+
+if($("customsCode")) $("customsCode").addEventListener("input", updateCustomsLookup);
+updateCustomsLookup();
+if($("stationCode")) $("stationCode").addEventListener("input", updateStationLookup);
+updateStationLookup();
+
+</script>
+<nav class="bottom-nav" id="modernBottomNav" aria-label="Hizli navigasyon">
+  <button type="button" data-screen="home" class="active"><span>⌂</span>Ana Sayfa</button>
+  <button type="button" data-screen="load"><span>✈</span>Balance</button>
+  <button type="button" data-screen="rad"><span>☢</span>Radyoaktif</button>
+  <button type="button" data-screen="summary"><span>▤</span>Summary</button>
+  <button type="button" data-screen="recent"><span>↶</span>Gecmis</button>
+</nav>
+
+<script id="modernUiBehavior">
+(function(){
+  "use strict";
+  function byId(id){ return document.getElementById(id); }
+  function safeText(id){ var el=byId(id); return el ? (el.textContent.trim() || "-") : "-"; }
+
+  function syncBottomNav(screen){
+    document.querySelectorAll("#modernBottomNav [data-screen]").forEach(function(btn){
+      btn.classList.toggle("active",btn.getAttribute("data-screen")===screen);
+    });
+  }
+
+  document.querySelectorAll("#modernBottomNav [data-screen]").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var target=btn.getAttribute("data-screen");
+      try{
+        if(typeof show==="function") show(target);
+        else{
+          document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+          if(byId(target)) byId(target).classList.add("active");
+        }
+        syncBottomNav(target);
+        window.scrollTo(0,0);
+      }catch(err){ console.warn("UI navigation:",err); }
+    });
+  });
+
+  document.querySelectorAll("[id^='backFrom']").forEach(function(btn){
+    btn.addEventListener("click",function(){ syncBottomNav("home"); });
+  });
+  [["goLoad","load"],["goRad","rad"],["goSummary","summary"],["goRecent","recent"]].forEach(function(pair){
+    var el=byId(pair[0]); if(el) el.addEventListener("click",function(){syncBottomNav(pair[1]);});
+  });
+
+  var load=byId("load");
+  if(load){
+    Array.prototype.slice.call(load.querySelectorAll(".wrap > .card")).forEach(function(card,index){
+      if(card.querySelector(".topbar") || index===0) return;
+      var heading=card.querySelector(":scope > div[style*='font-weight:950'], :scope > .title");
+      if(!heading) return;
+      var title=heading.textContent.trim();
+      if(!title) return;
+      var children=Array.prototype.slice.call(card.childNodes);
+      var body=document.createElement("div"); body.className="ui-collapse-body";
+      children.forEach(function(node){ if(node!==heading) body.appendChild(node); });
+      var toggle=document.createElement("button"); toggle.type="button"; toggle.className="ui-collapse-toggle";
+      toggle.setAttribute("aria-expanded","true");
+      toggle.innerHTML='<span>'+title+'</span><span class="ui-chevron">v</span>';
+      heading.remove(); card.classList.add("ui-collapsible"); card.appendChild(toggle); card.appendChild(body);
+      toggle.addEventListener("click",function(){
+        var collapsed=card.classList.toggle("is-collapsed"); toggle.setAttribute("aria-expanded",String(!collapsed));
+      });
+    });
+  }
+
+  document.querySelectorAll("input,select,textarea").forEach(function(field){
+    var validate=function(){
+      var has=String(field.value||"").trim()!=="";
+      field.classList.toggle("ui-valid",has);
+      field.classList.remove("ui-invalid");
+      if(field.type==="number" && has && Number(field.value)<0){field.classList.add("ui-invalid");field.classList.remove("ui-valid");}
+      if(field.id==="taxiFuel" && has && Number(field.value)>Number((byId("totalFuel")||{}).value||0)){field.classList.add("ui-invalid");field.classList.remove("ui-valid");}
+    };
+    field.addEventListener("input",validate); field.addEventListener("change",validate);
+  });
+
+  var unitMap={totalFuel:"KG",taxiFuel:"KG",tripFuel:"KG",bagTotalKg:"KG",bagPieces:"PCS",manualAvgBag:"KG",radBoxHcm:"CM"};
+  Object.keys(unitMap).forEach(function(id){
+    var field=byId(id); if(!field) return;
+    var label=field.parentElement ? field.parentElement.querySelector(":scope > label") : null;
+    if(label && !label.querySelector(".ui-unit-badge")){
+      var badge=document.createElement("span"); badge.className="ui-unit-badge"; badge.textContent=unitMap[id]; label.appendChild(badge);
+    }
+  });
+
+  var observer=new MutationObserver(function(){
+    var active=document.querySelector(".screen.active"); if(active) syncBottomNav(active.id);
+  });
+  document.querySelectorAll(".screen").forEach(function(s){observer.observe(s,{attributes:true,attributeFilter:["class"]});});
+})();
+</script>
+<script id="allImprovementsBehavior">
+(function(){
+  "use strict";
+  var byId=function(id){return document.getElementById(id);};
+  var num=function(id){var el=byId(id),n=el&&el.value!==""?Number(el.value):NaN;return Number.isFinite(n)?n:null;};
+  var txt=function(id){var el=byId(id);return el?String(el.value||"").trim():"";};
+  function compPcs(){return (typeof compartments!=="undefined"?compartments:[]).reduce(function(sum,c){return sum+(Number(c.bags)||0);},0);}
+  function metrics(){
+    var total=num("totalFuel"),taxi=num("taxiFuel"),bagKg=num("bagTotalKg"),bagPcs=num("bagPieces"),manual=num("manualAvgBag"),cp=compPcs();
+    var issues=[],critical=[];
+    if(total!==null&&taxi!==null&&taxi>total) critical.push("Taxi Fuel, Total Fuel'den büyük.");
+    if((bagKg!==null&&bagPcs===null)||(bagKg===null&&bagPcs!==null)) issues.push("Toplam bagaj kg ve PCS birlikte girilmeli; aksi halde manuel Avg kullanın.");
+    if(bagPcs!==null&&bagPcs<=0) critical.push("Bagaj PCS sıfır veya negatif olamaz.");
+    if(bagKg!==null&&bagPcs!==null&&bagPcs>0){var av=bagKg/bagPcs;if(av<10||av>30) issues.push("Avg bagaj "+av.toFixed(2)+" kg; değer olağandışı olabilir.");}
+    if(bagKg===null&&bagPcs===null&&manual!==null&&(manual<10||manual>30)) issues.push("Manuel Avg "+manual.toFixed(2)+" kg; değeri doğrulayın.");
+    if(bagPcs!==null&&cp!==bagPcs) issues.push("Kompartıman PCS farkı: "+(cp-bagPcs>0?"+":"")+(cp-bagPcs)+".");
+    if(txt("aircraft")&&!txt("waterRatio")) issues.push("Uçak seçildi fakat su oranı seçilmedi.");
+    var checks=[
+      ["TK / Tail",!!txt("flightNo")&&!!txt("tailNo")],
+      ["Crew / Pantry",!!txt("crewCode")&&!!txt("pantryCode")],
+      ["Aircraft / Water",!!txt("aircraft")&&!!txt("waterRatio")],
+      ["Fuel",total!==null&&taxi!==null&&taxi<=total],
+      ["Bagaj",(bagKg!==null&&bagPcs!==null&&bagPcs>0)||(manual!==null&&manual>0)],
+      ["Kompartıman PCS",bagPcs===null?(manual!==null||cp===0):cp===bagPcs],
+      ["PETC / Özel Yük",getAvihItems().length+getSpecialCargoItems().length>0?"warn":true]
+    ];
+    checks.slice(0,6).forEach(function(c){if(c[1]!==true&&!issues.some(function(x){return x.indexOf(c[0])>=0;}))issues.push(c[0]+" eksik veya kontrol edilmeli.");});
+    return {total:total,taxi:taxi,bagKg:bagKg,bagPcs:bagPcs,manual:manual,compPcs:cp,issues:issues,critical:critical,checks:checks,ready:critical.length===0&&issues.length===0&&checks.slice(0,6).every(function(x){return x[1]===true;})};
+  }
+  function setFieldState(id,kind){var el=byId(id);if(!el)return;el.classList.remove("ui-valid","ui-invalid");if(kind==="ok")el.classList.add("ui-valid");if(kind==="bad")el.classList.add("ui-invalid");}
+  function updateExtendedUi(){
+    var m=metrics(),grid=byId("opsCheckGrid");
+    if(grid) grid.innerHTML=m.checks.map(function(c){var k=c[1]===true?"ok":c[1]==="warn"?"warn":"bad";return '<div class="ops-check-item '+k+'">'+c[0]+(c[1]==="warn"?' • Mevcut':'')+'</div>';}).join("");
+    var alert=byId("opsAlertBox");if(alert){var all=m.critical.concat(m.issues);alert.className="ops-alert"+(m.critical.length?" bad":"");alert.textContent=all.length?all.join(" • "):"Tüm kritik kontroller tamam.";}
+    var compact=byId("opsCompactStatus");if(compact){compact.className="chip "+(m.critical.length?"bad":m.issues.length?"warn":"ok");compact.textContent=m.ready?"✓ Hazır":m.critical.length?("✕ "+m.critical.length+" kritik"):("! "+m.issues.length+" kontrol");}
+    setFieldState("taxiFuel",m.total!==null&&m.taxi!==null&&m.taxi>m.total?"bad":m.taxi!==null?"ok":"");
+    setFieldState("totalFuel",m.total!==null?"ok":"");
+    var mode=byId("bagAvgMode"),dist=byId("distributedPcs"),diff=byId("bagPcsDiff"),cp=byId("compPcsTotal"),check=byId("bagDistributionCheck");
+    if(mode) mode.textContent=(m.bagKg!==null&&m.bagPcs!==null&&m.bagPcs>0)?"AUTO":m.manual!==null?"MANUEL":"—";
+    if(dist) dist.textContent=String(m.compPcs);if(cp)cp.textContent=String(m.compPcs);
+    if(diff){diff.textContent=m.bagPcs===null?"—":((m.compPcs-m.bagPcs>0?"+":"")+(m.compPcs-m.bagPcs));diff.className="v "+(m.bagPcs!==null&&m.compPcs!==m.bagPcs?"bad":"ok");}
+    if(check){check.textContent=m.bagPcs===null?"PCS bekleniyor":m.compPcs===m.bagPcs?"✓ UYUŞUYOR":"✕ FARK VAR";check.className="v "+(m.bagPcs!==null&&m.compPcs===m.bagPcs?"ok":"warn");}
+    var w=byId("waterMatchInfo");if(w){var ac=txt("aircraft"),key="";try{key=waterKeyForAircraft(ac);}catch(e){}var labels={A330_JNA_JNB:"A330 • JNA-JNB",A330_GRP2:"A330 • JNC/JND/JNE/JI*/LNB/LO*",A330_JNF_JNG_JIL_JIM_JIN:"A330 • JNF/JNG/JIL/JIM/JIN",A330_GRP4:"A330 • JNH-JNZ/LNC-LNG/JO*/LO*",A330_TC_LON:"A330 • TC-LON",A350_AC:"A350 • A-C tail grubu",A350_BD:"A350 • B-D tail grubu"};w.textContent=!ac?"Uçak tipi bekleniyor.":key?("Eşleşen tablo: "+(labels[key]||key)):"Tail eşleşmedi — su değeri üretilemez.";w.style.color=key?"var(--ok)":"var(--bad)";}
+    try{setChip("statusChipL",m.critical.length?"bad":m.issues.length?"warn":"ok",m.ready?"Kontroller Tamam":m.critical.length?"Kritik Hata":"Kontrol Gerekli");}catch(e){}
+  }
+
+  var baseUpdateValues=window.updateValues;
+  if(typeof baseUpdateValues==="function") window.updateValues=function(){baseUpdateValues();updateExtendedUi();};
+  var baseWater=window.updateWaterBox;
+  if(typeof baseWater==="function") window.updateWaterBox=function(){baseWater();updateExtendedUi();};
+  var baseRad=window.updateRad;
+  if(typeof baseRad==="function") window.updateRad=function(){baseRad();var r=byId("radResult"),parts=byId("radTiParts"),raw=txt("radTI").replace(/,/g,".");if(parts){var found=raw.match(/\d+(?:\.\d+)?/g)||[];parts.textContent=found.length?found.join(" + "):"—";}if(byId("radAircraft"))localStorage.setItem("ops_rad_aircraft",byId("radAircraft").value||"");if(byId("radComp"))localStorage.setItem("ops_rad_comp",byId("radComp").value||"");if(!r)return;r.classList.remove("ok","warn","bad");var match=r.textContent.match(/Pay:\s*([\d.,]+)/i);if(r.textContent.indexOf("UYGUN DEĞİL")>=0||r.textContent.indexOf("UYGUN DEÄ")>=0)r.classList.add("bad");else if(match&&Number(match[1].replace(",","."))<=10){r.classList.add("warn");r.textContent=r.textContent.replace(/✅\s*UYGUN/i,"⚠️ SINIRDA");}else if(r.textContent.indexOf("UYGUN")>=0)r.classList.add("ok");};
+
+  var baseRefresh=window.refreshSummary;
+  if(typeof baseRefresh==="function") window.refreshSummary=function(){
+    baseRefresh();updateExtendedUi();var m=metrics();
+    var put=function(id,v){var el=byId(id);if(el)el.textContent=v||"—";};
+    put("sAvgBag",byId("avgBagStat")&&byId("avgBagStat").textContent);put("sBagPcs",m.bagPcs===null?"—":String(m.bagPcs));put("sCompPcs",String(m.compPcs));
+    put("sTotalBag",(byId("sumBag")?byId("sumBag").textContent:"0")+" kg");put("sTotalCargo",(byId("sumCargo")?byId("sumCargo").textContent:"0")+" kg");put("sTotalLoad",(byId("sumTotal")?byId("sumTotal").textContent:"0")+" kg");
+    var radEntered=!!txt("radAircraft")&&!!txt("radComp")&&!!txt("radTI")&&!!txt("radBoxHcm"),radBlock=byId("summaryRadBlock");if(radBlock)radBlock.style.display=radEntered?"flex":"none";put("sRadResult",radEntered&&byId("radResult")?byId("radResult").textContent:"—");put("sOpsNote",txt("opsNote"));
+    var title=byId("summaryReadyTitle"),detail=byId("summaryReadyDetail"),banner=byId("summaryReadyBanner");if(title){title.textContent=m.ready?"READY FOR BRIEFING":((m.critical.length+m.issues.length)+" KONTROL GEREKİYOR");detail.textContent=m.ready?"Fuel, water, bagaj ve dağıtım kontrolleri tamam.":m.critical.concat(m.issues).join(" • ");banner.style.borderColor=m.ready?"rgba(85,217,138,.55)":"rgba(255,212,92,.6)";}
+  };
+
+  var baseRenderHistory=window.renderHistory;
+  function augmentHistory(){
+    var box=byId("recentList"),q=txt("historySearch").toUpperCase();if(!box)return;
+    Array.prototype.slice.call(box.children).forEach(function(card){var text=card.textContent.toUpperCase();card.style.display=!q||text.indexOf(q)>=0?"":"none";var recall=card.querySelector("[data-recall]");if(!recall||card.querySelector("[data-delete-history]"))return;var id=recall.getAttribute("data-recall"),actions=card.querySelector(".btns")||card;
+      var meta=document.createElement("button");meta.type="button";meta.textContent="Sadece Uçuş Bilgileri";meta.setAttribute("data-meta-history",id);actions.appendChild(meta);
+      var del=document.createElement("button");del.type="button";del.textContent="Sil";del.className="btn-danger";del.setAttribute("data-delete-history",id);actions.appendChild(del);
+      meta.addEventListener("click",function(){var e=readHistory().find(function(x){return String(x.id)===String(id);});if(!e)return;byId("flightNo").value=e.flightNo||"";byId("tailNo").value=e.tailNo||"";byId("crewCode").value=e.crewCode||"";byId("pantryCode").value=e.pantryCode||"";byId("aircraft").value=e.aircraft||"";rebuildComps();updateValues();show("load");});
+      del.addEventListener("click",function(){if(!confirm("Bu uçuş kaydı silinsin mi?"))return;var list=readHistory().filter(function(x){return String(x.id)!==String(id);});localStorage.setItem(HISTORY_KEY,JSON.stringify(list));window.renderHistory();});
+    });
+  }
+  if(typeof baseRenderHistory==="function")window.renderHistory=function(){baseRenderHistory();augmentHistory();};
+  if(byId("historySearch"))byId("historySearch").addEventListener("input",function(){window.renderHistory();});
+  if(byId("btnClearHistory"))byId("btnClearHistory").addEventListener("click",function(e){if(!confirm("Tüm uçuş geçmişi silinsin mi?")){e.preventDefault();e.stopImmediatePropagation();}},true);
+
+  function saveRecentStation(code){if(!code||!STATION_DB[code])return;var arr=[];try{arr=JSON.parse(localStorage.getItem("ops_recent_stations")||"[]");}catch(e){}arr=arr.filter(function(x){return x!==code;});arr.unshift(code);localStorage.setItem("ops_recent_stations",JSON.stringify(arr.slice(0,5)));renderRecentStations();}
+  function renderRecentStations(){var box=byId("stationRecentCodes");if(!box)return;var arr=[];try{arr=JSON.parse(localStorage.getItem("ops_recent_stations")||"[]");}catch(e){}box.innerHTML=arr.length?arr.map(function(c){return '<button type="button" data-recent-station="'+c+'">'+c+'</button>';}).join(""):'<span class="hint">—</span>';box.querySelectorAll("[data-recent-station]").forEach(function(b){b.addEventListener("click",function(){byId("stationCode").value=b.getAttribute("data-recent-station");updateStationLookup();});});}
+  if(byId("stationCode"))byId("stationCode").addEventListener("input",function(){var code=txt("stationCode").toUpperCase();byId("stationCode").value=code;if(code.length===3)saveRecentStation(code);});renderRecentStations();
+  if(byId("customsCode"))byId("customsCode").addEventListener("input",function(){byId("customsCode").value=txt("customsCode").toUpperCase();});
+
+  var theme=localStorage.getItem("ops_theme_v1")||"dark";if(theme==="light")document.body.classList.add("theme-light");
+  if(byId("btnThemeToggle"))byId("btnThemeToggle").addEventListener("click",function(){document.body.classList.toggle("theme-light");localStorage.setItem("ops_theme_v1",document.body.classList.contains("theme-light")?"light":"dark");});
+
+  ["input","change"].forEach(function(evt){document.addEventListener(evt,function(e){if(e.target&&e.target.matches("input,select,textarea"))updateExtendedUi();});});
+  var savedRadAc=localStorage.getItem("ops_rad_aircraft")||"",savedRadComp=localStorage.getItem("ops_rad_comp")||"";if(savedRadAc&&byId("radAircraft")){byId("radAircraft").value=savedRadAc;fillRadComps();if(savedRadComp)byId("radComp").value=savedRadComp;window.updateRad();}
+  updateExtendedUi();
+})();
+</script>
+
+
+</body></html>
